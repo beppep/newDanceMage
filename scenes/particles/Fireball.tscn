@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://gv852tyslnt"]
+
+[ext_resource type="Script" uid="uid://cymmlrb7nw4e" path="res://scenes/particles/fireball.gd" id="1_5xrib"]
+[ext_resource type="Texture2D" uid="uid://sd3usujx5ho6" path="res://assets/sprites/particles/fireball.png" id="2_h8knq"]
+[ext_resource type="Texture2D" uid="uid://cogkd4bk4jh2q" path="res://assets/sprites/particles/fire.png" id="3_7s25a"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_087v8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_h8knq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7s25a")
+}],
+"loop": true,
+"name": &"fire",
+"speed": 5.0
+}]
+
+[node name="Fireball" type="Node2D"]
+script = ExtResource("1_5xrib")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_087v8")
+animation = &"fire"

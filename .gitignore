@@ -1,0 +1,45 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot-specific files
+.import/
+.export/
+export.cfg
+export_presets.cfg
+
+# Imported assets cache
+*.import
+
+# System-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Backup files
+*.bak
+*.old
+*.orig
+
+# Editor metadata (optional, can be useful to keep)
+# Uncomment if you want to ignore editor layout/preferences
+# .godot/
+
+# VSCode / JetBrains / etc.
+.vscode/
+.idea/
+
+# Build artifacts
+/bin/
+/build/
+/dist/
+/out/
+
+# Python if you use tools or scripts
+__pycache__/
+*.pyc
