@@ -8,4 +8,4 @@ class_name SpellResource
 @export var dance_length: int = 4
 
 # --- Visual effect scene (particles, etc.) ---
-@export var effect_scene: PackedScene
+@export var spell_script: Script

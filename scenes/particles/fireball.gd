@@ -8,18 +8,21 @@ extends Node2D
 @export var on_done_target: Node  # who to notify when finished
 @export var on_done_method: String = "on_spell_done"
 
-@onready var wall_tileset := $"/root/World/WallTileMapLayer"
+@onready var wall_tileset := $"/root/World/TileMapLayerWalls"
+@onready var world = get_tree().current_scene
+@onready var player = world.player
 
 var _tile_pos: Vector2i
 
 func _ready():
-	_tile_pos = wall_tileset.world_to_tile(global_position)
+	print("yo im ",self,wall_tileset)
+	_tile_pos = wall_tileset.local_to_map(global_position)
 
 func _physics_process(_delta):
 	# Move continuously until you reach the next tile center
 	global_position += direction * move_speed
 
-	var target_tile = wall_tileset.world_to_tile(global_position)
+	var target_tile = wall_tileset.local_to_map(global_position)
 	if target_tile != _tile_pos:
 		_tile_pos = target_tile
 		if _check_collision():
@@ -31,9 +34,9 @@ func _check_collision() -> bool:
 		return true
 
 	for enemy in $"/root/World/Units".get_children():
-		var enemy_cell = (enemy.global_position / TILESIZE).floor()
-		if enemy_cell == cell:
-			enemy.take_damage(10)
+		var enemy_cell = Vector2i((enemy.global_position / TILESIZE).floor())
+		if enemy_cell == _tile_pos and enemy != player:
+			#enemy.take_damage(1)
 			queue_free()
 			return true
 	

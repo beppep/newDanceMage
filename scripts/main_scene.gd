@@ -13,7 +13,7 @@ func start_player_turn():
 
 func _process(_delta):
 	# Wait until player finishes turn, then switch
-	if state == "player_movement" and not player.is_turn_active:
+	if state == "player_movement" and player.phase == player.Phase.NOT_MY_TURN:
 		start_player_turn()
 
 
