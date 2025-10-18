@@ -1,7 +1,6 @@
-extends Node2D
+extends Unit
 
 @onready var anim = $AnimatedSprite2D
-@onready var wall_tilemap = $"../../TileMapLayerWalls"
 @onready var units = get_parent()
 
 var fireball_spell = preload("res://assets/resources/spells/fireball_spell.tres")
@@ -74,19 +73,6 @@ func _await_move_input():
 			phase = Phase.MOVING
 
 
-func can_move_to(pos: Vector2) -> bool:
-	return not _is_wall_at(pos) and not _is_occupied(pos)
-
-func _is_occupied(pos: Vector2) -> bool:
-	for unit in units.get_children():
-		if unit.position == pos:
-			return true
-	return false
-	
-func _is_wall_at(pos: Vector2) -> bool:
-	var cell = wall_tilemap.local_to_map(pos)
-	var tile_id = wall_tilemap.get_cell_source_id(cell)
-	return tile_id != -1
 
 func check_recipe(recipe):
 	if move_history.slice(-recipe.size(), move_history.size()) == recipe:
@@ -95,7 +81,6 @@ func check_recipe(recipe):
 		return false
 
 func cast_spell(spell_resource: SpellResource):
-	print("yo", spell_resource.spell_script)
 	if spell_resource.spell_script:
 		var spell = spell_resource.spell_script.new(self)
 		#spell.caster = self
