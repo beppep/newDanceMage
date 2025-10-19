@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://dvhrggsk1jycp"]
+[gd_scene load_steps=20 format=4 uid="uid://dvhrggsk1jycp"]
 
 [ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_0afw7"]
 [ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_ux2rm"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bb37kamhejxh2" path="res://scenes/units/Rock.tscn" id="10_4rud1"]
 [ext_resource type="PackedScene" uid="uid://d2mmontgpnfx5" path="res://scenes/enemies/ghost.tscn" id="11_7fvey"]
 [ext_resource type="PackedScene" uid="uid://oj04kpiiqu67" path="res://scenes/enemies/bishop.tscn" id="12_ohk57"]
+[ext_resource type="PackedScene" uid="uid://75y2vqatrskg" path="res://scenes/enemies/knight.tscn" id="13_aovjg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
 texture = ExtResource("1_0afw7")
@@ -51,7 +52,7 @@ tile_set = SubResource("TileSet_7fvey")
 script = ExtResource("6_c1o4b")
 
 [node name="Player" parent="Units" instance=ExtResource("6_sgb2t")]
-position = Vector2(8, 8)
+position = Vector2(7, 22)
 
 [node name="Camera2D" type="Camera2D" parent="Units/Player"]
 zoom = Vector2(6, 6)
@@ -68,5 +69,8 @@ position = Vector2(88, -9)
 
 [node name="Bishop" parent="Units" instance=ExtResource("12_ohk57")]
 position = Vector2(-8, 71)
+
+[node name="Knight" parent="Units" instance=ExtResource("13_aovjg")]
+position = Vector2(73, 55)
 
 [node name="MainUI" parent="." instance=ExtResource("9_c1o4b")]

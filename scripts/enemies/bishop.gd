@@ -5,7 +5,7 @@ func _ready() -> void:
 
 func do_move(world: World):
 	var offset = DIAGONAL_DIRECTIONS.pick_random()
-	move(world, offset)
+	move_in_direction(world, offset)
 
 func get_possible_targets(world: World) -> Array[Vector2i]:
 	return target_with_directions(world, DIAGONAL_DIRECTIONS)
@@ -17,4 +17,4 @@ func target_attack(world: World, target: Vector2i) -> Array[Vector2i]:
 func perform_attack(world: World):
 	var offset = attack_targets.front()
 	var direction: Vector2i = (offset - location) / abs(offset.x - location.x)
-	move(world, direction, attack_range)
+	move_in_direction(world, direction, attack_range)

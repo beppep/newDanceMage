@@ -36,7 +36,11 @@ func is_adjacent_to(to: Vector2i) -> bool:
 func is_in_range_of(to: Vector2i, rang: int) -> bool:
 	return location.distance_squared_to(to) <= rang * rang
 
-func move(world: World, direction: Vector2i, length: int = 1):
+func move_to(world: World, target: Vector2i):
+	if world.is_empty(target):
+		location = target
+
+func move_in_direction(world: World, direction: Vector2i, length: int = 1):
 	for i in range(length):
 		if not world.is_empty(location + direction):
 			break
