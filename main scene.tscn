@@ -51,5 +51,3 @@ zoom = Vector2(6, 6)
 
 [node name="Rock" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(72, 40)
-
-[node name="Projectiles" type="Node" parent="."]
