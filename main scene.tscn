@@ -53,13 +53,13 @@ tile_set = SubResource("TileSet_7fvey")
 script = ExtResource("6_c1o4b")
 
 [node name="Player" parent="Units" instance=ExtResource("6_sgb2t")]
-position = Vector2(8, 8)
+position = Vector2(8, 7)
 
 [node name="Camera2D" type="Camera2D" parent="Units/Player"]
-zoom = Vector2(6, 6)
+zoom = Vector2(4, 4)
 
 [node name="Troll" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-56, 23)
+position = Vector2(-42, 29)
 script = ExtResource("9_neqfu")
 
 [node name="Rock" parent="Units" instance=ExtResource("10_4rud1")]
@@ -74,6 +74,26 @@ position = Vector2(-8, 71)
 [node name="Knight" parent="Units" instance=ExtResource("13_aovjg")]
 position = Vector2(73, 55)
 
+[node name="Troll2" parent="Units" instance=ExtResource("7_aqyhw")]
+position = Vector2(-41, 11)
+script = ExtResource("9_neqfu")
+
+[node name="Troll3" parent="Units" instance=ExtResource("7_aqyhw")]
+position = Vector2(-22, 24)
+script = ExtResource("9_neqfu")
+
+[node name="Troll4" parent="Units" instance=ExtResource("7_aqyhw")]
+position = Vector2(-58, 25)
+script = ExtResource("9_neqfu")
+
+[node name="Troll5" parent="Units" instance=ExtResource("7_aqyhw")]
+position = Vector2(-74, -38)
+script = ExtResource("9_neqfu")
+
+[node name="Troll6" parent="Units" instance=ExtResource("7_aqyhw")]
+position = Vector2(-40, -27)
+script = ExtResource("9_neqfu")
+
 [node name="MainUI" parent="." instance=ExtResource("9_c1o4b")]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
@@ -82,3 +102,5 @@ color = Color(0.39215687, 0.39215687, 0.39215687, 1)
 
 [node name="map_generator" type="Node" parent="."]
 script = ExtResource("15_52ei1")
+
+[node name="Particles" type="Node" parent="."]
