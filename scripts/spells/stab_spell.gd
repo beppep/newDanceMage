@@ -5,7 +5,7 @@ extends Spell
 
 
 func cast():
-	var target = world.units.get_unit_at(caster.location + caster.move_history[-1])
+	var target = world.units.get_unit_at(caster.location + caster.get_facing())
 	if target:
 		target.take_damage(1)
 	queue_free()

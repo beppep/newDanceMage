@@ -8,7 +8,7 @@ var rock_spell = preload("res://assets/resources/spells/rock_spell.tres")
 
 var has_input_released = true
 
-var move_history: Array = []  # stores Vector2 positions
+var move_history: Array[Vector2i] = []
 var recipe_book = [
 	[Vector2i.UP, Vector2i.DOWN],
 	[Vector2i.UP, Vector2i.UP],
@@ -81,6 +81,9 @@ func cast_spell(spell_resource: SpellResource):
 		add_child(spell)
 		spell.cast()
 
-
-func end_turn():
-	pass
+func get_facing() -> Vector2i:
+	for i in range(move_history.size() - 1, -1, -1):
+		var move = move_history[i]
+		if move != Vector2i.ZERO:
+			return move
+	return Vector2i.DOWN

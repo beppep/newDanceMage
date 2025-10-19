@@ -11,7 +11,6 @@ func _ready() -> void:
 	_on_health_changed()
 
 func _on_health_changed():
-	print("Updated health to ", player.health)
 	for child in health_container.get_children():
 		child.queue_free()
 	for i in range(player.max_health):

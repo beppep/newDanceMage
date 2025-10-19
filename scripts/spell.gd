@@ -2,8 +2,8 @@ extends Node2D
 class_name Spell
 
 var resource: SpellResource
-var caster: Node
-@onready var world = get_tree().current_scene
+var caster: Unit
+@onready var world: World = get_tree().current_scene
 var recipe: Array[Vector2i]
 
 func _init(_caster):
