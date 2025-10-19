@@ -28,4 +28,3 @@ script = ExtResource("1_88s7e")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_himtx")
-animation = &"windup"

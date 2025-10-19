@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cm2di112011s2"]
+[gd_scene load_steps=7 format=3 uid="uid://cm2di112011s2"]
 
 [ext_resource type="Texture2D" uid="uid://cxjhbajekthbp" path="res://assets/sprites/player/player_down.png" id="1_3li8b"]
 [ext_resource type="Script" uid="uid://c1utg37ualhgw" path="res://scripts/player.gd" id="1_mdl7e"]
 [ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/player.png" id="2_mdl7e"]
 [ext_resource type="Texture2D" uid="uid://ca8rojs13chse" path="res://assets/sprites/player/player_up.png" id="3_qu4a1"]
+[ext_resource type="Texture2D" uid="uid://dynt8xqk38d3y" path="res://assets/sprites/player/light.png" id="5_qu4a1"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kpjcp"]
 animations = [{
@@ -38,3 +39,9 @@ script = ExtResource("1_mdl7e")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_kpjcp")
 animation = &"down"
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+energy = 0.2
+shadow_enabled = true
+texture = ExtResource("5_qu4a1")

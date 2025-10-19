@@ -28,4 +28,3 @@ script = ExtResource("1_tijse")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_pug3q")
-animation = &"windup"

@@ -8,6 +8,7 @@ const TILE_SIZE = 16
 @onready var player: Player = units.get_node("Player")
 
 func _ready() -> void:
+	$map_generator.generate_map()
 	units.start()
 
 func _process(_delta):
