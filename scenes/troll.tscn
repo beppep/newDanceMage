@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://7lbdi7f23lil"]
+
+[ext_resource type="Script" uid="uid://brg4hxnwhxics" path="res://scripts/enemy.gd" id="1_liot7"]
+[ext_resource type="Texture2D" uid="uid://ddad03h7y6adn" path="res://assets/sprites/enemies/troll/idle.png" id="2_rigua"]
+[ext_resource type="Texture2D" uid="uid://ulph76j46j6t" path="res://assets/sprites/enemies/troll/windup.png" id="3_l735v"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ui7np"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rigua")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_l735v")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
+}]
+
+[node name="Troll" type="Node2D"]
+script = ExtResource("1_liot7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ui7np")
+animation = &"windup"
