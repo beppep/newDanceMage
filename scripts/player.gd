@@ -3,25 +3,22 @@ extends Unit
 var fireball_spell = preload("res://assets/resources/spells/fireball_spell.tres")
 var wind_spell = preload("res://assets/resources/spells/wind_spell.tres")
 
+var has_input_released = true
 
-var move = Vector2.ZERO
 var move_history: Array = []  # stores Vector2 positions
 var recipe_book = [[Vector2i.UP, Vector2i.DOWN], [Vector2i.UP, Vector2i.UP],]
 var spell_book = [fireball_spell, wind_spell]
 
 func process_turn(world: World):
-	while not check_move_input():
+	var move = get_move_input()
+	while not has_input_released or move == null:
 		await get_tree().create_timer(1.0 / 60.0).timeout
+		move = get_move_input()
 
-	move_history.append(Vector2i(move))
-	var move_frames_remaining = 0
-	if world.is_empty(move * TILE_SIZE + position):
-		move_frames_remaining = MOVE_FRAMES
-
-	while move_frames_remaining > 0:
-		position += move * TILE_SIZE / MOVE_FRAMES
-		move_frames_remaining -= 1
-		await get_tree().create_timer(1.0 / 60.0).timeout
+	has_input_released = false
+	move_history.append(move)
+	if world.is_empty(location + move):
+		location += move
 
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
@@ -31,25 +28,24 @@ func process_turn(world: World):
 
 	turn_done.emit()
 
-func check_move_input():
-	var got_input = true
+func get_move_input():
 	if Input.is_action_pressed("move_up"):
-		move = Vector2.UP
 		anim.play("up")
+		return Vector2i.UP
 	elif Input.is_action_pressed("move_down"):
-		move = Vector2.DOWN
 		anim.play("down")
+		return Vector2i.DOWN
 	elif Input.is_action_pressed("move_left"):
-		move = Vector2.LEFT
 		anim.play("right") # flip when walking left
 		anim.flip_h = true
+		return Vector2i.LEFT
 	elif Input.is_action_pressed("move_right"):
-		move = Vector2.RIGHT
 		anim.play("right")
 		anim.flip_h = false
+		return Vector2i.RIGHT
 	else:
-		got_input = false
-	return got_input
+		has_input_released = true
+		return null
 
 func check_recipe(recipe):
 	if move_history.slice(-recipe.size(), move_history.size()) == recipe:
