@@ -1,11 +1,12 @@
 extends Unit
+class_name Player
 
 var fireball_spell = preload("res://assets/resources/spells/fireball_spell.tres")
 var wind_spell = preload("res://assets/resources/spells/wind_spell.tres")
 
 var has_input_released = true
 
-var move_history: Array = []  # stores Vector2 positions
+var move_history: Array[Vector2i] = []  # stores Vector2 positions
 var recipe_book = [[Vector2i.UP, Vector2i.DOWN], [Vector2i.UP, Vector2i.UP],]
 var spell_book = [fireball_spell, wind_spell]
 
@@ -20,6 +21,7 @@ func process_turn(world: World):
 	if world.is_empty(location + move):
 		location += move
 
+	await get_tree().create_timer(World.TILE_SIZE / speed).timeout
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
 		if check_recipe(recipe_book[current_spell_nr]):

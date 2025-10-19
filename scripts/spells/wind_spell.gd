@@ -15,7 +15,7 @@ func cast():
 			for unit in caster.get_node("/root/World/Units").get_children():
 				var enemy_cell = wall_tileset.local_to_map(unit.global_position)
 				if enemy_cell == target_cell and unit != caster:
-					unit.forced_move(direction)
+					#unit.forced_move(direction)
 					break
 
 func _physics_process(_delta): # called at 60 fps

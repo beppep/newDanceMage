@@ -1,12 +1,10 @@
-[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://dx0sulr8ia333"]
+[gd_resource type="Resource" script_class="SpellResource" load_steps=3 format=3 uid="uid://dx0sulr8ia333"]
 
-[ext_resource type="Texture2D" uid="uid://cc8smmbj8whf" path="res://assets/sprites/tiles/sand.png" id="1_7m644"]
 [ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="1_o1k0s"]
 [ext_resource type="Script" uid="uid://vk3hy06fbhpm" path="res://scripts/spells/wind_spell.gd" id="2_o1k0s"]
 
 [resource]
 script = ExtResource("1_o1k0s")
-image = ExtResource("1_7m644")
 name = "Wind"
 dance_length = 2
 spell_script = ExtResource("2_o1k0s")
