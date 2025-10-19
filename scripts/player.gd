@@ -75,7 +75,7 @@ func check_recipe(recipe):
 		return false
 
 func cast_spell(spell_resource: SpellResource):
-	print("casting",spell_resource)
+	print("Casting ", spell_resource.name)
 	if spell_resource.spell_script:
 		var spell = spell_resource.spell_script.new(self)  # instantiate makes a node2D
 		add_child(spell)

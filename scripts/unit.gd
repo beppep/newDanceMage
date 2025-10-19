@@ -10,15 +10,15 @@ var max_health := 1
 var health := 1:
 	set(val):
 		health = val
+		if health <= 0:
+			die()
+			
 		health_changed.emit()
 		
 var speed := 260.0
 @onready var location := World.pos_to_loc(position)
 
 func _process(delta: float) -> void:
-	if health <= 0:
-		print(name, " died a horrible death.")
-		queue_free()
 	var target_position = World.loc_to_pos(location)
 	if not position.is_equal_approx(target_position):
 		position = position.move_toward(target_position, delta * speed)
@@ -45,3 +45,10 @@ func move_in_direction(world: World, direction: Vector2i, length: int = 1):
 		if not world.is_empty(location + direction):
 			break
 		location += direction
+
+func die():
+	print(name, " died a horrible death.")
+	queue_free()
+	var p = Particles.new()
+	add_child(p)
+	p.make_smoke_at(World.loc_to_pos(location))

@@ -22,7 +22,7 @@ func is_empty(location: Vector2i) -> bool:
 	return not is_wall_at(location) and not units.get_unit_at(location)
 
 static func pos_to_loc(position: Vector2) -> Vector2i:
-	return Vector2i((position + Vector2(TILE_SIZE, TILE_SIZE)) / TILE_SIZE)
+	return Vector2i(floori(position.x / TILE_SIZE), floori(position.y / TILE_SIZE))
 
 static func loc_to_pos(location: Vector2i) -> Vector2:
-	return Vector2(location * TILE_SIZE) - Vector2(TILE_SIZE / 2.0, TILE_SIZE / 2.0)
+	return Vector2(location * TILE_SIZE) + Vector2(TILE_SIZE / 2.0, TILE_SIZE / 2.0)

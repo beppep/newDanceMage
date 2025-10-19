@@ -36,7 +36,7 @@ var attack_targets: Array[Vector2i] = []:
 
 func _draw():
 	for target in attack_targets:
-		draw_texture(attack_indicator, World.loc_to_pos(target - location))
+		draw_texture(attack_indicator, World.loc_to_pos(target - location - Vector2i(1, 1)))
 
 @abstract func get_possible_targets(world: World) -> Array[Vector2i]
 @abstract func target_attack(world: World, target: Vector2i) -> Array[Vector2i]
@@ -65,6 +65,10 @@ func perform_attack(_world: World):
 	pass
 
 func process_turn(world: World):
+	if is_queued_for_deletion():
+		turn_done.emit()
+		return
+
 	if not attack_targets.is_empty():
 		print(name, " attacks.")
 		for target in attack_targets:
