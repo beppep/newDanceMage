@@ -26,7 +26,8 @@ func _on_turn_done():
 	var unit = get_children()[current_unit_index]
 	unit.process_turn(world)
 
-func get_unit_at(location: Vector2i):
+func get_unit_at(location: Vector2i) -> Unit:
 	for unit in get_children():
 		if Vector2i(unit.location) == location:
 			return unit
+	return null

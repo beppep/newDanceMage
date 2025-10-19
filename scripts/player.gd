@@ -1,4 +1,5 @@
 extends Unit
+class_name Player
 
 var fireball_spell = preload("res://assets/resources/spells/fireball_spell.tres")
 var wind_spell = preload("res://assets/resources/spells/wind_spell.tres")
@@ -32,6 +33,7 @@ func process_turn(world: World):
 	if world.is_empty(location + move):
 		location += move
 
+	await get_tree().create_timer(World.TILE_SIZE / speed).timeout
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
 		if check_recipe(recipe_book[current_spell_nr]):
