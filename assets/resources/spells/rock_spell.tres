@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://c5jjt0amjo8vs"]
+
+[ext_resource type="Texture2D" uid="uid://cfh5q0t0eiqdd" path="res://assets/sprites/units/rock.png" id="1_yu4kl"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_gn6fk"]
+[ext_resource type="Script" uid="uid://vk3hy06fbhpm" path="res://scripts/spells/wind_spell.gd" id="3_yxk1w"]
+
+[resource]
+script = ExtResource("2_gn6fk")
+image = ExtResource("1_yu4kl")
+name = "Rocks"
+dance_length = 3
+spell_script = ExtResource("3_yxk1w")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

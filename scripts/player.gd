@@ -78,7 +78,6 @@ func check_recipe(recipe):
 func cast_spell(spell_resource: SpellResource):
 	if spell_resource.spell_script:
 		var spell = spell_resource.spell_script.new(self)  # instantiate makes a node2D
-		spell.caster = self
 		add_child(spell)
 		spell.cast()
 
