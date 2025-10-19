@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://oj04kpiiqu67"]
+
+[ext_resource type="Script" uid="uid://cy3uavnne741b" path="res://scripts/enemies/bishop.gd" id="1_p8ep8"]
+[ext_resource type="Texture2D" uid="uid://c6u3du1y5gyo5" path="res://assets/sprites/enemies/bishop.png" id="2_ex7pv"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xauds"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ex7pv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ex7pv")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
+}]
+
+[node name="Bishop" type="Node2D"]
+script = ExtResource("1_p8ep8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_xauds")
+animation = &"windup"

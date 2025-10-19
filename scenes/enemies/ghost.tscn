@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://d2mmontgpnfx5"]
+
+[ext_resource type="Script" uid="uid://c6153fepr4q3b" path="res://scripts/enemies/ghost.gd" id="1_tijse"]
+[ext_resource type="Texture2D" uid="uid://p3latvgaii2u" path="res://assets/sprites/enemies/ghost/ghost.png" id="2_qr43c"]
+[ext_resource type="Texture2D" uid="uid://bid1a83wdyexj" path="res://assets/sprites/enemies/ghost/preExplode.png" id="3_u2dff"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pug3q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qr43c")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_u2dff")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
+}]
+
+[node name="Ghost" type="Node2D"]
+script = ExtResource("1_tijse")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_pug3q")
+animation = &"windup"

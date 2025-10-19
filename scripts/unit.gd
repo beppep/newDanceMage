@@ -12,7 +12,7 @@ var health := 1:
 		health = val
 		health_changed.emit()
 		
-var speed := 200.0
+var speed := 260.0
 @onready var location := World.pos_to_loc(position)
 
 func _process(delta: float) -> void:
@@ -35,3 +35,9 @@ func is_adjacent_to(to: Vector2i) -> bool:
 
 func is_in_range_of(to: Vector2i, rang: int) -> bool:
 	return location.distance_squared_to(to) <= rang * rang
+
+func move(world: World, direction: Vector2i, length: int = 1):
+	for i in range(length):
+		if not world.is_empty(location + direction):
+			break
+		location += direction
