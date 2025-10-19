@@ -2,12 +2,24 @@ extends Unit
 
 var fireball_spell = preload("res://assets/resources/spells/fireball_spell.tres")
 var wind_spell = preload("res://assets/resources/spells/wind_spell.tres")
+var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
+var rock_spell = preload("res://assets/resources/spells/rock_spell.tres")
 
 var has_input_released = true
 
 var move_history: Array = []  # stores Vector2 positions
-var recipe_book = [[Vector2i.UP, Vector2i.DOWN], [Vector2i.UP, Vector2i.UP],]
-var spell_book = [fireball_spell, wind_spell]
+var recipe_book = [
+	[Vector2i.UP, Vector2i.DOWN],
+	[Vector2i.UP, Vector2i.UP],
+	[Vector2i.ZERO],
+	[Vector2i.ZERO, Vector2i.ZERO],
+	]
+var spell_book = [
+	fireball_spell,
+	wind_spell,
+	stab_spell,
+	rock_spell,
+	]
 
 func process_turn(world: World):
 	var move = get_move_input()
@@ -43,6 +55,9 @@ func get_move_input():
 		anim.play("right")
 		anim.flip_h = false
 		return Vector2i.RIGHT
+	elif Input.is_action_pressed("move_nowhere"):
+		pass
+		return Vector2i.ZERO
 	else:
 		has_input_released = true
 		return null
@@ -54,6 +69,7 @@ func check_recipe(recipe):
 		return false
 
 func cast_spell(spell_resource: SpellResource):
+	print("casting",spell_resource)
 	if spell_resource.spell_script:
 		var spell = spell_resource.spell_script.new(self)  # instantiate makes a node2D
 		add_child(spell)

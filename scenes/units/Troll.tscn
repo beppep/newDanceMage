@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://7lbdi7f23lil"]
 
 [ext_resource type="Script" uid="uid://brg4hxnwhxics" path="res://scripts/enemy.gd" id="1_liot7"]
-[ext_resource type="Texture2D" uid="uid://ddad03h7y6adn" path="res://assets/sprites/enemies/troll/idle.png" id="2_rigua"]
-[ext_resource type="Texture2D" uid="uid://ulph76j46j6t" path="res://assets/sprites/enemies/troll/windup.png" id="3_l735v"]
+[ext_resource type="Texture2D" uid="uid://c8bwocb816evf" path="res://assets/sprites/enemies/troll/idle.png" id="2_rigua"]
+[ext_resource type="Texture2D" uid="uid://b3gnvd8d0mias" path="res://assets/sprites/enemies/troll/windup.png" id="3_l735v"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ui7np"]
 animations = [{
