@@ -1,32 +1,25 @@
 extends Node
+class_name World
 
 @onready var units = $Units
+@onready var wall_tilemap = $TileMapLayerWalls
 @onready var player = units.get_node("Player")
+var unit_thread: Thread
 
 enum Phase { PLAYER_MOVEMENT, SPELLCASTING, ENEMY }
 
 var state := Phase.PLAYER_MOVEMENT
 
-func start_player_turn():
-	state = Phase.PLAYER_MOVEMENT
-	print("Player's turn!")
-	player.start_turn()
+func _ready() -> void:
+	pass
 
 func _process(_delta):
-	# Wait until player finishes turn, then switch
-	if state == Phase.PLAYER_MOVEMENT and player.phase == player.Phase.NOT_MY_TURN:
-		start_player_turn()
+	pass
 
+func is_wall_at(pos: Vector2) -> bool:
+	var cell = wall_tilemap.local_to_map(pos)
+	var tile_id = wall_tilemap.get_cell_source_id(cell)
+	return tile_id != -1
 
-func start_enemy_turn():
-	state = Phase.ENEMY
-	print("Enemies' turn!")
-	await run_enemy_turns()
-	start_player_turn()
-
-
-func run_enemy_turns():
-	for unit in units.get_children():
-		if not is_instance_valid(unit):
-			continue
-		#await unit.take_turn()
+func is_empty(pos: Vector2) -> bool:
+	return not is_wall_at(pos) and not units.get_unit_at(pos)

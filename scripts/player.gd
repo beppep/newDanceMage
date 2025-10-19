@@ -1,73 +1,55 @@
 extends Unit
 
-
 var fireball_spell = preload("res://assets/resources/spells/fireball_spell.tres")
 var wind_spell = preload("res://assets/resources/spells/wind_spell.tres")
 
 
+var move = Vector2.ZERO
 var move_history: Array = []  # stores Vector2 positions
 var recipe_book = [[Vector2i.UP, Vector2i.DOWN], [Vector2i.UP, Vector2i.UP],]
 var spell_book = [fireball_spell, wind_spell]
-var current_spell_nr = 0
 
-func start_turn():
-	phase = Phase.AWAIT_INPUT
+func process_turn(world: World):
+	while not check_move_input():
+		await get_tree().create_timer(1.0 / 60.0).timeout
 
-func _physics_process(_delta): # called at 60 fps
-	match phase:
-		Phase.NOT_MY_TURN:
-			return
-		
-		Phase.AWAIT_INPUT:
-			_await_move_input()
-		
-		Phase.MOVING:
-			position += move_dir * TILE_SIZE / MOVE_FRAMES
-			move_frames_remaining -= 1
-			if move_frames_remaining == 0:
-				phase = Phase.CAST_NEXT_SPELL
-				current_spell_nr = 0
-		
-		Phase.CAST_NEXT_SPELL:
-			while current_spell_nr < spell_book.size():
-				if check_recipe(recipe_book[current_spell_nr]):
-					cast_spell(spell_book[current_spell_nr])
-					phase = Phase.AWAIT_SPELL_END
-					break
-				current_spell_nr += 1
-			phase = Phase.NOT_MY_TURN
-		
-		Phase.AWAIT_SPELL_END:
-			if get_children().size() == 1:
-				phase = Phase.NOT_MY_TURN
-		
+	move_history.append(Vector2i(move))
+	var move_frames_remaining = 0
+	if world.is_empty(move * TILE_SIZE + position):
+		move_frames_remaining = MOVE_FRAMES
 
-func _await_move_input():
+	while move_frames_remaining > 0:
+		position += move * TILE_SIZE / MOVE_FRAMES
+		move_frames_remaining -= 1
+		await get_tree().create_timer(1.0 / 60.0).timeout
+
+	var current_spell_nr = 0
+	while current_spell_nr < spell_book.size():
+		if check_recipe(recipe_book[current_spell_nr]):
+			cast_spell(spell_book[current_spell_nr])
+		current_spell_nr += 1
+
+	turn_done.emit()
+
+func check_move_input():
 	var got_input = true
-	if Input.is_action_just_pressed("move_up"):
-		move_dir = Vector2.UP
+	if Input.is_action_pressed("move_up"):
+		move = Vector2.UP
 		anim.play("up")
-	elif Input.is_action_just_pressed("move_down"):
-		move_dir = Vector2.DOWN
+	elif Input.is_action_pressed("move_down"):
+		move = Vector2.DOWN
 		anim.play("down")
-	elif Input.is_action_just_pressed("move_left"):
-		move_dir = Vector2.LEFT
+	elif Input.is_action_pressed("move_left"):
+		move = Vector2.LEFT
 		anim.play("right") # flip when walking left
 		anim.flip_h = true
-	elif Input.is_action_just_pressed("move_right"):
-		move_dir = Vector2.RIGHT
+	elif Input.is_action_pressed("move_right"):
+		move = Vector2.RIGHT
 		anim.play("right")
 		anim.flip_h = false
 	else:
 		got_input = false
-	
-	if got_input:
-		move_history.append(Vector2i(move_dir))
-		if is_empty(move_dir * TILE_SIZE + position):
-			move_frames_remaining = MOVE_FRAMES
-			phase = Phase.MOVING
-
-
+	return got_input
 
 func check_recipe(recipe):
 	if move_history.slice(-recipe.size(), move_history.size()) == recipe:
