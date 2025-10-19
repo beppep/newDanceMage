@@ -22,6 +22,10 @@ var spell_book = [
 	rock_spell,
 	]
 
+func _ready() -> void:
+	max_health = 3
+	health = 3
+
 func process_turn(world: World):
 	var move = get_move_input()
 	while not has_input_released or move == null:

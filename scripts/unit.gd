@@ -2,12 +2,18 @@ extends Node2D
 class_name Unit
 
 signal turn_done
+signal health_changed
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
-var health := 1
+var max_health := 1
+var health := 1:
+	set(val):
+		health = val
+		health_changed.emit()
+		
 var speed := 200.0
-@onready var location := Vector2i(position / World.TILE_SIZE)
+@onready var location := World.pos_to_loc(position)
 
 func _process(delta: float) -> void:
 	if health <= 0:

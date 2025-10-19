@@ -7,7 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://uxrre5lrh7lc" path="res://assets/sprites/tiles/wood.png" id="4_aqyhw"]
 [ext_resource type="Script" uid="uid://duu3jyqjhp3f1" path="res://scripts/units.gd" id="6_c1o4b"]
 [ext_resource type="PackedScene" uid="uid://cm2di112011s2" path="res://scenes/Player.tscn" id="6_sgb2t"]
-[ext_resource type="PackedScene" uid="uid://7lbdi7f23lil" path="res://scenes/units/Troll.tscn" id="7_aqyhw"]
+[ext_resource type="PackedScene" uid="uid://7lbdi7f23lil" path="res://scenes/troll.tscn" id="7_aqyhw"]
+[ext_resource type="PackedScene" uid="uid://b1r37xlv72lnf" path="res://main_ui.tscn" id="9_c1o4b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
 texture = ExtResource("1_0afw7")
@@ -55,4 +56,6 @@ zoom = Vector2(6, 6)
 position = Vector2(-25, 8)
 
 [node name="Rock" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(72, 40)
+position = Vector2(60, 12)
+
+[node name="MainUI" parent="." instance=ExtResource("9_c1o4b")]

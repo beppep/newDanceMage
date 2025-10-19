@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1r37xlv72lnf"]
+
+[ext_resource type="Script" uid="uid://d2rswpfdl28b2" path="res://main_ui.gd" id="1_2ppmm"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_2ppmm")
+
+[node name="Health" type="HBoxContainer" parent="."]

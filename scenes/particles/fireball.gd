@@ -39,6 +39,6 @@ func _check_collision():
 	for enemy in $"/root/World/Units".get_children():
 		var enemy_cell = Vector2i((enemy.global_position / TILESIZE).floor())
 		if enemy_cell == _tile_pos and enemy != player:
-			#enemy.take_damage(1)
+			enemy.take_damage(1)
 			queue_free()
 			
