@@ -5,7 +5,7 @@ extends Node
 @onready var wall_tilemap = world.get_node("TileMapLayerWalls")
 
 
-var rock_scene = preload("res://scenes/rock.tscn")
+var rock_scene = preload("res://scenes/Rock.tscn")
 
 var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3} # SKETCHY because it has to align with the tileset at all times
 
