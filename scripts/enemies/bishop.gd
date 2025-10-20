@@ -2,6 +2,7 @@ extends Enemy
 
 func _ready() -> void:
 	attack_range = 7
+	speed = 500.0
 
 func do_move(world: World):
 	var offset = DIAGONAL_DIRECTIONS.pick_random()

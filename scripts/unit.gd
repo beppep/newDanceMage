@@ -1,7 +1,6 @@
 extends Node2D
 class_name Unit
 
-signal turn_done
 signal health_changed
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -25,7 +24,6 @@ func _process(delta: float) -> void:
 
 func process_turn(_world: World):
 	print("process_turn() not defined for ", name)
-	turn_done.emit()
 
 func take_damage(amount):
 	health -= amount

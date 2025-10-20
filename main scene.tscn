@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://dvhrggsk1jycp"]
+[gd_scene load_steps=20 format=4 uid="uid://dvhrggsk1jycp"]
 
 [ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_0afw7"]
 [ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_ux2rm"]
@@ -9,12 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://cm2di112011s2" path="res://scenes/Player.tscn" id="6_sgb2t"]
 [ext_resource type="PackedScene" uid="uid://7lbdi7f23lil" path="res://scenes/units/Troll.tscn" id="7_aqyhw"]
 [ext_resource type="PackedScene" uid="uid://b1r37xlv72lnf" path="res://main_ui.tscn" id="9_c1o4b"]
-[ext_resource type="Script" uid="uid://c4ref8oyr03k2" path="res://scripts/enemies/troll.gd" id="9_neqfu"]
 [ext_resource type="PackedScene" uid="uid://bb37kamhejxh2" path="res://scenes/units/Rock.tscn" id="10_4rud1"]
 [ext_resource type="PackedScene" uid="uid://d2mmontgpnfx5" path="res://scenes/enemies/ghost.tscn" id="11_7fvey"]
 [ext_resource type="PackedScene" uid="uid://oj04kpiiqu67" path="res://scenes/enemies/bishop.tscn" id="12_ohk57"]
 [ext_resource type="PackedScene" uid="uid://75y2vqatrskg" path="res://scenes/enemies/knight.tscn" id="13_aovjg"]
-[ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="15_52ei1"]
+[ext_resource type="Script" path="res://scripts/map_generation.gd" id="15_52ei1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
 texture = ExtResource("1_0afw7")
@@ -60,7 +59,6 @@ zoom = Vector2(4, 4)
 
 [node name="Troll" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(-42, 29)
-script = ExtResource("9_neqfu")
 
 [node name="Rock" parent="Units" instance=ExtResource("10_4rud1")]
 position = Vector2(56, 24)
@@ -76,23 +74,18 @@ position = Vector2(73, 55)
 
 [node name="Troll2" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(-41, 11)
-script = ExtResource("9_neqfu")
 
 [node name="Troll3" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(-22, 24)
-script = ExtResource("9_neqfu")
 
 [node name="Troll4" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(-58, 25)
-script = ExtResource("9_neqfu")
 
 [node name="Troll5" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(-74, -38)
-script = ExtResource("9_neqfu")
 
 [node name="Troll6" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(-40, -27)
-script = ExtResource("9_neqfu")
 
 [node name="MainUI" parent="." instance=ExtResource("9_c1o4b")]
 
