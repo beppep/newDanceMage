@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="SpellResource" load_steps=3 format=3 uid="uid://dsty1ew11tf5k"]
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://dsty1ew11tf5k"]
 
 [ext_resource type="Script" uid="uid://btl56hu7xqit5" path="res://scripts/spells/fireball_spell.gd" id="1_4wxvt"]
 [ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="1_eoktn"]
+[ext_resource type="Texture2D" uid="uid://cwgiiwcjxlkve" path="res://assets/sprites/particles/fireball.png" id="1_ovvll"]
 
 [resource]
 script = ExtResource("1_eoktn")
+image = ExtResource("1_ovvll")
 name = "Fireball"
 spell_script = ExtResource("1_4wxvt")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

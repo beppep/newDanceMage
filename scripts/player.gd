@@ -11,7 +11,7 @@ var has_input_released = true
 var move_history: Array[Vector2i] = []
 var recipe_book = [
 	[Vector2i.UP, Vector2i.DOWN],
-	[Vector2i.UP, Vector2i.UP],
+	[Vector2i.UP, Vector2i.RIGHT],
 	[Vector2i.ZERO],
 	[Vector2i.ZERO, Vector2i.ZERO],
 	]
