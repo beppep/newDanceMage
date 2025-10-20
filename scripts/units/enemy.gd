@@ -65,7 +65,7 @@ func target_with_directions(world: World, directions: Array[Vector2i]) -> Array[
 			targets.append(target)
 	return targets
 
-func perform_attack(_world: World):
+func perform_attack_effects(_world: World):
 	pass
 
 func process_turn(world: World):
@@ -73,7 +73,7 @@ func process_turn(world: World):
 		print(name, " attacks.")
 		for target in attack_targets:
 			world.deal_damage_to(target, attack_power)
-		perform_attack(world)
+		perform_attack_effects(world)
 		attack_targets = []
 
 	elif get_possible_targets(world).has(world.player.location) or (randf()>0.5 and is_in_range_of(world.player.location, 3)): # random aggression:

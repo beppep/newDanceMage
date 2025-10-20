@@ -10,3 +10,10 @@ func get_possible_targets(world: World) -> Array[Vector2i]:
 
 func target_attack(world: World, _target: Vector2i) -> Array[Vector2i]:
 	return target_with_offsets(world, ALL_DIRECTIONS)
+
+
+func perform_attack_effects(_world: World):
+	
+	var p = Particles.new()
+	add_child(p)
+	p.make_particle_cloud_at(World.loc_to_pos(location), "electrics")

@@ -1,26 +1,19 @@
 extends Unit
 class_name Player
 
-var fireball_spell = preload("res://assets/resources/spells/fireball_spell.tres")
-var wind_spell = preload("res://assets/resources/spells/wind_spell.tres")
 var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
-var rock_spell = preload("res://assets/resources/spells/rock_spell.tres")
+
+var locked_spells = [
+	preload("res://assets/resources/spells/fireball_spell.tres"),
+	preload("res://assets/resources/spells/wind_spell.tres"),
+	preload("res://assets/resources/spells/rock_spell.tres"),
+]
 
 var has_input_released = true
 
 var move_history: Array[Vector2i] = []
-var recipe_book = [
-	[Vector2i.UP, Vector2i.DOWN],
-	[Vector2i.UP, Vector2i.RIGHT],
-	[Vector2i.ZERO],
-	[Vector2i.ZERO, Vector2i.ZERO],
-	]
-var spell_book = [
-	fireball_spell,
-	wind_spell,
-	stab_spell,
-	rock_spell,
-	]
+var recipe_book = [[Vector2i.ZERO]]
+var spell_book = [stab_spell]
 
 func _ready() -> void:
 	max_health = 3
@@ -40,7 +33,9 @@ func process_turn(world: World):
 	await get_tree().create_timer(World.TILE_SIZE / speed).timeout
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
-		if check_recipe(recipe_book[current_spell_nr]):
+		var recipe = recipe_book[current_spell_nr]
+		world.get_node("MainUI")._on_spells_changed()
+		if check_recipe_alignment(recipe) == recipe.size():
 			cast_spell(world, spell_book[current_spell_nr])
 		current_spell_nr += 1
 
@@ -65,11 +60,12 @@ func get_move_input():
 		has_input_released = true
 		return null
 
-func check_recipe(recipe):
-	if move_history.slice(-recipe.size(), move_history.size()) == recipe:
-		return true
-	else:
-		return false
+func check_recipe_alignment(recipe):
+	for i in range(recipe.size()):
+		var alignment_size = recipe.size()-i
+		if move_history.slice(-alignment_size, move_history.size()) == recipe.slice(0, alignment_size):
+			return alignment_size
+	return 0
 
 func cast_spell(world: World, spell_resource: SpellResource):
 	print("Casting ", spell_resource.name)
@@ -84,3 +80,17 @@ func get_facing() -> Vector2i:
 		if move != Vector2i.ZERO:
 			return move
 	return Vector2i.DOWN
+
+
+func unlock_random_spell():
+	var new_spell = locked_spells.pick_random()
+	spell_book.append(new_spell)
+	recipe_book.append(create_random_recipe(new_spell.dance_length))
+
+func create_random_recipe(recipe_length :int):
+	var all_inputs = [Vector2i.RIGHT, Vector2i.UP, -Vector2i.RIGHT, Vector2i.DOWN, Vector2i.ZERO]
+	var recipe = []
+	for i in range(recipe_length):
+		recipe.append(all_inputs.pick_random())
+	return recipe
+		

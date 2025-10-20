@@ -25,12 +25,12 @@ func _ready() -> void:
 	# no way this is the easiest way to rotate ui lul
 	for i in range(3):
 		var tex = arrow_textures[-1].get_image()
-		tex.rotate_90(-1)
+		tex.rotate_90(0)
 		var rotated_texture = ImageTexture.create_from_image(tex)
 		arrow_textures.append(rotated_texture)
 	for i in range(3):
 		var tex = dark_arrow_textures[-1].get_image()
-		tex.rotate_90(-1)
+		tex.rotate_90(0)
 		var rotated_texture = ImageTexture.create_from_image(tex)
 		dark_arrow_textures.append(rotated_texture)
 	
@@ -52,20 +52,28 @@ func _on_health_changed():
 func _on_spells_changed():
 	for child in spell_container.get_children():
 		child.queue_free()
+		
+	
+	
 	for i in range(player.spell_book.size()):
 		var spell_HBox = HBoxContainer.new()
 		spell_container.add_child(spell_HBox)
+		
 		var spell_icon = TextureRect.new()
 		spell_icon.texture = player.spell_book[i].image
 		#spell_icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 		#spell_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		spell_HBox.add_child(spell_icon)
-		for arrow_vector in player.recipe_book[i]:
+		
+		var alignment = player.check_recipe_alignment(player.recipe_book[i])
+		
+		for x in range(player.recipe_book[i].size()):
+			var arrow_vector = player.recipe_book[i][x]
 			var arrow = TextureRect.new()
 			if arrow_vector == Vector2i.ZERO:
-				arrow.texture = nowhere_arrow_texture if i < player.health else dark_nowhere_arrow_texture
+				arrow.texture = nowhere_arrow_texture if x < alignment else dark_nowhere_arrow_texture
 			else:
-				arrow.texture = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90] if i < player.health else dark_arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
+				arrow.texture = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90] if x < alignment else dark_arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
 			arrow.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 			arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			spell_HBox.add_child(arrow)

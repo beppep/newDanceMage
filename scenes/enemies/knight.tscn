@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://75y2vqatrskg"]
 
-[ext_resource type="Script" uid="uid://g3ua3xquhxid" path="res://scripts/enemies/knight.gd" id="1_88s7e"]
+[ext_resource type="Script" uid="uid://g3ua3xquhxid" path="res://scripts/units/knight.gd" id="1_88s7e"]
 [ext_resource type="Texture2D" uid="uid://bpv3kpd0fsef6" path="res://assets/sprites/enemies/knight/knight.png" id="2_wyqsr"]
 [ext_resource type="Texture2D" uid="uid://c0msavhx74vbw" path="res://assets/sprites/enemies/knight/windup.png" id="3_wyqsr"]
 

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqgcs4g5m6m40"]
+
+[ext_resource type="Script" uid="uid://hj7ov87dmim6" path="res://scenes/units/crystal.gd" id="1_x5bvn"]
+[ext_resource type="Texture2D" uid="uid://inwjj0lddvkd" path="res://assets/sprites/units/crystal.png" id="2_x5bvn"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wmx41"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_x5bvn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Crystal" type="Node2D"]
+script = ExtResource("1_x5bvn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_wmx41")
