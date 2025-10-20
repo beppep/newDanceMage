@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://dvhrggsk1jycp"]
+[gd_scene load_steps=22 format=4 uid="uid://dvhrggsk1jycp"]
 
 [ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_0afw7"]
 [ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_ux2rm"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cqgcs4g5m6m40" path="res://scenes/units/Crystal.tscn" id="13_52ei1"]
 [ext_resource type="PackedScene" uid="uid://75y2vqatrskg" path="res://scenes/enemies/knight.tscn" id="13_aovjg"]
 [ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="15_52ei1"]
+[ext_resource type="PackedScene" uid="uid://bgy6xipqa012g" path="res://scenes/units/Egg.tscn" id="16_v7vy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
 texture = ExtResource("1_0afw7")
@@ -86,6 +87,9 @@ position = Vector2(-74, -38)
 
 [node name="Troll6" parent="Units" instance=ExtResource("7_aqyhw")]
 position = Vector2(-40, -27)
+
+[node name="Egg" parent="Units" instance=ExtResource("16_v7vy4")]
+position = Vector2(24, -58)
 
 [node name="Crystal" parent="Units" instance=ExtResource("13_52ei1")]
 position = Vector2(157, 34)

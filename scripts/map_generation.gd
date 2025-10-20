@@ -26,7 +26,10 @@ func generate_map():
 		var random_room_dims = Vector2i(randi_range(2, 10), randi_range(2, 10))
 		var random_room_pos = Vector2i(randi_range(-MAPSIZE, MAPSIZE-random_room_dims.x), randi_range(-MAPSIZE, MAPSIZE-random_room_dims.y))
 		_create_room(random_room_pos, random_room_pos + random_room_dims)
-			
+	
+	for i in range(10):
+		var random_pos = Vector2i(randi_range(-MAPSIZE, MAPSIZE), randi_range(-MAPSIZE, MAPSIZE))
+		_create_rock_at(random_pos)
 	
 
 func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_location: Vector2i, tile_id: int) -> void:
@@ -35,9 +38,12 @@ func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_locati
 			tilemap_layer.set_cell(Vector2i(x, y), tile_id , Vector2i(0, 0))
 
 func _create_rock_at(location: Vector2i):
-	var rock: Unit = rock_scene.instantiate()
-	rock.position = World.loc_to_pos(location)
-	world.units.add_child(rock)
+	if world.is_empty(location):
+		var rock: Unit = rock_scene.instantiate()
+		rock.position = World.loc_to_pos(location)
+		world.units.add_child(rock)
+		return true
+	return false
 	
 func _create_room(from_location: Vector2i, to_location: Vector2i) -> void:
 	_paint_area(ground_tilemap, from_location, to_location, tile_ids["WOOD"])
