@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://dwqarwclkgvuv"]
+
+[ext_resource type="Texture2D" uid="uid://b3rmogt8ilc0y" path="res://assets/sprites/particles/fire.png" id="1_yqg7v"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_1mguj"]
+[ext_resource type="Script" uid="uid://dr7q5tlaoc7jy" path="res://scripts/spells/explode_spell.gd" id="3_1mguj"]
+
+[resource]
+script = ExtResource("2_1mguj")
+image = ExtResource("1_yqg7v")
+name = "Explode"
+dance_length = 3
+spell_script = ExtResource("3_1mguj")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

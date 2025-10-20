@@ -4,6 +4,7 @@ class_name Player
 var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
 
 var locked_spells = [
+	preload("res://assets/resources/spells/explode_spell.tres"),
 	preload("res://assets/resources/spells/fireball_spell.tres"),
 	preload("res://assets/resources/spells/wind_spell.tres"),
 	preload("res://assets/resources/spells/rock_spell.tres"),

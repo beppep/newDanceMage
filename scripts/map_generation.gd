@@ -24,5 +24,5 @@ func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_locati
 
 func _create_rock_at(location: Vector2i):
 	var rock: Unit = rock_scene.instantiate()
-	world.units.add_child(rock)
 	rock.position = World.loc_to_pos(location)
+	world.units.add_child(rock)

@@ -1,5 +1,4 @@
 extends Spell
-class_name Fireball
 
 @export var fireball_scene: PackedScene = preload("res://scenes/particles/Fireball.tscn")
 

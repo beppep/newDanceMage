@@ -4,6 +4,9 @@ class_name Spell
 var resource: SpellResource
 var recipe: Array[Vector2i]
 
+@onready var world = get_tree().current_scene
+
+
 func _ready() -> void:
 	child_exiting_tree.connect(_on_child_exit)
 

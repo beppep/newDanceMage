@@ -8,5 +8,6 @@
 script = ExtResource("1_eoktn")
 image = ExtResource("1_ovvll")
 name = "Fireball"
+dance_length = 3
 spell_script = ExtResource("1_4wxvt")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"
