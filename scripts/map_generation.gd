@@ -1,8 +1,8 @@
 extends Node
 
-@onready var world = $"/root/World"
-@onready var ground_tilemap = world.get_node("TileMapLayerGround")
-@onready var wall_tilemap = world.get_node("TileMapLayerWalls")
+@onready var world := $"/root/World"
+@onready var ground_tilemap: TileMapLayer = world.get_node("TileMapLayerGround")
+@onready var wall_tilemap: TileMapLayer = world.get_node("TileMapLayerWalls")
 
 
 var rock_scene = preload("res://scenes/units/Rock.tscn")
@@ -17,12 +17,12 @@ func generate_map():
 	_create_rock_at(Vector2i(2, 0))
 	
 
-func _paint_area(tilemap_layer, from_location: Vector2i, to_location: Vector2i, tile_id: int) -> void:
+func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_location: Vector2i, tile_id: int) -> void:
 	for x in range(from_location.x, to_location.x + 1):
 		for y in range(from_location.y, to_location.y + 1):
 			tilemap_layer.set_cell(Vector2i(x, y), tile_id , Vector2i(0, 0))
 
 func _create_rock_at(location: Vector2i):
 	var rock: Unit = rock_scene.instantiate()
-	rock.position = World.loc_to_pos(location)
 	world.units.add_child(rock)
+	rock.position = World.loc_to_pos(location)

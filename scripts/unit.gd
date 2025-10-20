@@ -4,6 +4,7 @@ class_name Unit
 signal health_changed
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+var tween: Tween
 
 var max_health := 1
 var health := 1:
@@ -15,15 +16,17 @@ var health := 1:
 		health_changed.emit()
 		
 var speed := 260.0
-@onready var location := World.pos_to_loc(position)
-
-func _process(delta: float) -> void:
-	var target_position = World.loc_to_pos(location)
-	if not position.is_equal_approx(target_position):
-		position = position.move_toward(target_position, delta * speed)
+@onready var location := World.pos_to_loc(position):
+	set(loc):
+		if is_instance_valid(tween) and tween.is_running():
+			await tween.finished
+		var new_position = World.loc_to_pos(loc)
+		location = loc
+		tween = create_tween().set_trans(Tween.TRANS_LINEAR)
+		tween.tween_property(self, "position", new_position, position.distance_to(new_position) / speed)
 
 func process_turn(_world: World):
-	print("process_turn() not defined for ", name)
+	pass
 
 func take_damage(amount):
 	health -= amount

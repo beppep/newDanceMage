@@ -8,9 +8,8 @@ func do_move(world: World):
 func get_possible_targets(world: World) -> Array[Vector2i]:
 	return target_with_offsets(world, CARDINAL_DIRECTIONS)
 
-func target_attack(_world: World, target: Vector2i) -> Array[Vector2i]:
-	if is_in_range_of(target, 1):
-		return [target]
+func target_attack(_world: World, offset: Vector2i) -> Array[Vector2i]:
+	if is_in_range_of(location + offset, 1):
+		return [offset]
 	else:
-		var offset = CARDINAL_DIRECTIONS.pick_random()
-		return [location + offset]
+		return [CARDINAL_DIRECTIONS.pick_random()]

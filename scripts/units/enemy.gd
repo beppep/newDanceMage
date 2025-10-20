@@ -25,7 +25,7 @@ const ALL_DIRECTIONS: Array[Vector2i] = [
 	Vector2i.DOWN + Vector2i.RIGHT,
 ]
 
-@export var attack_indicator := preload("res://assets/sprites/particles/attack_indicator.png")
+var attack_indicator := preload("res://assets/sprites/particles/attack_indicator.png")
 var attack_power := 1
 var attack_range := 1
 
@@ -40,10 +40,10 @@ var attack_targets: Array[Vector2i] = []:
 
 func _draw():
 	for target in attack_targets:
-		draw_texture(attack_indicator, World.loc_to_pos(target - location - Vector2i(1, 1)))
+		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 
 @abstract func get_possible_targets(world: World) -> Array[Vector2i]
-@abstract func target_attack(world: World, target: Vector2i) -> Array[Vector2i]
+@abstract func target_attack(world: World, offset: Vector2i) -> Array[Vector2i]
 @abstract func do_move(world: World)
 
 func target_with_offsets(world: World, offsets: Array[Vector2i]) -> Array[Vector2i]:
@@ -52,7 +52,7 @@ func target_with_offsets(world: World, offsets: Array[Vector2i]) -> Array[Vector
 		var target = location + offset
 		if world.is_wall_at(target):
 			continue
-		targets.append(target)
+		targets.append(offset)
 	return targets
 
 func target_with_directions(world: World, directions: Array[Vector2i]) -> Array[Vector2i]:
@@ -62,7 +62,7 @@ func target_with_directions(world: World, directions: Array[Vector2i]) -> Array[
 			var target = location + direction * i
 			if world.is_wall_at(target):
 				break
-			targets.append(target)
+			targets.append(direction * i)
 	return targets
 
 func perform_attack_effects(_world: World):
@@ -72,14 +72,22 @@ func process_turn(world: World):
 	if not attack_targets.is_empty():
 		print(name, " attacks.")
 		for target in attack_targets:
-			world.deal_damage_to(target, attack_power)
+			world.deal_damage_to(location + target, attack_power)
 		perform_attack_effects(world)
 		attack_targets = []
+		return
 
-	elif get_possible_targets(world).has(world.player.location) or (randf()>0.5 and is_in_range_of(world.player.location, 3)): # random aggression:
+	var possible_targets = get_possible_targets(world)
+	if possible_targets.has(world.player.location - location):
 		print(name, " winds up for attack.")
-		attack_targets = target_attack(world, world.player.location)
+		attack_targets = target_attack(world, world.player.location - location)
+	elif randf() < 0.3:
+		for offset in possible_targets:
+			var target = location + offset
+			if target.distance_squared_to(world.player.location) <= 1:
+				attack_targets = target_attack(world, offset)
+				break
+	
 
-
-	else:
+	if not attack_targets:
 		do_move(world)

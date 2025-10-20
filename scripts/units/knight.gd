@@ -20,12 +20,9 @@ func do_move(world: World):
 func get_possible_targets(world: World) -> Array[Vector2i]:
 	return target_with_offsets(world, offsets)
 
-func target_attack(world: World, target: Vector2i) -> Array[Vector2i]:
-	if get_possible_targets(world).has(world.player.location):
-		return [target]
-	else:
-		return [location + offsets.pick_random()]
+func target_attack(_world: World, offset: Vector2i) -> Array[Vector2i]:
+	return [offset]
 
 func perform_attack(world: World):
-	var target = attack_targets.front()
-	move_to(world, target)
+	var offset = attack_targets.front()
+	move_to(world, location + offset)
