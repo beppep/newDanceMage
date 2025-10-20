@@ -50,3 +50,6 @@ func move_in_direction(world: World, direction: Vector2i, length: int = 1):
 func die():
 	print(name, " died a horrible death.")
 	queue_free()
+	var p = Particles.new()
+	add_child(p)
+	p.make_particle_cloud_at(World.loc_to_pos(location), "smoke")

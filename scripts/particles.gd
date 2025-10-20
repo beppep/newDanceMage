@@ -1,14 +1,14 @@
 extends Node
 class_name Particles
 
-func make_particle_cloud_at(pos: Vector2, name : String):
+func make_particle_cloud_at(pos: Vector2, particle_name : String):
 	var p = GPUParticles2D.new()
 	var mat = ParticleProcessMaterial.new()
 	p.lifetime = 0.3
 	p.one_shot = 1
 	p.explosiveness = 0.9
 	p.amount = 12
-	p.texture = load("res://assets/sprites/particles/"+name+".png")
+	p.texture = load("res://assets/sprites/particles/" + particle_name + ".png")
 	mat.initial_velocity_min = 50
 	mat.initial_velocity_max = 70
 	mat.gravity = Vector3.ZERO

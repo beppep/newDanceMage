@@ -13,8 +13,8 @@ func do_move(world: World):
 func get_possible_targets(world: World) -> Array[Vector2i]:
 	return target_with_directions(world, DIAGONAL_DIRECTIONS)
 
-func target_attack(world: World, target: Vector2i) -> Array[Vector2i]:
-	var direction: Vector2i = Vector2i( -1 if (target.x<location.x+randf()) else 1, -1 if (target.y<location.y+randf()) else 1 )
+func target_attack(world: World, offset: Vector2i) -> Array[Vector2i]:
+	var direction: Vector2i = offset / abs(offset.x)
 	return target_with_directions(world, [direction])
 
 func perform_attack_effects(world: World):
