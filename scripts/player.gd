@@ -41,10 +41,8 @@ func process_turn(world: World):
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
 		if check_recipe(recipe_book[current_spell_nr]):
-			cast_spell(spell_book[current_spell_nr])
+			cast_spell(world, spell_book[current_spell_nr])
 		current_spell_nr += 1
-
-	turn_done.emit()
 
 func get_move_input():
 	if Input.is_action_pressed("move_up"):
@@ -62,7 +60,6 @@ func get_move_input():
 		anim.flip_h = false
 		return Vector2i.RIGHT
 	elif Input.is_action_pressed("move_nowhere"):
-		pass
 		return Vector2i.ZERO
 	else:
 		has_input_released = true
@@ -74,12 +71,12 @@ func check_recipe(recipe):
 	else:
 		return false
 
-func cast_spell(spell_resource: SpellResource):
+func cast_spell(world: World, spell_resource: SpellResource):
 	print("Casting ", spell_resource.name)
 	if spell_resource.spell_script:
-		var spell = spell_resource.spell_script.new(self)  # instantiate makes a node2D
+		var spell = spell_resource.spell_script.new()  # instantiate makes a node2D
 		add_child(spell)
-		spell.cast()
+		spell.cast(self, world)
 
 func get_facing() -> Vector2i:
 	for i in range(move_history.size() - 1, -1, -1):

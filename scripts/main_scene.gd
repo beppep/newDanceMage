@@ -22,6 +22,11 @@ func is_wall_at(location: Vector2i) -> bool:
 func is_empty(location: Vector2i) -> bool:
 	return not is_wall_at(location) and not units.get_unit_at(location)
 
+func deal_damage_to(location: Vector2i, damage: int = 1):
+	var unit = units.get_unit_at(location)
+	if unit:
+		unit.take_damage(damage)
+
 static func pos_to_loc(position: Vector2) -> Vector2i:
 	return Vector2i(floori(position.x / TILE_SIZE), floori(position.y / TILE_SIZE))
 

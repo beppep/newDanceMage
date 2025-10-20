@@ -1,30 +1,36 @@
 extends Node
 class_name Units
 
-var current_unit_index := 0
 var is_running := true
 @onready var world = $"/root/World"
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	for child in get_children():
-		if is_instance_valid(child):
-			if child.has_method("process_turn") and child is Unit:
-				child.turn_done.connect(_on_turn_done)
-			else:
-				print_debug("WARNING: ", child.name, " is missing function process_turn()")
-
 func start():
-	get_children().front().process_turn(world)
+	while is_running:
+		await process_turn()
 
-func append_unit(unit: Unit):
-	add_child(unit)
-	unit.turn_done.connect(_on_turn_done)
+func process_turn():
+	var moves_first: Array[Unit] = []
+	var moves_second: Array[Unit] = []
+	for unit in get_units():
+		if unit is Player or (unit is Enemy and not unit.attack_targets.is_empty()):
+			moves_first.append(unit)
+		else:
+			moves_second.append(unit)
+	await process_units(moves_first)
+	await process_units(moves_second)
 
-func _on_turn_done():
-	current_unit_index = (current_unit_index + 1) % get_child_count()
-	var unit = get_children()[current_unit_index]
-	unit.process_turn(world)
+func process_units(units: Array[Unit]):
+	for unit in units:
+		if not is_instance_valid(unit) or unit.is_queued_for_deletion():
+			continue
+		await unit.process_turn(world)
+
+func get_units() -> Array[Unit]:
+	var units: Array[Unit] = []
+	for child in get_children():
+		if child is Unit:
+			units.append(child)
+	return units
 
 func get_unit_at(location: Vector2i) -> Unit:
 	for unit in get_children():

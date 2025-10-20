@@ -32,6 +32,10 @@ var attack_range := 1
 var attack_targets: Array[Vector2i] = []:
 	set(val):
 		attack_targets = val
+		if val:
+			anim.play("windup")
+		else:
+			anim.play("default")
 		queue_redraw()
 
 func _draw():
@@ -65,27 +69,17 @@ func perform_attack(_world: World):
 	pass
 
 func process_turn(world: World):
-	if is_queued_for_deletion():
-		turn_done.emit()
-		return
-
 	if not attack_targets.is_empty():
 		print(name, " attacks.")
 		for target in attack_targets:
-			var unit = world.units.get_unit_at(target)
-			if unit:
-				unit.take_damage(attack_power)
+			world.deal_damage_to(target, attack_power)
 		perform_attack(world)
 		attack_targets = []
-		anim.play("default")
 
 	elif get_possible_targets(world).has(world.player.location) or (randf()>0.5 and is_in_range_of(world.player.location, 3)): # random aggression:
 		print(name, " winds up for attack.")
 		attack_targets = target_attack(world, world.player.location)
-		anim.play("windup")
 
 
 	else:
 		do_move(world)
-		anim.play("default")
-	turn_done.emit()

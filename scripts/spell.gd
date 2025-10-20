@@ -2,12 +2,7 @@ extends Node2D
 class_name Spell
 
 var resource: SpellResource
-var caster: Unit
-@onready var world: World = get_tree().current_scene
 var recipe: Array[Vector2i]
-
-func _init(_caster):
-	caster = _caster
 
 func _ready() -> void:
 	child_exiting_tree.connect(_on_child_exit)
@@ -17,6 +12,6 @@ func _on_child_exit(_node: Node) -> void:
 	if get_child_count() == 0:
 		queue_free()
 
-func cast():
+func cast(_caster: Unit, _world: World):
 	print("cast() is not implemented for ", name)
 	pass
