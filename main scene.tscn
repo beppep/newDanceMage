@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://d2mmontgpnfx5" path="res://scenes/enemies/ghost.tscn" id="11_7fvey"]
 [ext_resource type="PackedScene" uid="uid://oj04kpiiqu67" path="res://scenes/enemies/bishop.tscn" id="12_ohk57"]
 [ext_resource type="PackedScene" uid="uid://75y2vqatrskg" path="res://scenes/enemies/knight.tscn" id="13_aovjg"]
-[ext_resource type="Script" path="res://scripts/map_generation.gd" id="15_52ei1"]
+[ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="15_52ei1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
 texture = ExtResource("1_0afw7")
