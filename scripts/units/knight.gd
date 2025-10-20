@@ -20,9 +20,6 @@ func do_move(world: World):
 func get_possible_targets(world: World) -> Array[Vector2i]:
 	return target_with_offsets(world, offsets)
 
-func target_attack(_world: World, offset: Vector2i) -> Array[Vector2i]:
-	return [offset]
-
 func perform_attack_effects(world: World):
-	var offset = attack_targets.front()
+	var offset = attack_offsets.front()
 	move_to(world, location + offset)

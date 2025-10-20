@@ -29,22 +29,24 @@ var attack_indicator := preload("res://assets/sprites/particles/attack_indicator
 var attack_power := 1
 var attack_range := 1
 
-var attack_targets: Array[Vector2i] = []:
+var attack_offsets: Array[Vector2i] = []:
 	set(val):
-		attack_targets = val
+		attack_offsets = val
 		if val:
 			anim.play("windup")
 		else:
 			anim.play("default")
 		queue_redraw()
 
+@abstract func get_possible_targets(world: World) -> Array[Vector2i]
+@abstract func do_move(world: World)
+
 func _draw():
-	for target in attack_targets:
+	for target in attack_offsets:
 		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 
-@abstract func get_possible_targets(world: World) -> Array[Vector2i]
-@abstract func target_attack(world: World, offset: Vector2i) -> Array[Vector2i]
-@abstract func do_move(world: World)
+func get_attack_offsets(_world: World, offset: Vector2i) -> Array[Vector2i]:
+	return [offset]
 
 func target_with_offsets(world: World, offsets: Array[Vector2i]) -> Array[Vector2i]:
 	var targets: Array[Vector2i] = []
@@ -69,25 +71,25 @@ func perform_attack_effects(_world: World):
 	pass
 
 func process_turn(world: World):
-	if not attack_targets.is_empty():
+	if not attack_offsets.is_empty():
 		print(name, " attacks.")
-		for target in attack_targets:
+		for target in attack_offsets:
 			world.deal_damage_to(location + target, attack_power)
 		perform_attack_effects(world)
-		attack_targets = []
+		attack_offsets = []
 		return
 
 	var possible_targets = get_possible_targets(world)
 	if possible_targets.has(world.player.location - location):
 		print(name, " winds up for attack.")
-		attack_targets = target_attack(world, world.player.location - location)
+		attack_offsets = get_attack_offsets(world, world.player.location - location)
 	elif randf() < 0.3:
 		for offset in possible_targets:
 			var target = location + offset
 			if target.distance_squared_to(world.player.location) <= 1:
-				attack_targets = target_attack(world, offset)
+				attack_offsets = get_attack_offsets(world, offset)
 				break
 	
 
-	if not attack_targets:
+	if not attack_offsets:
 		do_move(world)

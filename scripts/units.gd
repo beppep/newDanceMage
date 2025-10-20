@@ -23,7 +23,7 @@ func process_turn():
 	var moves_first: Array[Unit] = []
 	var moves_second: Array[Unit] = []
 	for unit in get_units():
-		if unit is Player or (unit is Enemy and not unit.attack_targets.is_empty()):
+		if unit is Player or (unit is Enemy and not unit.attack_offsets.is_empty()):
 			moves_first.append(unit)
 		else:
 			moves_second.append(unit)

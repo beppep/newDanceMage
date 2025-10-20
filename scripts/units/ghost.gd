@@ -8,7 +8,7 @@ func do_move(world: World):
 func get_possible_targets(world: World) -> Array[Vector2i]:
 	return target_with_offsets(world, ALL_DIRECTIONS)
 
-func target_attack(world: World, _target: Vector2i) -> Array[Vector2i]:
+func get_attack_offsets(world: World, _target: Vector2i) -> Array[Vector2i]:
 	return target_with_offsets(world, ALL_DIRECTIONS)
 
 
