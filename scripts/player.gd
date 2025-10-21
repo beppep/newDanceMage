@@ -8,6 +8,7 @@ var locked_spells = [
 	preload("res://assets/resources/spells/fireball_spell.tres"),
 	preload("res://assets/resources/spells/wind_spell.tres"),
 	preload("res://assets/resources/spells/rock_spell.tres"),
+	preload("res://assets/resources/spells/bomb_spell.tres"),
 ]
 
 var buffered_input = null
