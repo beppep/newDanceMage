@@ -27,6 +27,16 @@ func deal_damage_to(location: Vector2i, damage: int = 1):
 	if unit:
 		unit.take_damage(damage)
 
+func get_closest_unit(from: Vector2i, direction: Vector2i, max_range: int = 20) -> Unit:
+	for i in range(1, max_range + 1):
+		var target = from + direction * i
+		var unit = units.get_unit_at(target)
+		if unit:
+			return unit
+		elif is_wall_at(target):
+			return null
+	return null
+
 static func pos_to_loc(position: Vector2) -> Vector2i:
 	return Vector2i(floori(position.x / TILE_SIZE), floori(position.y / TILE_SIZE))
 

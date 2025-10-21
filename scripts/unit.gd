@@ -42,10 +42,12 @@ func move_to(world: World, target: Vector2i):
 		location = target
 
 func move_in_direction(world: World, direction: Vector2i, length: int = 1):
+	var goal = location
 	for i in range(length):
-		if not world.is_empty(location + direction):
+		if not world.is_empty(goal + direction):
 			break
-		location += direction
+		goal += direction
+	location = goal
 
 func die():
 	print(name, " died a horrible death.")

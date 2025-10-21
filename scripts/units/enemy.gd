@@ -41,12 +41,15 @@ var attack_offsets: Array[Vector2i] = []:
 @abstract func get_possible_targets(world: World) -> Array[Vector2i]
 @abstract func do_move(world: World)
 
+func get_attack_offsets(_world: World, offset: Vector2i) -> Array[Vector2i]:
+	return [offset]
+
+func perform_attack_effects(_world: World):
+	pass
+
 func _draw():
 	for target in attack_offsets:
 		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
-
-func get_attack_offsets(_world: World, offset: Vector2i) -> Array[Vector2i]:
-	return [offset]
 
 func target_with_offsets(world: World, offsets: Array[Vector2i]) -> Array[Vector2i]:
 	var targets: Array[Vector2i] = []
@@ -67,16 +70,42 @@ func target_with_directions(world: World, directions: Array[Vector2i]) -> Array[
 			targets.append(direction * i)
 	return targets
 
-func perform_attack_effects(_world: World):
-	pass
+func get_unit_in_direction(world: World, direction: Vector2i, length: int = 1) -> Unit:
+	return world.get_closest_unit(location, direction, length)
+
+func perform_moving_attack(world: World, offset: Vector2i, length: int = 1):
+	if world.is_wall_at(location + offset):
+		return
+
+	attack_offsets = []
+
+	var unit = get_unit_in_direction(world, offset, length)
+
+	if unit:
+		location = unit.location
+		# Play hitting particle animation
+		var p = Particles.new()
+		add_child(p)
+		p.make_particle_cloud_at(World.loc_to_pos(location), "smoke")
+		# Move back one step if unit will still be alive after attack
+		if unit.health > attack_power:
+			location -= offset
+		unit.take_damage(attack_power)
+	else:
+		move_in_direction(world, offset, length)
+
+func perform_attack(world: World):
+	print(name, " attacks.")
+	var targets = attack_offsets.map(func (offset): return location + offset)
+	perform_attack_effects(world)
+	for target in targets:
+		world.deal_damage_to(target, attack_power)
+	attack_offsets = []
+
 
 func process_turn(world: World):
 	if not attack_offsets.is_empty():
-		print(name, " attacks.")
-		for target in attack_offsets:
-			world.deal_damage_to(location + target, attack_power)
-		perform_attack_effects(world)
-		attack_offsets = []
+		perform_attack(world)
 		return
 
 	var possible_targets = get_possible_targets(world)
