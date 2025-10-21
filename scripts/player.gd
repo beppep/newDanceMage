@@ -10,8 +10,7 @@ var locked_spells = [
 	preload("res://assets/resources/spells/rock_spell.tres"),
 ]
 
-var has_input_released = true
-
+var buffered_input = null
 var move_history: Array[Vector2i] = []
 var recipe_book = [[Vector2i.ZERO]]
 var spell_book = [stab_spell]
@@ -20,16 +19,46 @@ func _ready() -> void:
 	max_health = 3
 	health = 3
 
-func process_turn(world: World):
-	var move = get_move_input()
-	while not has_input_released or move == null:
-		await get_tree().create_timer(1.0 / 60.0).timeout
-		move = get_move_input()
+func _process(_delta: float) -> void:
+	var input = get_input()
+	if input != null:
+		buffered_input = input
 
-	has_input_released = false
-	move_history.append(move)
-	if world.is_empty(location + move):
-		location += move
+func get_input():
+	if Input.is_action_just_pressed("move_up"):
+		return Vector2i.UP
+	elif Input.is_action_just_pressed("move_down"):
+		return Vector2i.DOWN
+	elif Input.is_action_just_pressed("move_left"):
+		return Vector2i.LEFT
+	elif Input.is_action_just_pressed("move_right"):
+		return Vector2i.RIGHT
+	elif Input.is_action_just_pressed("move_nowhere"):
+		return Vector2i.ZERO
+	return null
+
+func update_animation(move: Vector2i):
+	match move:
+		Vector2i.UP:
+			anim.play("up")
+		Vector2i.DOWN:
+			anim.play("down")
+		Vector2i.LEFT:
+			anim.play("right") # flip when walking left
+			anim.flip_h = true
+		Vector2i.RIGHT:
+			anim.play("right")
+			anim.flip_h = false
+
+func process_turn(world: World):
+	while buffered_input == null:
+		await get_tree().create_timer(1.0 / 100.0).timeout
+
+	update_animation(buffered_input)
+	move_history.append(buffered_input)
+	if world.is_empty(location + buffered_input):
+		location += buffered_input
+	buffered_input = null
 
 	await get_tree().create_timer(World.TILE_SIZE / speed).timeout
 	var current_spell_nr = 0
@@ -39,27 +68,6 @@ func process_turn(world: World):
 		if check_recipe_alignment(recipe) == recipe.size():
 			cast_spell(world, spell_book[current_spell_nr])
 		current_spell_nr += 1
-
-func get_move_input():
-	if Input.is_action_pressed("move_up"):
-		anim.play("up")
-		return Vector2i.UP
-	elif Input.is_action_pressed("move_down"):
-		anim.play("down")
-		return Vector2i.DOWN
-	elif Input.is_action_pressed("move_left"):
-		anim.play("right") # flip when walking left
-		anim.flip_h = true
-		return Vector2i.LEFT
-	elif Input.is_action_pressed("move_right"):
-		anim.play("right")
-		anim.flip_h = false
-		return Vector2i.RIGHT
-	elif Input.is_action_pressed("move_nowhere"):
-		return Vector2i.ZERO
-	else:
-		has_input_released = true
-		return null
 
 func check_recipe_alignment(recipe):
 	for i in range(recipe.size()):
