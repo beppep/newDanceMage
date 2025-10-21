@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cqgcs4g5m6m40"]
 
-[ext_resource type="Script" uid="uid://hj7ov87dmim6" path="res://scenes/units/crystal.gd" id="1_x5bvn"]
+[ext_resource type="Script" uid="uid://hj7ov87dmim6" path="res://scripts/units/crystal.gd" id="1_x5bvn"]
 [ext_resource type="Texture2D" uid="uid://inwjj0lddvkd" path="res://assets/sprites/units/crystal.png" id="2_x5bvn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wmx41"]

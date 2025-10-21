@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgy6xipqa012g"]
 
-[ext_resource type="Script" uid="uid://d2hthreunr4ud" path="res://scenes/units/egg.gd" id="1_pw5tk"]
+[ext_resource type="Script" uid="uid://d2hthreunr4ud" path="res://scripts/units/egg.gd" id="1_pw5tk"]
 [ext_resource type="Texture2D" uid="uid://c2nrl2gdxirbu" path="res://assets/sprites/units/egg.png" id="2_pw5tk"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wmx41"]
