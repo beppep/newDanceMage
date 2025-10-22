@@ -97,9 +97,9 @@ func perform_moving_attack(world: World, offset: Vector2i, length: int = 1):
 func perform_attack(world: World):
 	print(name, " attacks.")
 	var targets = attack_offsets.map(func (offset): return location + offset)
-	perform_attack_effects(world)
 	for target in targets:
 		world.deal_damage_to(target, attack_power)
+	perform_attack_effects(world)
 	attack_offsets = []
 
 

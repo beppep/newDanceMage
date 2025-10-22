@@ -1,7 +1,6 @@
 extends Unit
 
 
-@onready var world = get_tree().current_scene
 var age = 0
 
 func _ready() -> void:

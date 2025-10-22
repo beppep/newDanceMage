@@ -2,7 +2,6 @@ extends Unit
 
 
 @export var jellyfish_scene: PackedScene = preload("res://scenes/enemies/ghost.tscn")
-@onready var world = get_tree().current_scene
 
 
 func die():

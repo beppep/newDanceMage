@@ -1,6 +1,5 @@
 extends Unit
 
-@onready var world = $"/root/World"
 
 
 func die():

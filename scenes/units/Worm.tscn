@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://ljx8t4cb2tt1"]
+
+[ext_resource type="Script" uid="uid://nnhqccequ4th" path="res://scripts/units/worm.gd" id="1_36hab"]
+[ext_resource type="Texture2D" uid="uid://oe4ktx1csa3u" path="res://assets/sprites/enemies/worm/body.png" id="2_36hab"]
+[ext_resource type="Texture2D" uid="uid://bl5l3i5jst2sl" path="res://assets/sprites/enemies/worm/head1.png" id="3_3hnd7"]
+[ext_resource type="Texture2D" uid="uid://dxbmb3xqt43s4" path="res://assets/sprites/enemies/worm/head2.png" id="4_36hab"]
+[ext_resource type="Texture2D" uid="uid://cy7mou2l868cf" path="res://assets/sprites/enemies/worm/tail.png" id="5_6efkb"]
+[ext_resource type="Texture2D" uid="uid://dvct0dpwkt56d" path="res://assets/sprites/enemies/worm/turn.png" id="6_6efkb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ui7np"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_36hab")
+}],
+"loop": true,
+"name": &"body",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_3hnd7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_36hab")
+}],
+"loop": true,
+"name": &"head",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_6efkb")
+}],
+"loop": true,
+"name": &"tail",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_6efkb")
+}],
+"loop": true,
+"name": &"turn",
+"speed": 5.0
+}]
+
+[node name="Worm" type="Node2D"]
+script = ExtResource("1_36hab")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ui7np")
+animation = &"turn"

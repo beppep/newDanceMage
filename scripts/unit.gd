@@ -4,6 +4,8 @@ class_name Unit
 signal health_changed
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var world = get_tree().current_scene
+
 var tween: Tween
 
 var max_health := 1
