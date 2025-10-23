@@ -8,7 +8,7 @@ var tail : Worm = null
 
 func _ready():
 	print("h")
-	if front==null or randf() < 0.8:
+	if front==null or randf() < 0.9:
 		print("hw")
 		tail = worm_scene.instantiate()
 		var direction = Vector2i(Vector2.RIGHT.rotated(anim.rotation))
@@ -36,11 +36,12 @@ func crawl_in_dir(offset):
 		location += offset
 		
 		var new_rotation = Vector2(offset).angle()
-		if new_rotation == anim.rotation:
-			tail.anim.play("body")
-		else:
-			tail.anim.play("turn")
-			tail.anim.flip_v = (wrapf(anim.rotation - new_rotation, -PI, PI)>0)
+		if tail.tail:
+			if new_rotation == anim.rotation:
+				tail.anim.play("body")
+			else:
+				tail.anim.play("turn")
+				tail.anim.flip_v = (wrapf(anim.rotation - new_rotation, -PI, PI)>0)
 		tail.anim.rotation = new_rotation
 		anim.rotation = new_rotation
 			
@@ -78,3 +79,18 @@ func process_turn(world: World):
 		anim.play("tail")
 	else: # youre the body
 		pass
+	
+func die():
+	super()
+	if tail:
+		if not tail.tail:
+			tail.queue_free()
+		else:
+			tail.front = null
+			tail.anim.play("head")
+	if front:
+		if not front.front:
+			front.queue_free()
+		else:
+			front.tail = null
+			front.anim.play("tail")
