@@ -2,7 +2,7 @@ extends Spell
 
 @export var bomb_scene: PackedScene = preload("res://scenes/units/Bomb.tscn")
 
-func cast(caster: Unit, world: World):
+func cast(caster: Unit):
 	var target_cell = caster.location + caster.get_facing()
 	if world.is_empty(target_cell):
 		var bomb = bomb_scene.instantiate()

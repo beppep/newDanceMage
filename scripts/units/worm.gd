@@ -26,7 +26,7 @@ func _ready():
 	else:
 		anim.play("tail")
 
-func do_move(world: World):
+func do_move():
 	if front==null:
 		crawl_in_dir(CARDINAL_DIRECTIONS.pick_random())
 
@@ -58,19 +58,19 @@ func follow_worm_front():
 	anim.flip_v = front.anim.flip_v
 	location = front.location
 
-func get_possible_targets(world: World) -> Array[Vector2i]:
+func get_possible_targets() -> Array[Vector2i]:
 	if front == null:
-		return target_with_offsets(world, CARDINAL_DIRECTIONS)
+		return target_with_offsets(CARDINAL_DIRECTIONS)
 	else:
 		return []
 
-func perform_attack_effects(_world: World):
+func perform_attack_effects():
 	if front==null:
 		crawl_in_dir(attack_offsets.front())
 			
-func process_turn(world: World):
+func process_turn():
 	if front == null: # means youre the head
-		super(world)
+		super()
 	elif not is_instance_valid(front): # head died
 		front = null
 		anim.play("head")

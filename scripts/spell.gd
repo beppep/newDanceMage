@@ -15,6 +15,6 @@ func _on_child_exit(_node: Node) -> void:
 	if get_child_count() == 0:
 		queue_free()
 
-func cast(_caster: Unit, _world: World):
+func cast(_caster: Unit): # could use ready for this instead?
 	print("cast() is not implemented for ", name)
 	pass

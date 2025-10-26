@@ -9,8 +9,8 @@ func make_particle_cloud_at(pos: Vector2, particle_name : String):
 	p.explosiveness = 0.9
 	p.amount = 12
 	p.texture = load("res://assets/sprites/particles/" + particle_name + ".png")
-	mat.initial_velocity_min = 50
-	mat.initial_velocity_max = 70
+	mat.initial_velocity_min = 70
+	mat.initial_velocity_max = 80
 	mat.gravity = Vector3.ZERO
 	mat.direction = Vector3(0, 0, 0) # Note: ParticleProcessMaterial uses Vector3 for direction in 2D too
 	mat.spread = 180.0

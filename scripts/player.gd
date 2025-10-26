@@ -9,6 +9,7 @@ var locked_spells = [
 	preload("res://assets/resources/spells/wind_spell.tres"),
 	preload("res://assets/resources/spells/rock_spell.tres"),
 	preload("res://assets/resources/spells/bomb_spell.tres"),
+	preload("res://assets/resources/spells/lightning_storm_spell.tres"),
 ]
 
 var buffered_input = null
@@ -51,7 +52,7 @@ func update_animation(move: Vector2i):
 			anim.play("right")
 			anim.flip_h = false
 
-func process_turn(world: World):
+func process_turn():
 	while buffered_input == null:
 		await get_tree().create_timer(1.0 / 100.0).timeout
 
@@ -67,7 +68,7 @@ func process_turn(world: World):
 		var recipe = recipe_book[current_spell_nr]
 		world.get_node("MainUI")._on_spells_changed()
 		if check_recipe_alignment(recipe) == recipe.size():
-			cast_spell(world, spell_book[current_spell_nr])
+			cast_spell(spell_book[current_spell_nr])
 		current_spell_nr += 1
 
 func check_recipe_alignment(recipe):
@@ -77,12 +78,12 @@ func check_recipe_alignment(recipe):
 			return alignment_size
 	return 0
 
-func cast_spell(world: World, spell_resource: SpellResource):
+func cast_spell(spell_resource: SpellResource):
 	print("Casting ", spell_resource.name)
 	if spell_resource.spell_script:
-		var spell = spell_resource.spell_script.new()  # instantiate makes a node2D
+		var spell = spell_resource.spell_script.new()  # instantiate makes a node2D?
 		add_child(spell)
-		spell.cast(self, world)
+		spell.cast(self)
 
 func get_facing() -> Vector2i:
 	for i in range(move_history.size() - 1, -1, -1):

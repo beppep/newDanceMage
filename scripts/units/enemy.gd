@@ -38,20 +38,20 @@ var attack_offsets: Array[Vector2i] = []:
 			anim.play("default")
 		queue_redraw()
 
-@abstract func get_possible_targets(world: World) -> Array[Vector2i]
-@abstract func do_move(world: World)
+@abstract func get_possible_targets() -> Array[Vector2i]
+@abstract func do_move()
 
-func get_attack_offsets(_world: World, offset: Vector2i) -> Array[Vector2i]:
+func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]:
 	return [offset]
 
-func perform_attack_effects(_world: World):
+func perform_attack_effects():
 	pass
 
 func _draw():
 	for target in attack_offsets:
 		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 
-func target_with_offsets(world: World, offsets: Array[Vector2i]) -> Array[Vector2i]:
+func target_with_offsets(offsets: Array[Vector2i]) -> Array[Vector2i]:
 	var targets: Array[Vector2i] = []
 	for offset in offsets:
 		var target = location + offset
@@ -60,7 +60,7 @@ func target_with_offsets(world: World, offsets: Array[Vector2i]) -> Array[Vector
 		targets.append(offset)
 	return targets
 
-func target_with_directions(world: World, directions: Array[Vector2i]) -> Array[Vector2i]:
+func target_with_directions(directions: Array[Vector2i]) -> Array[Vector2i]:
 	var targets: Array[Vector2i] = []
 	for direction in directions:
 		for i in range(1, attack_range + 1):
@@ -70,16 +70,16 @@ func target_with_directions(world: World, directions: Array[Vector2i]) -> Array[
 			targets.append(direction * i)
 	return targets
 
-func get_unit_in_direction(world: World, direction: Vector2i, length: int = 1) -> Unit:
+func get_unit_in_direction(direction: Vector2i, length: int = 1) -> Unit:
 	return world.get_closest_unit(location, direction, length)
 
-func perform_moving_attack(world: World, offset: Vector2i, length: int = 1):
+func perform_moving_attack(offset: Vector2i, length: int = 1):
 	if world.is_wall_at(location + offset):
 		return
 
 	attack_offsets = []
 
-	var unit = get_unit_in_direction(world, offset, length)
+	var unit = get_unit_in_direction(offset, length)
 
 	if unit:
 		location = unit.location
@@ -92,33 +92,33 @@ func perform_moving_attack(world: World, offset: Vector2i, length: int = 1):
 			location -= offset
 		unit.take_damage(attack_power)
 	else:
-		move_in_direction(world, offset, length)
+		move_in_direction(offset, length)
 
-func perform_attack(world: World):
+func perform_attack():
 	print(name, " attacks.")
 	var targets = attack_offsets.map(func (offset): return location + offset)
 	for target in targets:
 		world.deal_damage_to(target, attack_power)
-	perform_attack_effects(world)
+	perform_attack_effects()
 	attack_offsets = []
 
 
-func process_turn(world: World):
+func process_turn():
 	if not attack_offsets.is_empty():
-		perform_attack(world)
+		perform_attack()
 		return
 
-	var possible_targets = get_possible_targets(world)
+	var possible_targets = get_possible_targets()
 	if possible_targets.has(world.player.location - location):
 		print(name, " winds up for attack.")
-		attack_offsets = get_attack_offsets(world, world.player.location - location)
+		attack_offsets = get_attack_offsets(world.player.location - location)
 	elif randf() < 0.3:
 		for offset in possible_targets:
 			var target = location + offset
 			if target.distance_squared_to(world.player.location) <= 1:
-				attack_offsets = get_attack_offsets(world, offset)
+				attack_offsets = get_attack_offsets(offset)
 				break
 	
 
 	if not attack_offsets:
-		do_move(world)
+		do_move()

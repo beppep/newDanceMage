@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://cc6chi8ekrxcs"]
+
+[ext_resource type="Script" uid="uid://d22erh5iojf8v" path="res://scenes/particles/lightning.gd" id="1_fkipk"]
+[ext_resource type="Texture2D" uid="uid://xj1gawmdrjlc" path="res://assets/sprites/particles/lightning/lightning1.png" id="2_73asq"]
+[ext_resource type="Texture2D" uid="uid://da1tjgn5treio" path="res://assets/sprites/particles/lightning/lightning2.png" id="3_nlgkv"]
+[ext_resource type="Texture2D" uid="uid://7uj55amhyb6k" path="res://assets/sprites/particles/lightning/lightning3.png" id="4_nld64"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5eywi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_73asq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_nlgkv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_nld64")
+}],
+"loop": false,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="Lightning" type="Node2D"]
+script = ExtResource("1_fkipk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_5eywi")
+frame_progress = 0.6073507

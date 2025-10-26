@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://dvhrggsk1jycp"]
+[gd_scene load_steps=25 format=4 uid="uid://dvhrggsk1jycp"]
 
 [ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_0afw7"]
 [ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_ux2rm"]
@@ -15,8 +15,10 @@
 [ext_resource type="PackedScene" uid="uid://cqgcs4g5m6m40" path="res://scenes/units/Crystal.tscn" id="13_52ei1"]
 [ext_resource type="PackedScene" uid="uid://75y2vqatrskg" path="res://scenes/enemies/knight.tscn" id="13_aovjg"]
 [ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="15_52ei1"]
+[ext_resource type="PackedScene" uid="uid://bnr4e05gj6q8g" path="res://scenes/enemies/mother_ghost.tscn" id="15_cws43"]
 [ext_resource type="PackedScene" uid="uid://bgy6xipqa012g" path="res://scenes/units/Egg.tscn" id="16_v7vy4"]
 [ext_resource type="PackedScene" uid="uid://ljx8t4cb2tt1" path="res://scenes/units/Worm.tscn" id="17_7bxi3"]
+[ext_resource type="Script" uid="uid://3quawpdbegmg" path="res://scripts/particle_spawner.gd" id="18_lslek"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
 texture = ExtResource("1_0afw7")
@@ -60,7 +62,7 @@ position = Vector2(8, 7)
 zoom = Vector2(4, 4)
 
 [node name="Troll" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-42, 29)
+position = Vector2(-40, 24)
 
 [node name="Rock" parent="Units" instance=ExtResource("10_4rud1")]
 position = Vector2(56, 24)
@@ -74,38 +76,23 @@ position = Vector2(-8, 71)
 [node name="Knight" parent="Units" instance=ExtResource("13_aovjg")]
 position = Vector2(73, 55)
 
-[node name="Troll2" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-41, 11)
-
-[node name="Troll3" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-22, 24)
-
-[node name="Troll4" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-58, 25)
-
-[node name="Troll5" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-74, -38)
-
-[node name="Troll6" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-40, -27)
-
 [node name="Egg" parent="Units" instance=ExtResource("16_v7vy4")]
-position = Vector2(24, -58)
+position = Vector2(24, -56)
 
 [node name="Worm" parent="Units" instance=ExtResource("17_7bxi3")]
-position = Vector2(20, 111)
+position = Vector2(24, 120)
+
+[node name="MotherGhost" parent="Units" instance=ExtResource("15_cws43")]
+position = Vector2(-56, -40)
 
 [node name="Crystal" parent="Units" instance=ExtResource("13_52ei1")]
-position = Vector2(157, 34)
+position = Vector2(152, 40)
 
 [node name="Crystal2" parent="Units" instance=ExtResource("13_52ei1")]
-position = Vector2(-155, 23)
+position = Vector2(-152, 24)
 
 [node name="Crystal3" parent="Units" instance=ExtResource("13_52ei1")]
-position = Vector2(380, 119)
-
-[node name="Crystal4" parent="Units" instance=ExtResource("13_52ei1")]
-position = Vector2(-104, -120)
+position = Vector2(8, -104)
 
 [node name="MainUI" parent="." instance=ExtResource("9_c1o4b")]
 
@@ -117,3 +104,4 @@ color = Color(0.39215687, 0.39215687, 0.39215687, 1)
 script = ExtResource("15_52ei1")
 
 [node name="Particles" type="Node" parent="."]
+script = ExtResource("18_lslek")

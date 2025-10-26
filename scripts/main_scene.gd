@@ -6,6 +6,7 @@ const TILE_SIZE = 16
 @onready var units: Units = $Units
 @onready var wall_tilemap = $TileMapLayerWalls
 @onready var player: Player = units.get_node("Player")
+@onready var particles: = $Particles
 
 func _ready() -> void:
 	units.start()
@@ -19,8 +20,19 @@ func is_wall_at(location: Vector2i) -> bool:
 	var tile_id = wall_tilemap.get_cell_source_id(cell)
 	return tile_id != -1
 
-func is_empty(location: Vector2i) -> bool:
-	return not is_wall_at(location) and not units.get_unit_at(location)
+func debug():
+	for i in units.get_children(): # Calling this does crazy shit. :/
+		i.location = i.location
+
+func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null, log=false) -> bool:
+	for x in range(fatness.x):
+		for y in range(fatness.y):
+			var loc = location + Vector2i(x,y)
+			if log:
+				print(x,y, " : ", loc, is_wall_at(loc),units.get_unit_at(loc))
+			if is_wall_at(loc) or (units.get_unit_at(loc, log) and units.get_unit_at(loc)!=except):
+				return false
+	return true
 
 func deal_damage_to(location: Vector2i, damage: int = 1):
 	var unit = units.get_unit_at(location)

@@ -34,8 +34,10 @@ func generate_map():
 			random_room_pos = Vector2i(randi_range(-MAPSIZE+1, MAPSIZE-1), randi_range(-MAPSIZE+1, MAPSIZE-1))
 		_create_spell_room(random_room_pos)
 		
+	# STARTING ROOM
 	_create_room(Vector2i(-2,-2),Vector2i(2,2))
-	#wall_tilemap.set_cell(Vector2i(2, 0), -1 , Vector2i(0, 0))
+	wall_tilemap.set_cell(Vector2i(2, 0), -1 , Vector2i(0, 0))
+	_paint_area(wall_tilemap, Vector2i(1, 0), Vector2i(4, 0), -1)
 	#_create_rock_at(Vector2i(2, 0))
 	
 	# ROCKS

@@ -7,7 +7,7 @@ extends Spell
 var anim_timer = 8
 var RANGE = 10
 
-func cast(caster: Unit, world: World):
+func cast(caster: Unit):
 	for direction in [Vector2.UP, Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT]:
 		# push in reverse order
 		for i in range(RANGE):
@@ -15,7 +15,7 @@ func cast(caster: Unit, world: World):
 			var target_cell = caster.location + Vector2i(direction * j)
 			var unit = world.units.get_unit_at(target_cell)
 			if unit:
-				unit.move_in_direction(world, direction)
+				unit.move_in_direction(direction)
 
 func _physics_process(_delta): # called at 60 fps
 	anim_timer -= 1

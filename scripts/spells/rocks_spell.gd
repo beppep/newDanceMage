@@ -2,7 +2,7 @@ extends Spell
 
 @export var rock_scene: PackedScene = preload("res://scenes/units/Rock.tscn")
 
-func cast(caster: Unit, world: World):
+func cast(caster: Unit):
 	for direction in [Vector2i(1,1), Vector2i(1,-1), Vector2i(-1,1), Vector2i(-1,-1)]:
 		var target_cell = caster.location + direction
 		if world.is_empty(target_cell):
