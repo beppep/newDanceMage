@@ -6,8 +6,9 @@
 
 [resource]
 script = ExtResource("2_1mguj")
-image = ExtResource("1_yqg7v")
 name = "Explode"
+image = ExtResource("1_yqg7v")
+description = "Explode to damage all enemies around you."
 dance_length = 3
 spell_script = ExtResource("3_1mguj")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

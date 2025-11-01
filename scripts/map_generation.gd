@@ -10,7 +10,7 @@ var rock_scene = preload("res://scenes/units/Rock.tscn")
 var crystal_scene = preload("res://scenes/units/Crystal.tscn")
 var egg_scene = preload("res://scenes/units/Egg.tscn")
 
-var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3} # SKETCHY because it has to align with the tileset at all times
+var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4} # SKETCHY because it has to align with the tileset at all times
 
 
 func generate_map():
@@ -53,6 +53,11 @@ func generate_map():
 		random_pos = Vector2i(clamp(random_pos.x + randi_range(-3, 3), -MAPSIZE, MAPSIZE), clamp(random_pos.y + randi_range(-3, 3), -MAPSIZE, MAPSIZE))
 		if random_pos.length() > 3:
 			_create_unit_at(random_pos, egg_scene)
+	
+	random_pos = Vector2i(randi_range(-MAPSIZE, MAPSIZE), randi_range(-MAPSIZE, MAPSIZE))
+	while not world.is_empty(random_pos):
+		random_pos = Vector2i(randi_range(-MAPSIZE, MAPSIZE), randi_range(-MAPSIZE, MAPSIZE))
+	ground_tilemap.set_cell(random_pos, tile_ids["STAIRS"] , Vector2i(0, 0))
 
 func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_location: Vector2i, tile_id: int) -> void:
 	var min_vec = Vector2(min(from_location.x, to_location.x), min(from_location.y, to_location.y))

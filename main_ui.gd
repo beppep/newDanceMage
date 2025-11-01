@@ -4,6 +4,8 @@ extends CanvasLayer
 @onready var health_container := $VBoxContainer/Health
 @onready var spell_container := $VBoxContainer/Spells
 
+@onready var spell_card_scene := preload("res://scenes/spell_card.tscn")
+
 @onready var heart_texture := preload("res://assets/sprites/ui/heart.png")
 @onready var dark_heart_texture := preload("res://assets/sprites/ui/darkheart.png")
 @onready var arrow_texture := preload("res://assets/sprites/ui/arrow.png")
@@ -38,6 +40,20 @@ func _ready() -> void:
 	_on_health_changed()
 	_on_spells_changed()
 	$VBoxContainer.scale = Vector2(4, 4)
+	
+
+func show_card_reward(spells, recipes):
+	#$CardRewards.visible = true
+	for i in range(spells.size()):
+		var spell_card : Spell_card = spell_card_scene.instantiate()
+		spell_card.spell = spells[i]
+		$CardRewards.add_child(spell_card)
+		spell_card.recipe = recipes[i]
+
+func remove_card_rewards():
+	for child in $CardRewards.get_children():
+		child.queue_free()
+		
 
 func _on_health_changed():
 	for child in health_container.get_children():
@@ -52,8 +68,6 @@ func _on_health_changed():
 func _on_spells_changed():
 	for child in spell_container.get_children():
 		child.queue_free()
-		
-	
 	
 	for i in range(player.spell_book.size()):
 		var spell_HBox = HBoxContainer.new()

@@ -6,8 +6,9 @@
 
 [resource]
 script = ExtResource("2_d1y67")
-image = ExtResource("1_7h3oj")
 name = "Bomb"
+image = ExtResource("1_7h3oj")
+description = "Creates a bomb which explodes after a set duration or when struck."
 dance_length = 2
 spell_script = ExtResource("3_d1y67")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

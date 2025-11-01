@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("2_ua06p")
-image = ExtResource("1_rlk8i")
 name = "Lightning Storm"
+image = ExtResource("1_rlk8i")
+description = "Lightnings strike around you."
 spell_script = ExtResource("3_rlk8i")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

@@ -93,6 +93,22 @@ func get_facing() -> Vector2i:
 	return Vector2i.DOWN
 
 
+func create_card_reward():
+	var spell_options = []
+	var recipe_options = []
+	for i in range(3):
+		var new_spell : SpellResource = locked_spells.pick_random()
+		spell_options.append(new_spell)
+		recipe_options.append(create_random_recipe(new_spell.dance_length))
+	
+	var main_ui := $"/root/World/MainUI"
+	main_ui.show_card_reward(spell_options, recipe_options)
+
+func unlock(spell: SpellResource, recipe: Array):
+	print("unlocked ", spell, recipe)
+	spell_book.append(spell)
+	recipe_book.append(recipe)
+
 func unlock_random_spell():
 	var new_spell = locked_spells.pick_random()
 	spell_book.append(new_spell)
@@ -104,4 +120,3 @@ func create_random_recipe(recipe_length :int):
 	for i in range(recipe_length):
 		recipe.append(all_inputs.pick_random())
 	return recipe
-		

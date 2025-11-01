@@ -6,8 +6,9 @@
 
 [resource]
 script = ExtResource("2_lylqd")
-image = ExtResource("1_ff6l2")
 name = "Stab"
+image = ExtResource("1_ff6l2")
+description = "Attacks right in front of you."
 dance_length = 1
 spell_script = ExtResource("3_ff6l2")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

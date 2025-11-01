@@ -4,7 +4,7 @@ extends Unit
 
 func die():
 	super()
-	world.player.unlock_random_spell()
+	world.player.create_card_reward()
 
 
 	var p = Particles.new()
