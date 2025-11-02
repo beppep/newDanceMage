@@ -5,12 +5,20 @@ const TILE_SIZE = 16
 
 @onready var units: Units = $Units
 @onready var wall_tilemap = $TileMapLayerWalls
+@onready var ground_tilemap = $TileMapLayerGround
 @onready var player: Player = units.get_node("Player")
 @onready var particles: = $Particles
 
 func _ready() -> void:
-	units.start()
 	$map_generator.generate_map()
+	units.start()
+
+func next_floor():
+	for child in units.get_children():
+		if child != player:
+			child.queue_free()
+	$map_generator.generate_map()
+	units.start()
 
 func _process(_delta):
 	pass

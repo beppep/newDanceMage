@@ -4,7 +4,7 @@ extends Node
 @onready var ground_tilemap: TileMapLayer = world.get_node("TileMapLayerGround")
 @onready var wall_tilemap: TileMapLayer = world.get_node("TileMapLayerWalls")
 
-var MAPSIZE = 20
+var MAPSIZE = 16
 
 var rock_scene = preload("res://scenes/units/Rock.tscn")
 var crystal_scene = preload("res://scenes/units/Crystal.tscn")
@@ -14,18 +14,21 @@ var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4} # SKETC
 
 
 func generate_map():
+	ground_tilemap.clear()
+	wall_tilemap.clear()
+	
 	_paint_area(wall_tilemap, Vector2i(-MAPSIZE-2,-MAPSIZE-2),Vector2i(-MAPSIZE-1,MAPSIZE+2), tile_ids["OBSIDIAN"]) # left wall
 	_paint_area(wall_tilemap, Vector2i(-MAPSIZE-2,-MAPSIZE-2),Vector2i(MAPSIZE+2,-MAPSIZE-1), tile_ids["OBSIDIAN"]) # up wall
 	_paint_area(wall_tilemap, Vector2i(MAPSIZE+1,-MAPSIZE-2),Vector2i(MAPSIZE+2,MAPSIZE+2), tile_ids["OBSIDIAN"]) # right wall
 	_paint_area(wall_tilemap, Vector2i(-MAPSIZE-2,MAPSIZE+1),Vector2i(MAPSIZE+2,MAPSIZE+2), tile_ids["OBSIDIAN"]) # down wall
 	
-	_paint_area(ground_tilemap, Vector2i(-20,-20),Vector2i(20,20), tile_ids["SAND"]) # sand
+	_paint_area(ground_tilemap, Vector2i(-MAPSIZE,-MAPSIZE),Vector2i(MAPSIZE,MAPSIZE), tile_ids["SAND"]) # sand
 	
-	for x in range(2*MAPSIZE / 10):
-		for y in range(2*MAPSIZE / 10):
-			var chunk = Vector2i(-MAPSIZE, -MAPSIZE) + Vector2i(x,y)*10
-			var random_room_dims = Vector2i(randi_range(2, 10), randi_range(2, 10))
-			var random_room_pos = Vector2i(randi_range(0, 10-random_room_dims.x), randi_range(0, 10-random_room_dims.y))
+	for x in range(2*MAPSIZE / 8):
+		for y in range(2*MAPSIZE / 8):
+			var chunk = Vector2i(-MAPSIZE, -MAPSIZE) + Vector2i(x,y)*8
+			var random_room_dims = Vector2i(randi_range(2, 8), randi_range(2, 8))
+			var random_room_pos = Vector2i(randi_range(0, 8-random_room_dims.x), randi_range(0, 8-random_room_dims.y))
 			_create_room(chunk+random_room_pos, chunk+random_room_pos + random_room_dims)
 	
 	for i in range(6):

@@ -22,6 +22,10 @@ func _ready() -> void:
 	health = 3
 
 func _process(_delta: float) -> void:
+	if world.ground_tilemap.get_cell_source_id(location)==4:
+		location = Vector2i.ZERO
+		world.next_floor()
+	
 	var input = get_input()
 	if input != null:
 		buffered_input = input
