@@ -5,6 +5,7 @@ const TILE_SIZE = 16
 
 @onready var units: Units = $Units
 @onready var wall_tilemap = $TileMapLayerWalls
+@onready var floor_tilemap = $TileMapLayerFloor
 @onready var ground_tilemap = $TileMapLayerGround
 @onready var player: Player = units.get_node("Player")
 @onready var particles: Particle_spawner = $Particles

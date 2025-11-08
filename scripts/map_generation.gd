@@ -2,6 +2,7 @@ extends Node
 
 @onready var world := $"/root/World"
 @onready var ground_tilemap: TileMapLayer = world.get_node("TileMapLayerGround")
+@onready var floor_tilemap: TileMapLayer = world.get_node("TileMapLayerFloor")
 @onready var wall_tilemap: TileMapLayer = world.get_node("TileMapLayerWalls")
 
 var MAPSIZE = 16
@@ -21,10 +22,11 @@ var all_enemies = [egg_scene,
 	preload("res://scenes/enemies/knight.tscn"),
 ]
 
-var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4} # SKETCHY because it has to align with the tileset at all times
+var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4, "HEART":1, "COIN":2} # SKETCHY because it has to align with the tileset at all times
 
 func generate_shop():
 	ground_tilemap.clear()
+	floor_tilemap.clear()
 	wall_tilemap.clear()
 	
 	world.player.position = Vector2(0,2)*world.TILE_SIZE
@@ -49,6 +51,7 @@ func generate_shop():
 
 func generate_map():
 	ground_tilemap.clear()
+	floor_tilemap.clear()
 	wall_tilemap.clear()
 	
 	world.player.position = Vector2(0,2)*world.TILE_SIZE
@@ -91,7 +94,10 @@ func generate_map():
 	for i in range(MAPSIZE_X^2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if random_pos.length() > 3:
-			_create_unit_at(random_pos, rock_scene)
+			if randf()<0.9:
+				_create_unit_at(random_pos, rock_scene)
+			else:
+				floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
 	
 	# ENEMIES
 	for i in range(MAPSIZE_X^2):

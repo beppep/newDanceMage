@@ -18,6 +18,7 @@ var buffered_input = null
 var move_history: Array[Vector2i] = []
 var recipe_book = [[Vector2i.ZERO]]
 var spell_book = [stab_spell]
+var coins = 0
 
 func _ready() -> void:
 	super()
@@ -25,6 +26,9 @@ func _ready() -> void:
 	health = 3
 
 func _process(_delta: float) -> void:
+	if world.floor_tilemap.get_cell_source_id(location)==2:
+		world.floor_tilemap.set_cell(location, -1, Vector2i(0, 0))
+		coins += 1
 	if world.ground_tilemap.get_cell_source_id(location)==4:
 		#location = Vector2i.ZERO
 		world.next_floor()

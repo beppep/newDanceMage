@@ -69,6 +69,11 @@ func _on_spells_changed():
 	for child in spell_container.get_children():
 		child.queue_free()
 	
+	var coin_label = Label.new()
+	spell_container.add_child(coin_label)
+	coin_label.text = str(player.coins)+"$"
+
+	
 	for i in range(player.spell_book.size()):
 		var spell_HBox = HBoxContainer.new()
 		spell_container.add_child(spell_HBox)
