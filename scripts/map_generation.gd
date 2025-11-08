@@ -1,6 +1,6 @@
 extends Node
 
-@onready var world := $"/root/World"
+@onready var world: World = $"/root/World"
 @onready var ground_tilemap: TileMapLayer = world.get_node("TileMapLayerGround")
 @onready var floor_tilemap: TileMapLayer = world.get_node("TileMapLayerFloor")
 @onready var wall_tilemap: TileMapLayer = world.get_node("TileMapLayerWalls")
@@ -29,9 +29,7 @@ func generate_shop():
 	floor_tilemap.clear()
 	wall_tilemap.clear()
 	
-	world.player.position = Vector2(0,2)*world.TILE_SIZE
-	world.player.location = Vector2i(0,2)
-	
+	world.player.teleport_to(Vector2i(0, 2))
 	
 	_paint_area(wall_tilemap, Vector2i(-SHOPSIZE_X-2,-SHOPSIZE_Y-2),Vector2i(-SHOPSIZE_X-1,SHOPSIZE_Y+2), tile_ids["OBSIDIAN"]) # left wall
 	_paint_area(wall_tilemap, Vector2i(-SHOPSIZE_X-2,-SHOPSIZE_Y-2),Vector2i(SHOPSIZE_X+2,-SHOPSIZE_Y-1), tile_ids["OBSIDIAN"]) # up wall
@@ -54,9 +52,7 @@ func generate_map():
 	floor_tilemap.clear()
 	wall_tilemap.clear()
 	
-	world.player.position = Vector2(0,2)*world.TILE_SIZE
-	world.player.location = Vector2i(0,2)
-	print(world.player.location) # (-5, -3)
+	world.player.teleport_to(Vector2i(0, 2))
 	
 	var MAPSIZE_X = 1 + world.current_floor
 	var MAPSIZE_Y = 2 + world.current_floor

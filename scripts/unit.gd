@@ -37,7 +37,7 @@ var speed := 260.0
 			await tween.finished
 		var new_position = World.loc_to_pos(loc)
 		tween = create_tween().set_trans(Tween.TRANS_LINEAR)
-		tween.tween_property(self, "position", new_position, position.distance_to(new_position) / speed)
+		tween.tween_property(self, "position", new_position, 0.1)
 
 func _ready():
 	frozen_indicator = Sprite2D.new()
@@ -81,6 +81,13 @@ func move_in_direction(direction: Vector2i, length: int = 1):
 			break
 		goal += direction
 	location = goal
+
+func teleport_to(loc: Vector2i):
+	if is_instance_valid(tween) and tween.is_running():
+		tween.kill()
+		tween = null
+	position = World.loc_to_pos(loc)
+	location = loc
 
 func die():
 	print(name, " died a horrible death.")

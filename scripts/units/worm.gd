@@ -59,7 +59,8 @@ func follow_worm_front():
 
 func get_possible_targets() -> Array[Vector2i]:
 	if front == null:
-		return target_with_offsets(CARDINAL_DIRECTIONS)
+		var direction = Vector2i(Vector2.RIGHT.rotated(anim.rotation))
+		return target_with_offsets(CARDINAL_DIRECTIONS.filter(func (dir): return dir != -direction))
 	else:
 		return []
 

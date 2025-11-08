@@ -52,7 +52,6 @@ func _draw():
 	if frozen:
 		return
 	for target in attack_offsets:
-		print("lol")
 		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 
 func target_with_offsets(offsets: Array[Vector2i]) -> Array[Vector2i]:

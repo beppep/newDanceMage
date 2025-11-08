@@ -20,6 +20,10 @@ func do_move():
 func get_possible_targets() -> Array[Vector2i]:
 	return target_with_offsets(offsets)
 
+func perform_attack():
+	var offset = attack_offsets.front()
+	perform_moving_attack(offset)
+
 func perform_attack_effects():
 	var offset = attack_offsets.front()
 	if world.is_empty(location + offset):
