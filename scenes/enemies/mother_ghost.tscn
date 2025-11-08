@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bnr4e05gj6q8g"]
 
-[ext_resource type="Script" uid="uid://co53boopm0h6h" path="res://scenes/enemies/mother_ghost.gd" id="1_5441n"]
+[ext_resource type="Script" uid="uid://co53boopm0h6h" path="res://scripts/units/mother_ghost.gd" id="1_5441n"]
 [ext_resource type="Texture2D" uid="uid://ydva7md7tbxs" path="res://assets/sprites/enemies/mother ghost/mother ghost.png" id="2_5441n"]
 [ext_resource type="Texture2D" uid="uid://bk0hed3t6fs33" path="res://assets/sprites/enemies/mother ghost/preExplode.png" id="3_rodpx"]
 

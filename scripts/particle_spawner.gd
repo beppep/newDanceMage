@@ -1,4 +1,5 @@
 extends Node
+class_name Particle_spawner
 
 
 func make_cloud(location, particle_name, source_fatness = Vector2i(1,1)):

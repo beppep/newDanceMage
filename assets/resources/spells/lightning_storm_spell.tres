@@ -9,5 +9,6 @@ script = ExtResource("2_ua06p")
 name = "Lightning Storm"
 image = ExtResource("1_rlk8i")
 description = "Lightnings strike around you."
+dance_length = 3
 spell_script = ExtResource("3_rlk8i")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

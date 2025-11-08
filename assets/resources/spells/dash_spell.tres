@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://cfs0q2j42t4rp"]
+
+[ext_resource type="Texture2D" uid="uid://dbbiii6afobno" path="res://assets/sprites/particles/smoke.png" id="1_sxfcu"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_1fbbx"]
+[ext_resource type="Script" uid="uid://dm1n2pys02cul" path="res://scripts/spells/dash_spell.gd" id="3_sxfcu"]
+
+[resource]
+script = ExtResource("2_1fbbx")
+name = "Dash"
+image = ExtResource("1_sxfcu")
+description = "Dash forward and deal damage in front of you."
+dance_length = 2
+spell_script = ExtResource("3_sxfcu")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

@@ -2,6 +2,9 @@ extends Enemy
 
 @export var egg_scene: PackedScene = preload("res://scenes/units/Egg.tscn")
 
+func _init():
+	fatness = Vector2i(2,2)
+
 
 var TARGET_OFFSETS: Array[Vector2i] = [
 		Vector2i(-1,-1),Vector2i(-1,0),Vector2i(-1,1),Vector2i(-1,2),
@@ -12,16 +15,14 @@ var TARGET_OFFSETS: Array[Vector2i] = [
 
 
 func _ready():
-	fatness = Vector2i(2,2)
+	super()
 	max_health = 3
 	health = 3
 	
 
 func do_move():
 	var offset = ALL_DIRECTIONS.pick_random()
-	print("move fat")
 	if world.is_empty(location + offset, fatness, self):
-		print("did move fa")
 		location += offset
 
 func get_possible_targets() -> Array[Vector2i]:

@@ -7,17 +7,24 @@ const TILE_SIZE = 16
 @onready var wall_tilemap = $TileMapLayerWalls
 @onready var ground_tilemap = $TileMapLayerGround
 @onready var player: Player = units.get_node("Player")
-@onready var particles: = $Particles
+@onready var particles: Particle_spawner = $Particles
+var current_floor = 1
 
 func _ready() -> void:
+	current_floor = 1
 	$map_generator.generate_map()
 	units.start()
 
 func next_floor():
+	current_floor += 1
+	print("current floor: ", current_floor)
 	for child in units.get_children():
 		if child != player:
 			child.queue_free()
-	$map_generator.generate_map()
+	if current_floor % 2 == 1:
+		$map_generator.generate_map()
+	else:
+		$map_generator.generate_shop()
 	units.start()
 
 func _process(_delta):
@@ -42,7 +49,7 @@ func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null, _log=fal
 				return false
 	return true
 
-func deal_damage_to(location: Vector2i, damage: int = 1):
+func deal_damage_at(location: Vector2i, damage: int = 1):
 	var unit = units.get_unit_at(location)
 	if unit:
 		unit.take_damage(damage)

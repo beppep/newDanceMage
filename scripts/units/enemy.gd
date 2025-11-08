@@ -48,7 +48,11 @@ func perform_attack_effects():
 	pass
 
 func _draw():
+	print("frozen ",frozen)
+	if frozen:
+		return
 	for target in attack_offsets:
+		print("lol")
 		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 
 func target_with_offsets(offsets: Array[Vector2i]) -> Array[Vector2i]:
@@ -98,12 +102,13 @@ func perform_attack():
 	print(name, " attacks.")
 	var targets = attack_offsets.map(func (offset): return location + offset)
 	for target in targets:
-		world.deal_damage_to(target, attack_power)
+		world.deal_damage_at(target, attack_power)
 	perform_attack_effects()
 	attack_offsets = []
 
 
 func process_turn():
+		
 	if not attack_offsets.is_empty():
 		perform_attack()
 		return

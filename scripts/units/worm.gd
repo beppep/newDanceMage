@@ -7,9 +7,8 @@ var front: Worm = null
 var tail : Worm = null
 
 func _ready():
-	print("h")
+	super()
 	if front==null or randf() < 0.9:
-		print("hw")
 		tail = worm_scene.instantiate()
 		var direction = Vector2i(Vector2.RIGHT.rotated(anim.rotation))
 		#tail.anim.rotation = anim.rotation

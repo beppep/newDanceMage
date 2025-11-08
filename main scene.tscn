@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://dvhrggsk1jycp"]
+[gd_scene load_steps=18 format=4 uid="uid://dvhrggsk1jycp"]
 
 [ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_0afw7"]
 [ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_ux2rm"]
@@ -8,17 +8,8 @@
 [ext_resource type="Script" uid="uid://duu3jyqjhp3f1" path="res://scripts/units.gd" id="6_c1o4b"]
 [ext_resource type="Texture2D" uid="uid://57ta6mjg534o" path="res://assets/sprites/tiles/staircase.png" id="6_j008o"]
 [ext_resource type="PackedScene" uid="uid://cm2di112011s2" path="res://scenes/Player.tscn" id="6_sgb2t"]
-[ext_resource type="PackedScene" uid="uid://7lbdi7f23lil" path="res://scenes/units/Troll.tscn" id="7_aqyhw"]
 [ext_resource type="PackedScene" uid="uid://b1r37xlv72lnf" path="res://main_ui.tscn" id="9_c1o4b"]
-[ext_resource type="PackedScene" uid="uid://bb37kamhejxh2" path="res://scenes/units/Rock.tscn" id="10_4rud1"]
-[ext_resource type="PackedScene" uid="uid://d2mmontgpnfx5" path="res://scenes/enemies/ghost.tscn" id="11_7fvey"]
-[ext_resource type="PackedScene" uid="uid://oj04kpiiqu67" path="res://scenes/enemies/bishop.tscn" id="12_ohk57"]
-[ext_resource type="PackedScene" uid="uid://cqgcs4g5m6m40" path="res://scenes/units/Crystal.tscn" id="13_52ei1"]
-[ext_resource type="PackedScene" uid="uid://75y2vqatrskg" path="res://scenes/enemies/knight.tscn" id="13_aovjg"]
 [ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="15_52ei1"]
-[ext_resource type="PackedScene" uid="uid://bnr4e05gj6q8g" path="res://scenes/enemies/mother_ghost.tscn" id="15_cws43"]
-[ext_resource type="PackedScene" uid="uid://bgy6xipqa012g" path="res://scenes/units/Egg.tscn" id="16_v7vy4"]
-[ext_resource type="PackedScene" uid="uid://ljx8t4cb2tt1" path="res://scenes/units/Worm.tscn" id="17_7bxi3"]
 [ext_resource type="Script" uid="uid://3quawpdbegmg" path="res://scripts/particle_spawner.gd" id="18_lslek"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
@@ -66,39 +57,6 @@ position = Vector2(8, 7)
 
 [node name="Camera2D" type="Camera2D" parent="Units/Player"]
 zoom = Vector2(4, 4)
-
-[node name="Troll" parent="Units" instance=ExtResource("7_aqyhw")]
-position = Vector2(-40, 24)
-
-[node name="Rock" parent="Units" instance=ExtResource("10_4rud1")]
-position = Vector2(56, 24)
-
-[node name="Ghost" parent="Units" instance=ExtResource("11_7fvey")]
-position = Vector2(88, -9)
-
-[node name="Bishop" parent="Units" instance=ExtResource("12_ohk57")]
-position = Vector2(-8, 71)
-
-[node name="Knight" parent="Units" instance=ExtResource("13_aovjg")]
-position = Vector2(73, 55)
-
-[node name="Egg" parent="Units" instance=ExtResource("16_v7vy4")]
-position = Vector2(24, -56)
-
-[node name="Worm" parent="Units" instance=ExtResource("17_7bxi3")]
-position = Vector2(24, 120)
-
-[node name="MotherGhost" parent="Units" instance=ExtResource("15_cws43")]
-position = Vector2(-56, -40)
-
-[node name="Crystal" parent="Units" instance=ExtResource("13_52ei1")]
-position = Vector2(152, 40)
-
-[node name="Crystal2" parent="Units" instance=ExtResource("13_52ei1")]
-position = Vector2(-152, 24)
-
-[node name="Crystal3" parent="Units" instance=ExtResource("13_52ei1")]
-position = Vector2(8, -104)
 
 [node name="MainUI" parent="." instance=ExtResource("9_c1o4b")]
 

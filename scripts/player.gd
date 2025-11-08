@@ -10,6 +10,8 @@ var locked_spells = [
 	preload("res://assets/resources/spells/rock_spell.tres"),
 	preload("res://assets/resources/spells/bomb_spell.tres"),
 	preload("res://assets/resources/spells/lightning_storm_spell.tres"),
+	preload("res://assets/resources/spells/freeze_spell.tres"),
+	preload("res://assets/resources/spells/dash_spell.tres"),
 ]
 
 var buffered_input = null
@@ -18,12 +20,13 @@ var recipe_book = [[Vector2i.ZERO]]
 var spell_book = [stab_spell]
 
 func _ready() -> void:
+	super()
 	max_health = 3
 	health = 3
 
 func _process(_delta: float) -> void:
 	if world.ground_tilemap.get_cell_source_id(location)==4:
-		location = Vector2i.ZERO
+		#location = Vector2i.ZERO
 		world.next_floor()
 	
 	var input = get_input()
