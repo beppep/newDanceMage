@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var player: Player = $"/root/World/Units/Player"
 @onready var health_container := $VBoxContainer/Health
 @onready var spell_container := $VBoxContainer/Spells
+@onready var upgrade_button := $Shop/UpgradeButton
 
 @onready var spell_card_scene := preload("res://scenes/spell_card.tscn")
 
@@ -15,6 +16,8 @@ extends CanvasLayer
 
 var arrow_textures
 var dark_arrow_textures
+
+var upgrade_cost = 10
 
 
 # Called when the node enters the scene tree for the first time.
@@ -53,7 +56,12 @@ func show_card_reward(spells, recipes):
 func remove_card_rewards():
 	for child in $CardRewards.get_children():
 		child.queue_free()
-		
+	
+func show_shop():
+	$Shop.show()
+func hide_shop():
+	$Shop.hide()
+	
 
 func _on_health_changed():
 	for child in health_container.get_children():
@@ -96,3 +104,19 @@ func _on_spells_changed():
 			arrow.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 			arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			spell_HBox.add_child(arrow)
+
+
+func _on_upgrade_button_pressed() -> void:
+	if player.coins >= upgrade_cost:
+		var possible_upgrades = []
+		for i in range(len(player.spell_book)):
+			if len(player.recipe_book[i])>1:
+				possible_upgrades.append(i)
+		if possible_upgrades:
+			player.coins -= upgrade_cost
+			var upgraded_i = possible_upgrades.pick_random()
+			var removed_arrow = randi() % player.recipe_book[upgraded_i].size()
+			player.recipe_book[upgraded_i].pop_at(removed_arrow)
+			_on_spells_changed()
+			_on_health_changed()
+	

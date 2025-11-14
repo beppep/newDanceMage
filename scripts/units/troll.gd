@@ -9,7 +9,4 @@ func get_possible_targets() -> Array[Vector2i]:
 	return target_with_offsets(CARDINAL_DIRECTIONS)
 
 func perform_attack_effects():
-	
-	var p = Particles.new()
-	add_child(p)
-	p.make_particle_cloud_at(World.loc_to_pos(location + attack_offsets[-1]), "smoke")
+	world.particles.make_cloud(location+ attack_offsets[-1], "smoke")

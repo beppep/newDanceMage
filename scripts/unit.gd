@@ -6,7 +6,7 @@ signal health_changed
 const FROZEN_SPRITE = preload("res://assets/sprites/particles/front_ice.png")
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-@onready var world = get_tree().current_scene
+@onready var world : World = get_tree().current_scene
 
 var fatness = Vector2i(1,1)
 var tween: Tween
@@ -92,6 +92,5 @@ func teleport_to(loc: Vector2i):
 func die():
 	print(name, " died a horrible death.")
 	queue_free()
-	var p = Particles.new()
-	add_child(p)
-	p.make_particle_cloud_at(World.loc_to_pos(location), "smoke")
+	world.particles.make_cloud(location, "smoke")
+	world.floor_tilemap.set_cell(location, 2, Vector2i(0,0))
