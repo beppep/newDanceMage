@@ -41,6 +41,9 @@ var attack_offsets: Array[Vector2i] = []:
 @abstract func get_possible_targets() -> Array[Vector2i]
 @abstract func do_move()
 
+func should_attack(target) -> bool:
+	return target is Player
+
 func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]:
 	return [offset]
 
@@ -48,7 +51,7 @@ func perform_attack_effects():
 	pass
 
 func _draw():
-	print("frozen ",frozen)
+	#print("frozen ",frozen)
 	if frozen:
 		return
 	for target in attack_offsets:
@@ -85,15 +88,18 @@ func perform_moving_attack(offset: Vector2i, length: int = 1):
 	var unit = get_unit_in_direction(offset, length)
 
 	if unit:
-		location = unit.location
-		# Play hitting particle animation
-		var p = Particles.new()
-		add_child(p)
-		p.make_particle_cloud_at(World.loc_to_pos(location), "smoke")
-		# Move back one step if unit will still be alive after attack
-		if unit.health > attack_power:
-			location -= offset
-		unit.take_damage(attack_power)
+		if should_attack(unit):
+			location = unit.location
+			# Play hitting particle animation
+			var p = Particles.new()
+			add_child(p)
+			p.make_particle_cloud_at(World.loc_to_pos(location), "smoke")
+			# Move back one step if unit will still be alive after attack
+			if unit.health > attack_power:
+				location -= offset
+			unit.take_damage(attack_power)
+		else:
+			move_in_direction(offset, length)
 	else:
 		move_in_direction(offset, length)
 
@@ -101,7 +107,8 @@ func perform_attack():
 	print(name, " attacks.")
 	var targets = attack_offsets.map(func (offset): return location + offset)
 	for target in targets:
-		world.deal_damage_at(target, attack_power)
+		if should_attack(world.units.get_unit_at(target)):
+			world.deal_damage_at(target, attack_power)
 	perform_attack_effects()
 	attack_offsets = []
 
@@ -126,3 +133,13 @@ func process_turn():
 
 	if not attack_offsets:
 		do_move()
+
+
+
+func die():
+	super()
+	if randf() < 0.9:
+		world.floor_tilemap.set_cell(location, 2, Vector2i(0,0))
+	else:
+		world.floor_tilemap.set_cell(location, 1, Vector2i(0,0))
+		

@@ -12,6 +12,7 @@ var locked_spells = [
 	preload("res://assets/resources/spells/lightning_storm_spell.tres"),
 	preload("res://assets/resources/spells/freeze_spell.tres"),
 	preload("res://assets/resources/spells/dash_spell.tres"),
+	preload("res://assets/resources/spells/magnet_spell.tres"),
 ]
 
 var buffered_input = null
@@ -29,6 +30,9 @@ func _process(_delta: float) -> void:
 	if world.floor_tilemap.get_cell_source_id(location)==2:
 		world.floor_tilemap.set_cell(location, -1, Vector2i(0, 0))
 		coins += 1
+	if world.floor_tilemap.get_cell_source_id(location)==1:
+		world.floor_tilemap.set_cell(location, -1, Vector2i(0, 0))
+		health += 1
 	if world.ground_tilemap.get_cell_source_id(location)==4:
 		#location = Vector2i.ZERO
 		world.next_floor()
@@ -79,7 +83,7 @@ func process_turn():
 		var recipe = recipe_book[current_spell_nr]
 		world.get_node("MainUI")._on_spells_changed()
 		if check_recipe_alignment(recipe) == recipe.size():
-			cast_spell(spell_book[current_spell_nr])
+			await cast_spell(spell_book[current_spell_nr])
 		current_spell_nr += 1
 
 func check_recipe_alignment(recipe):
@@ -91,10 +95,13 @@ func check_recipe_alignment(recipe):
 
 func cast_spell(spell_resource: SpellResource):
 	print("Casting ", spell_resource.name)
+	var spell
 	if spell_resource.spell_script:
-		var spell = spell_resource.spell_script.new()  # instantiate makes a node2D?
+		spell = spell_resource.spell_script.new()  # instantiate makes a node2D?
 		add_child(spell)
 		spell.cast(self)
+	while spell in get_children():
+		await get_tree().process_frame
 
 func get_facing() -> Vector2i:
 	for i in range(move_history.size() - 1, -1, -1):

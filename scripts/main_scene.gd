@@ -13,7 +13,7 @@ var current_floor = 1
 
 func _ready() -> void:
 	current_floor = 1
-	$map_generator.generate_map()
+	$map_generator.generate_shop(true)
 	units.start()
 
 func next_floor():
@@ -23,9 +23,12 @@ func next_floor():
 		if child != player:
 			child.queue_free()
 	if current_floor % 2 == 1:
-		$map_generator.generate_map()
-	else:
 		$map_generator.generate_shop()
+	else:
+		if current_floor % 6 == 0:
+			$map_generator.generate_chessboard()
+		else:
+			$map_generator.generate_map()
 	units.start()
 
 func _process(_delta):

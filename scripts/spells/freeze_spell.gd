@@ -1,6 +1,10 @@
 extends Spell
 
 
+func _ready():
+	super()
+	life_time = 8
+
 func cast(caster: Unit):
 	for x in [-2,-1,0,1,2]:
 		for y in [-2,-1,0,1,2]:

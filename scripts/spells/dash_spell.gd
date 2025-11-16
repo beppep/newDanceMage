@@ -1,6 +1,11 @@
 extends Spell
 
 
+func _ready():
+	super()
+	life_time = 8
+	
+	
 func cast(caster: Unit):
 	var direction : Vector2i = caster.get_facing()
 	var new_location = caster.location
@@ -10,5 +15,3 @@ func cast(caster: Unit):
 		new_location += direction
 	caster.location = new_location
 	world.deal_damage_at(new_location + direction)
-
-	queue_free()

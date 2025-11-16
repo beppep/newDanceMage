@@ -1,5 +1,10 @@
 extends Enemy
 
+
+func should_attack(target):
+	return target is Player or target is Egg
+	
+	
 func do_move():
 	var offset = ALL_DIRECTIONS.pick_random()
 	move_to(location + offset)

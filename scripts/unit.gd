@@ -49,6 +49,7 @@ func _ready():
 	frozen_indicator.position = world.TILE_SIZE * (Vector2(fatness) - Vector2(1,1))*0.5
 
 func process_turn_unless_frozen():
+	print(self, "frozen: ",frozen)
 	if frozen>0:
 		frozen -= 1
 	else:
@@ -93,4 +94,3 @@ func die():
 	print(name, " died a horrible death.")
 	queue_free()
 	world.particles.make_cloud(location, "smoke")
-	world.floor_tilemap.set_cell(location, 2, Vector2i(0,0))

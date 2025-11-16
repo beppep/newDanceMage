@@ -10,31 +10,43 @@ var MAPSIZE = 16
 const SHOPSIZE_X = 5
 const SHOPSIZE_Y = 3
 
+const CHEAT = true
+
+var troll_scene = preload("res://scenes/units/troll.tscn")
+var knight_scene = preload("res://scenes/enemies/Knight.tscn")
+var bishop_scene = preload("res://scenes/enemies/Bishop.tscn")
+var rook_scene = preload("res://scenes/enemies/rook.tscn")
 
 var trader_scene = preload("res://scenes/units/Trader.tscn")
+
 var rock_scene = preload("res://scenes/units/Rock.tscn")
 var crystal_scene = preload("res://scenes/units/Crystal.tscn")
 var egg_scene = preload("res://scenes/units/Egg.tscn")
-var all_enemies = [egg_scene,
-	preload("res://scenes/units/Troll.tscn"),
-	preload("res://scenes/enemies/bishop.tscn"),
+
+var all_enemies = [
+	egg_scene,
+	troll_scene,
+	bishop_scene,
 	preload("res://scenes/enemies/ghost.tscn"),
-	preload("res://scenes/enemies/knight.tscn"),
+	knight_scene,
+	rook_scene
+]
+var hard_enemies = [
+	preload("res://scenes/units/Worm.tscn"),
+	preload("res://scenes/enemies/mother_ghost.tscn"),
+	
 ]
 
-var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4, "HEART":1, "COIN":2} # SKETCHY because it has to align with the tileset at all times
+var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4, "WHITE":5, "BLACK":6, "HEART":1, "COIN":2} # SKETCHY because it has to align with the tileset at all times
 
-func generate_shop():
+func generate_shop(first_floor=false):
 	ground_tilemap.clear()
 	floor_tilemap.clear()
 	wall_tilemap.clear()
 	
 	world.player.teleport_to(Vector2i(0, 2))
 	
-	_paint_area(wall_tilemap, Vector2i(-SHOPSIZE_X-2,-SHOPSIZE_Y-2),Vector2i(-SHOPSIZE_X-1,SHOPSIZE_Y+2), tile_ids["OBSIDIAN"]) # left wall
-	_paint_area(wall_tilemap, Vector2i(-SHOPSIZE_X-2,-SHOPSIZE_Y-2),Vector2i(SHOPSIZE_X+2,-SHOPSIZE_Y-1), tile_ids["OBSIDIAN"]) # up wall
-	_paint_area(wall_tilemap, Vector2i(SHOPSIZE_X+1,-SHOPSIZE_Y-2),Vector2i(SHOPSIZE_X+2,SHOPSIZE_Y+2), tile_ids["OBSIDIAN"]) # right wall
-	_paint_area(wall_tilemap, Vector2i(-SHOPSIZE_X-2,SHOPSIZE_Y+1),Vector2i(SHOPSIZE_X+2,SHOPSIZE_Y+2), tile_ids["OBSIDIAN"]) # down wall
+	_create_borders(-SHOPSIZE_X, SHOPSIZE_X, -SHOPSIZE_Y, SHOPSIZE_Y)
 	
 	_paint_area(ground_tilemap, Vector2i(-SHOPSIZE_X,-SHOPSIZE_Y),Vector2i(SHOPSIZE_X,SHOPSIZE_Y), tile_ids["SAND"]) # sand
 
@@ -42,25 +54,57 @@ func generate_shop():
 	var random_pos = Vector2i(-SHOPSIZE_X, -SHOPSIZE_Y)
 	ground_tilemap.set_cell(random_pos, tile_ids["STAIRS"] , Vector2i(0, 0))
 	
-	_create_unit_at(Vector2i(0, -2), crystal_scene)
+	if not first_floor:
+		_create_unit_at(Vector2i(0, -2), crystal_scene)
 	
-	_create_unit_at(Vector2i(3, -3), trader_scene)
+		_create_unit_at(Vector2i(3, -3), trader_scene)
 	
+	if first_floor and CHEAT:
+		_create_unit_at(Vector2i(1, -2), crystal_scene)
+		_create_unit_at(Vector2i(2, -2), crystal_scene)
+		_create_unit_at(Vector2i(0, -2), crystal_scene)
+		
+func generate_chessboard():
+	ground_tilemap.clear()
+	floor_tilemap.clear()
+	wall_tilemap.clear()
+	
+	world.player.teleport_to(Vector2i(4, 7))
+	
+	
+	_create_borders(0, 7, 0, 7)
+	_paint_area(ground_tilemap, Vector2i(0,0),Vector2i(7,7), tile_ids["WHITE"]) # sand
+	for x in range(8):
+		for y in range(8):
+			if (x+y)%2 == 1:
+				ground_tilemap.set_cell(Vector2i(x,y), tile_ids["BLACK"], Vector2i(0,0))
+	
+	_create_unit_at(Vector2i(0,0), rook_scene)
+	_create_unit_at(Vector2i(1,0), knight_scene)
+	_create_unit_at(Vector2i(2,0), bishop_scene)
+	_create_unit_at(Vector2i(3,0), rook_scene)
+	_create_unit_at(Vector2i(5,0), bishop_scene)
+	_create_unit_at(Vector2i(6,0), knight_scene)
+	_create_unit_at(Vector2i(7,0), rook_scene)
+	for x in range(8):
+		_create_unit_at(Vector2i(x,1), troll_scene)
+		
+	ground_tilemap.set_cell(Vector2i(4,0), tile_ids["STAIRS"] , Vector2i(0, 0))
+	
+		
 
 func generate_map():
 	ground_tilemap.clear()
 	floor_tilemap.clear()
 	wall_tilemap.clear()
 	
-	world.player.teleport_to(Vector2i(0, 2))
+	var PLAYER_SPAWN = Vector2i(0,2)
+	world.player.teleport_to(PLAYER_SPAWN)
 	
 	var MAPSIZE_X = 1 + world.current_floor
 	var MAPSIZE_Y = 2 + world.current_floor
 	
-	_paint_area(wall_tilemap, Vector2i(-MAPSIZE_X-2,-MAPSIZE_Y-2),Vector2i(-MAPSIZE_X-1,MAPSIZE_Y+2), tile_ids["OBSIDIAN"]) # left wall
-	_paint_area(wall_tilemap, Vector2i(-MAPSIZE_X-2,-MAPSIZE_Y-2),Vector2i(MAPSIZE_X+2,-MAPSIZE_Y-1), tile_ids["OBSIDIAN"]) # up wall
-	_paint_area(wall_tilemap, Vector2i(MAPSIZE_X+1,-MAPSIZE_Y-2),Vector2i(MAPSIZE_X+2,MAPSIZE_Y+2), tile_ids["OBSIDIAN"]) # right wall
-	_paint_area(wall_tilemap, Vector2i(-MAPSIZE_X-2,MAPSIZE_Y+1),Vector2i(MAPSIZE_X+2,MAPSIZE_Y+2), tile_ids["OBSIDIAN"]) # down wall
+	_create_borders(-MAPSIZE_X, MAPSIZE_X, -MAPSIZE_Y, MAPSIZE_Y)
 	
 	_paint_area(ground_tilemap, Vector2i(-MAPSIZE_X,-MAPSIZE_Y),Vector2i(MAPSIZE_X,MAPSIZE_Y), tile_ids["SAND"]) # sand
 	
@@ -87,19 +131,20 @@ func generate_map():
 	
 	# ROCKS
 	var random_pos
-	for i in range(MAPSIZE_X^2):
+	for i in range(MAPSIZE_X**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-		if random_pos.length() > 3:
+		if (random_pos-PLAYER_SPAWN).length() > 1:
 			if randf()<0.9:
 				_create_unit_at(random_pos, rock_scene)
 			else:
 				floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
 	
 	# ENEMIES
-	for i in range(MAPSIZE_X^2):
+	for i in range(MAPSIZE_X**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-		if random_pos.length() > 3:
-			_create_unit_at(random_pos, all_enemies.pick_random())
+		if (random_pos-PLAYER_SPAWN).length() > 1:
+			var enemy_pool = all_enemies + hard_enemies if world.current_floor>4 else all_enemies
+			_create_unit_at(random_pos, enemy_pool.pick_random())
 	
 	# EGGS
 	if MAPSIZE_X>6:
@@ -109,10 +154,18 @@ func generate_map():
 			if random_pos.length() > 3:
 				_create_unit_at(random_pos, egg_scene)
 	
-	random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-	while not world.is_empty(random_pos) or Vector2(random_pos).length()<MAPSIZE_Y*0.5:
-		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
+	# STAIRS
+	random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
+	while not world.is_empty(random_pos) or Vector2(random_pos - world.player.location).length()<MAPSIZE_Y*0.7:
+		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
 	ground_tilemap.set_cell(random_pos, tile_ids["STAIRS"] , Vector2i(0, 0))
+
+func _create_borders(start_x, end_x, start_y, end_y):
+	_paint_area(wall_tilemap, Vector2i(start_x-2,start_y-2),Vector2i(start_x-1,end_y+2), tile_ids["OBSIDIAN"]) # left wall
+	_paint_area(wall_tilemap, Vector2i(start_x-2,start_y-2),Vector2i(end_x+2,start_y-1), tile_ids["OBSIDIAN"]) # up wall
+	_paint_area(wall_tilemap, Vector2i(end_x+1,start_y-2),Vector2i(end_x+2,end_y+2), tile_ids["OBSIDIAN"]) # right wall
+	_paint_area(wall_tilemap, Vector2i(start_x-2,end_y+1),Vector2i(end_x+2,end_y+2), tile_ids["OBSIDIAN"]) # down wall
+	
 
 func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_location: Vector2i, tile_id: int) -> void:
 	var min_vec = Vector2(min(from_location.x, to_location.x), min(from_location.y, to_location.y))

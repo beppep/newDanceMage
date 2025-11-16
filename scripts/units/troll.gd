@@ -1,5 +1,9 @@
 extends Enemy
 
+
+func should_attack(target) -> bool:
+	return true
+	
 func do_move():
 	var offset = CARDINAL_DIRECTIONS.pick_random()
 	if world.is_empty(location + offset):

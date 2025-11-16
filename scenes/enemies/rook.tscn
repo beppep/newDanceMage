@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://che0fbmtrapet"]
+
+[ext_resource type="Script" uid="uid://bp2yhuygmmvgp" path="res://scripts/units/rook.gd" id="1_yfuld"]
+[ext_resource type="Texture2D" uid="uid://kpr1re3pwdm0" path="res://assets/sprites/enemies/rook.png" id="2_yfuld"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xauds"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yfuld")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Rook" type="Node2D"]
+script = ExtResource("1_yfuld")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_xauds")

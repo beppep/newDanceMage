@@ -1,4 +1,5 @@
 extends Unit
+class_name Egg
 
 
 @export var jellyfish_scene: PackedScene = preload("res://scenes/enemies/ghost.tscn")

@@ -19,13 +19,16 @@ func start():
 		await get_tree().create_timer(1.0 / 165.0).timeout
 
 func process_turn():
+	await world.player.process_turn_unless_frozen()
+	
 	var moves_first: Array[Unit] = []
 	var moves_second: Array[Unit] = []
 	for unit in get_units():
-		if unit is Player or (unit is Enemy and not unit.attack_offsets.is_empty()):
-			moves_first.append(unit)
-		else:
+		if (unit is Enemy and unit.attack_offsets.is_empty()):
 			moves_second.append(unit)
+		elif not unit is Player:
+			moves_first.append(unit)
+	moves_first.erase(world.player)
 	await process_units(moves_first)
 	await process_units(moves_second)
 

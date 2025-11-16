@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bxehkube4ivrn"]
 
-[ext_resource type="Script" uid="uid://dl35rf8vdg0w7" path="res://scenes/units/trader.gd" id="1_4t5fr"]
+[ext_resource type="Script" uid="uid://dl35rf8vdg0w7" path="res://scripts/units/trader.gd" id="1_4t5fr"]
 [ext_resource type="Texture2D" uid="uid://c564di1iinqor" path="res://assets/sprites/units/table.png" id="2_4t5fr"]
 [ext_resource type="Texture2D" uid="uid://25bu774w5d4j" path="res://assets/sprites/units/dead_table.png" id="2_l8hlf"]
 

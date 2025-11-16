@@ -11,7 +11,7 @@ extends Node2D
 
 
 var direction := Vector2.RIGHT
-var caster # player or enemy casting the spell
+var caster # player (or enemy!?) casting the spell
 var age = 0
 
 var _tile_pos: Vector2i
