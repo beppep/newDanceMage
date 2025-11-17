@@ -9,6 +9,6 @@ script = ExtResource("2_85q0r")
 name = "Magnet"
 image = ExtResource("1_veonq")
 description = "Collect all nearby coins. Works even if the enemy is still alive."
-dance_length = 2
+dance_length = 1
 spell_script = ExtResource("3_veonq")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

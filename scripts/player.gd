@@ -33,9 +33,6 @@ func _process(_delta: float) -> void:
 	if world.floor_tilemap.get_cell_source_id(location)==1:
 		world.floor_tilemap.set_cell(location, -1, Vector2i(0, 0))
 		health += 1
-	if world.ground_tilemap.get_cell_source_id(location)==4:
-		#location = Vector2i.ZERO
-		world.next_floor()
 	
 	var input = get_input()
 	if input != null:
@@ -69,7 +66,7 @@ func update_animation(move: Vector2i):
 
 func process_turn():
 	while buffered_input == null:
-		await get_tree().create_timer(1.0 / 100.0).timeout
+		await get_tree().create_timer(1.0 / 100.0).timeout # let other stuff run while waiting
 
 	update_animation(buffered_input)
 	move_history.append(buffered_input)
@@ -85,6 +82,7 @@ func process_turn():
 		if check_recipe_alignment(recipe) == recipe.size():
 			await cast_spell(spell_book[current_spell_nr])
 		current_spell_nr += 1
+	
 
 func check_recipe_alignment(recipe):
 	for i in range(recipe.size()):
@@ -102,6 +100,7 @@ func cast_spell(spell_resource: SpellResource):
 		spell.cast(self)
 	while spell in get_children():
 		await get_tree().process_frame
+	print("Done casting",spell_resource.name)
 
 func get_facing() -> Vector2i:
 	for i in range(move_history.size() - 1, -1, -1):

@@ -29,7 +29,7 @@ func next_floor():
 			$map_generator.generate_chessboard()
 		else:
 			$map_generator.generate_map()
-	units.start()
+	#units.start() # DONT!! Then it will run multiple instances of turn order (!!?!)
 
 func _process(_delta):
 	pass

@@ -49,8 +49,8 @@ func _ready():
 	frozen_indicator.position = world.TILE_SIZE * (Vector2(fatness) - Vector2(1,1))*0.5
 
 func process_turn_unless_frozen():
-	print(self, "frozen: ",frozen)
 	if frozen>0:
+		print(self, " frozen: ",frozen)
 		frozen -= 1
 	else:
 		await process_turn()

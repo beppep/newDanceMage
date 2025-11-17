@@ -101,8 +101,8 @@ func generate_map():
 	var PLAYER_SPAWN = Vector2i(0,2)
 	world.player.teleport_to(PLAYER_SPAWN)
 	
-	var MAPSIZE_X = 1 + world.current_floor
-	var MAPSIZE_Y = 2 + world.current_floor
+	var MAPSIZE_X = 1 + world.current_floor/2
+	var MAPSIZE_Y = 2 + world.current_floor/2
 	
 	_create_borders(-MAPSIZE_X, MAPSIZE_X, -MAPSIZE_Y, MAPSIZE_Y)
 	
@@ -140,7 +140,7 @@ func generate_map():
 				floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
 	
 	# ENEMIES
-	for i in range(MAPSIZE_X**2):
+	for i in range(MAPSIZE_X**2 + world.current_floor**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 1:
 			var enemy_pool = all_enemies + hard_enemies if world.current_floor>4 else all_enemies

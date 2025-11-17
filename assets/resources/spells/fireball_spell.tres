@@ -9,6 +9,6 @@ script = ExtResource("1_eoktn")
 name = "Fireball"
 image = ExtResource("1_ovvll")
 description = "Shoot fireballs in all four directions."
-dance_length = 2
+dance_length = 3
 spell_script = ExtResource("1_4wxvt")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

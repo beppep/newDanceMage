@@ -41,6 +41,14 @@ var attack_offsets: Array[Vector2i] = []:
 @abstract func get_possible_targets() -> Array[Vector2i]
 @abstract func do_move()
 
+var indicator_drawer: Node2D
+
+func _ready():
+	super()
+	indicator_drawer = Node2D.new()
+	add_child(indicator_drawer)
+	indicator_drawer.z_index = -1      # always below the enemy
+
 func should_attack(target) -> bool:
 	return target is Player
 
@@ -49,12 +57,14 @@ func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]:
 
 func perform_attack_effects():
 	pass
+	
 
 func _draw():
 	#print("frozen ",frozen)
 	if frozen:
 		return
 	for target in attack_offsets:
+		#indicator_drawer.draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 
 func target_with_offsets(offsets: Array[Vector2i]) -> Array[Vector2i]:

@@ -15,11 +15,16 @@ func _on_child_exit(_node: Node):
 
 func start():
 	while is_running:
-		await process_turn()
+		await _process_turn()
 		await get_tree().create_timer(1.0 / 165.0).timeout
 
-func process_turn():
+func _process_turn():
 	await world.player.process_turn_unless_frozen()
+	
+	# next floor check (should this be here?)
+	if world.ground_tilemap.get_cell_source_id(world.player.location)==4:
+		world.next_floor()
+		await world.player.process_turn_unless_frozen() # extra turn
 	
 	var moves_first: Array[Unit] = []
 	var moves_second: Array[Unit] = []
