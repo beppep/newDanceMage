@@ -1,48 +1,48 @@
 [gd_scene load_steps=29 format=4 uid="uid://dvhrggsk1jycp"]
 
-[ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_0afw7"]
-[ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_ux2rm"]
-[ext_resource type="Texture2D" uid="uid://b1j5y10ckc80i" path="res://assets/sprites/tiles/rock.png" id="2_ux2rm"]
-[ext_resource type="Texture2D" uid="uid://bvaj6imc6unwm" path="res://assets/sprites/tiles/sand.png" id="3_sgb2t"]
-[ext_resource type="Texture2D" uid="uid://euie60wjbdx0" path="res://assets/sprites/tiles/wood.png" id="4_aqyhw"]
-[ext_resource type="Script" uid="uid://duu3jyqjhp3f1" path="res://scripts/units.gd" id="6_c1o4b"]
-[ext_resource type="Texture2D" uid="uid://57ta6mjg534o" path="res://assets/sprites/tiles/staircase.png" id="6_j008o"]
-[ext_resource type="PackedScene" uid="uid://cm2di112011s2" path="res://scenes/Player.tscn" id="6_sgb2t"]
-[ext_resource type="Texture2D" uid="uid://b6tbvcewt1oj2" path="res://assets/sprites/tiles/diamond.png" id="7_aovjg"]
-[ext_resource type="Texture2D" uid="uid://bxb3i4d6d082o" path="res://assets/sprites/tiles/white.png" id="7_v7vy4"]
-[ext_resource type="Texture2D" uid="uid://c5ugh0410ghil" path="res://assets/sprites/tiles/black.png" id="8_7bxi3"]
-[ext_resource type="Texture2D" uid="uid://clleiojhorbc1" path="res://assets/sprites/ui/heart.png" id="8_52ei1"]
-[ext_resource type="PackedScene" uid="uid://b1r37xlv72lnf" path="res://main_ui.tscn" id="9_c1o4b"]
-[ext_resource type="Texture2D" uid="uid://u0kthw8kmx5w" path="res://assets/sprites/particles/coin.png" id="9_v7vy4"]
-[ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="15_52ei1"]
-[ext_resource type="Script" uid="uid://3quawpdbegmg" path="res://scripts/particle_spawner.gd" id="18_lslek"]
+[ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_mdami"]
+[ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="2_gqlja"]
+[ext_resource type="Texture2D" uid="uid://b1j5y10ckc80i" path="res://assets/sprites/tiles/rock.png" id="3_1w873"]
+[ext_resource type="Texture2D" uid="uid://bvaj6imc6unwm" path="res://assets/sprites/tiles/sand.png" id="4_vd6wd"]
+[ext_resource type="Texture2D" uid="uid://euie60wjbdx0" path="res://assets/sprites/tiles/wood.png" id="5_3yfn6"]
+[ext_resource type="Texture2D" uid="uid://57ta6mjg534o" path="res://assets/sprites/tiles/staircase.png" id="6_cdyvt"]
+[ext_resource type="Texture2D" uid="uid://bxb3i4d6d082o" path="res://assets/sprites/tiles/white.png" id="7_ewawa"]
+[ext_resource type="Texture2D" uid="uid://c5ugh0410ghil" path="res://assets/sprites/tiles/black.png" id="8_q80np"]
+[ext_resource type="Texture2D" uid="uid://b6tbvcewt1oj2" path="res://assets/sprites/tiles/diamond.png" id="9_u77jt"]
+[ext_resource type="Texture2D" uid="uid://clleiojhorbc1" path="res://assets/sprites/ui/heart.png" id="10_rt8ct"]
+[ext_resource type="Texture2D" uid="uid://u0kthw8kmx5w" path="res://assets/sprites/particles/coin.png" id="11_ewq6b"]
+[ext_resource type="Script" uid="uid://duu3jyqjhp3f1" path="res://scripts/units.gd" id="12_txgxd"]
+[ext_resource type="PackedScene" uid="uid://cm2di112011s2" path="res://scenes/Player.tscn" id="13_q0kxy"]
+[ext_resource type="PackedScene" uid="uid://b1r37xlv72lnf" path="res://scenes/main_ui.tscn" id="14_wr82n"]
+[ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="15_up5pg"]
+[ext_resource type="Script" uid="uid://3quawpdbegmg" path="res://scripts/particle_spawner.gd" id="16_j2c5s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_18xev"]
-texture = ExtResource("1_0afw7")
+texture = ExtResource("2_gqlja")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c1o4b"]
-texture = ExtResource("2_ux2rm")
+texture = ExtResource("3_1w873")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_neqfu"]
-texture = ExtResource("3_sgb2t")
+texture = ExtResource("4_vd6wd")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4rud1"]
-texture = ExtResource("4_aqyhw")
+texture = ExtResource("5_3yfn6")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xn55d"]
-texture = ExtResource("6_j008o")
+texture = ExtResource("6_cdyvt")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j008o"]
-texture = ExtResource("7_v7vy4")
+texture = ExtResource("7_ewawa")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tfagm"]
-texture = ExtResource("8_7bxi3")
+texture = ExtResource("8_q80np")
 0:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_7fvey"]
@@ -55,15 +55,15 @@ sources/5 = SubResource("TileSetAtlasSource_j008o")
 sources/6 = SubResource("TileSetAtlasSource_tfagm")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7bxi3"]
-texture = ExtResource("7_aovjg")
+texture = ExtResource("9_u77jt")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lslek"]
-texture = ExtResource("8_52ei1")
+texture = ExtResource("10_rt8ct")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cws43"]
-texture = ExtResource("9_v7vy4")
+texture = ExtResource("11_ewq6b")
 0:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_j008o"]
@@ -72,7 +72,7 @@ sources/1 = SubResource("TileSetAtlasSource_lslek")
 sources/2 = SubResource("TileSetAtlasSource_cws43")
 
 [node name="World" type="Node2D"]
-script = ExtResource("1_ux2rm")
+script = ExtResource("1_mdami")
 
 [node name="TileMapLayerGround" type="TileMapLayer" parent="."]
 z_index = -10
@@ -88,22 +88,22 @@ tile_set = SubResource("TileSet_j008o")
 tile_set = SubResource("TileSet_7fvey")
 
 [node name="Units" type="Node" parent="."]
-script = ExtResource("6_c1o4b")
+script = ExtResource("12_txgxd")
 
-[node name="Player" parent="Units" instance=ExtResource("6_sgb2t")]
+[node name="Player" parent="Units" instance=ExtResource("13_q0kxy")]
 position = Vector2(8, 7)
 
 [node name="Camera2D" type="Camera2D" parent="Units/Player"]
-zoom = Vector2(4, 4)
+zoom = Vector2(7, 7)
 
-[node name="MainUI" parent="." instance=ExtResource("9_c1o4b")]
+[node name="MainUI" parent="." instance=ExtResource("14_wr82n")]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 visible = false
 color = Color(0.39215687, 0.39215687, 0.39215687, 1)
 
 [node name="map_generator" type="Node" parent="."]
-script = ExtResource("15_52ei1")
+script = ExtResource("15_up5pg")
 
 [node name="Particles" type="Node" parent="."]
-script = ExtResource("18_lslek")
+script = ExtResource("16_j2c5s")

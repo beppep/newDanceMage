@@ -15,9 +15,6 @@ var max_health := 1
 var health := 1:
 	set(val):
 		health = min(val, max_health)
-		if health <= 0:
-			die()
-			
 		health_changed.emit()
 		
 var frozen_indicator : Sprite2D
@@ -60,6 +57,9 @@ func process_turn():
 
 func take_damage(amount=1):
 	health -= amount
+	if health <= 0:
+		if not is_queued_for_deletion():
+			await die()
 
 func is_adjacent_to(to: Vector2i) -> bool:
 	return is_in_range_of(to, 1)
@@ -92,5 +92,5 @@ func teleport_to(loc: Vector2i):
 
 func die():
 	print(name, " died a horrible death.")
-	queue_free()
 	world.particles.make_cloud(location, "smoke")
+	queue_free()

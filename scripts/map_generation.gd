@@ -12,9 +12,9 @@ const SHOPSIZE_Y = 3
 
 const CHEAT = true
 
-var troll_scene = preload("res://scenes/units/troll.tscn")
-var knight_scene = preload("res://scenes/enemies/Knight.tscn")
-var bishop_scene = preload("res://scenes/enemies/Bishop.tscn")
+var troll_scene = preload("res://scenes/units/Troll.tscn")
+var knight_scene = preload("res://scenes/enemies/knight.tscn")
+var bishop_scene = preload("res://scenes/enemies/bishop.tscn")
 var rook_scene = preload("res://scenes/enemies/rook.tscn")
 
 var trader_scene = preload("res://scenes/units/Trader.tscn")
@@ -28,6 +28,7 @@ var all_enemies = [
 	troll_scene,
 	bishop_scene,
 	preload("res://scenes/enemies/ghost.tscn"),
+	preload("res://scenes/enemies/mortar.tscn"),
 	knight_scene,
 	rook_scene
 ]

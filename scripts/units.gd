@@ -26,14 +26,18 @@ func _process_turn():
 		world.next_floor()
 		await world.player.process_turn_unless_frozen() # extra turn
 	
+	var bombs_first: Array[Unit] = []
 	var moves_first: Array[Unit] = []
 	var moves_second: Array[Unit] = []
 	for unit in get_units():
-		if (unit is Enemy and unit.attack_offsets.is_empty()):
+		if unit is Bomb:
+			bombs_first.append(unit)
+		elif (unit is Enemy and unit.attack_offsets.is_empty()):
 			moves_second.append(unit)
 		elif not unit is Player:
 			moves_first.append(unit)
-	moves_first.erase(world.player)
+	#moves_first.erase(world.player)
+	await process_units(bombs_first)
 	await process_units(moves_first)
 	await process_units(moves_second)
 

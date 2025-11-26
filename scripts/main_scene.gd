@@ -12,6 +12,7 @@ const TILE_SIZE = 16
 var current_floor = 1
 
 func _ready() -> void:
+	print(" GAME START ")
 	current_floor = 1
 	$map_generator.generate_shop(true)
 	units.start()
@@ -55,8 +56,8 @@ func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null, _log=fal
 
 func deal_damage_at(location: Vector2i, damage: int = 1):
 	var unit = units.get_unit_at(location)
-	if unit:
-		unit.take_damage(damage)
+	if unit and is_instance_valid(unit) and not unit.is_queued_for_deletion():
+		await unit.take_damage(damage)
 
 func get_closest_unit(from: Vector2i, direction: Vector2i, max_range: int = 20) -> Unit:
 	for i in range(1, max_range + 1):

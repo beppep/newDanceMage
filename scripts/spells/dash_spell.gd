@@ -14,4 +14,4 @@ func cast(caster: Unit):
 	while world.is_empty(new_location + direction):
 		new_location += direction
 	caster.location = new_location
-	world.deal_damage_at(new_location + direction)
+	await world.deal_damage_at(new_location + direction)

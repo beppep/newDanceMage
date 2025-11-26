@@ -26,6 +26,10 @@ desktop.ini
 *.old
 *.orig
 
+# Android builds
+*.apk
+*.apk.idsig
+
 # Editor metadata (optional, can be useful to keep)
 # Uncomment if you want to ignore editor layout/preferences
 # .godot/
