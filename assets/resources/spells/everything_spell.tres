@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://fg3wjtajx0gf"]
+
+[ext_resource type="Texture2D" uid="uid://inwjj0lddvkd" path="res://assets/sprites/units/crystal.png" id="1_hmqgh"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_ygm1c"]
+[ext_resource type="Script" uid="uid://fm40eeco61pt" path="res://scripts/spells/everything_spell.gd" id="3_hmqgh"]
+
+[resource]
+script = ExtResource("2_ygm1c")
+name = "Omegapotence"
+image = ExtResource("1_hmqgh")
+description = "Cast each of your other spells."
+dance_length = 5
+spell_script = ExtResource("3_hmqgh")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

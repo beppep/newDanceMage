@@ -13,6 +13,7 @@ var locked_spells = [
 	preload("res://assets/resources/spells/freeze_spell.tres"),
 	preload("res://assets/resources/spells/dash_spell.tres"),
 	preload("res://assets/resources/spells/magnet_spell.tres"),
+	preload("res://assets/resources/spells/everything_spell.tres"),
 ]
 
 var buffered_input = null
