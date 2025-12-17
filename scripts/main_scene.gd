@@ -3,10 +3,10 @@ class_name World
 
 const TILE_SIZE = 16
 
-@onready var units: Units = $Units
-@onready var wall_tilemap : TileMapLayer = $TileMapLayerWalls
-@onready var floor_tilemap : TileMapLayer = $TileMapLayerFloor
-@onready var ground_tilemap : TileMapLayer = $TileMapLayerGround
+@onready var units: Units = $Level/Units
+@onready var wall_tilemap : TileMapLayer = $Level/TileMapLayerWalls
+@onready var floor_tilemap : TileMapLayer = $Level/TileMapLayerFloor
+@onready var ground_tilemap : TileMapLayer = $Level/TileMapLayerGround
 @onready var player: Player = units.get_node("Player")
 @onready var particles: Particle_spawner = $Particles
 var current_floor = 1

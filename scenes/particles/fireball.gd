@@ -5,7 +5,7 @@ extends Node2D
 @export var move_speed := 4.0  # pixels per frame
 @export var LIFETIME = 100
 
-@onready var wall_tileset : TileMapLayer = $"/root/World/TileMapLayerWalls"
+@onready var wall_tileset : TileMapLayer = $"/root/World/Level/TileMapLayerWalls"
 @onready var world = get_tree().current_scene
 @onready var player = world.player
 

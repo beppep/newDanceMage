@@ -1,9 +1,9 @@
 extends Node
 
 @onready var world: World = $"/root/World"
-@onready var ground_tilemap: TileMapLayer = world.get_node("TileMapLayerGround")
-@onready var floor_tilemap: TileMapLayer = world.get_node("TileMapLayerFloor")
-@onready var wall_tilemap: TileMapLayer = world.get_node("TileMapLayerWalls")
+@onready var ground_tilemap: TileMapLayer = world.get_node("Level/TileMapLayerGround")
+@onready var floor_tilemap: TileMapLayer = world.get_node("Level/TileMapLayerFloor")
+@onready var wall_tilemap: TileMapLayer = world.get_node("Level/TileMapLayerWalls")
 
 var MAPSIZE = 16
 

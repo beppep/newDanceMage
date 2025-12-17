@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@onready var player: Player = $"/root/World/Units/Player"
+@onready var player: Player = $"/root/World/Level/Units/Player"
 @onready var health_container := $VBoxContainer/Health
 @onready var spell_container := $VBoxContainer/Spells
 @onready var upgrade_button := $Shop/UpgradeButton
