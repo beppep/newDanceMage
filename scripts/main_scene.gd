@@ -12,17 +12,25 @@ const TILE_SIZE = 16
 var current_floor = 1
 
 func _ready() -> void:
+	
+	if OS.get_name() == "Android":
+		get_tree().root.content_scale_factor = 1.5
+		
 	print(" GAME START ")
 	current_floor = 1
 	$map_generator.generate_shop(true)
 	units.start()
 
 func next_floor():
+	
+	
+	
 	current_floor += 1
 	print("current floor: ", current_floor)
 	for child in units.get_children():
 		if child != player:
 			child.queue_free()
+	
 	if current_floor % 2 == 1:
 		$map_generator.generate_shop()
 	else:

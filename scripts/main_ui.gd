@@ -23,6 +23,7 @@ var upgrade_cost = 10
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
+	
 	arrow_textures = [arrow_texture]
 	dark_arrow_textures = [dark_arrow_texture]
 	player.health_changed.connect(_on_health_changed)
@@ -77,9 +78,7 @@ func _on_spells_changed():
 	for child in spell_container.get_children():
 		child.queue_free()
 	
-	var coin_label = Label.new()
-	spell_container.add_child(coin_label)
-	coin_label.text = str(player.coins)+"$"
+	$CoinLabel.text = str(player.coins)+"$"
 
 	
 	for i in range(player.spell_book.size()):
@@ -101,9 +100,18 @@ func _on_spells_changed():
 				arrow.texture = nowhere_arrow_texture if x < alignment else dark_nowhere_arrow_texture
 			else:
 				arrow.texture = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90] if x < alignment else dark_arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
+			if x==alignment-1:
+				flash_icon(arrow)
 			arrow.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 			arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			spell_HBox.add_child(arrow)
+
+func flash_icon(node: Node):
+	var tween = get_tree().create_tween()
+	tween.tween_property(node, "scale", Vector2(1.2, 1.2), 0.08).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(node, "modulate", Color(1.2, 1.2, 1.2), 0.05)
+	tween.tween_property(node, "scale", Vector2(1, 1), 0.1)
+	tween.tween_property(node, "modulate", Color(1,1,1), 0.05)
 
 
 func _on_upgrade_button_pressed() -> void:

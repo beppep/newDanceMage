@@ -24,7 +24,7 @@ var dark_arrow_textures
 		recipe = value
 		for x in range(recipe.size()):
 			var arrow_vector = recipe[x]
-			var arrow = TextureRect.new()
+			var arrow := TextureRect.new()
 			if arrow_vector == Vector2i.ZERO:
 				arrow.texture = nowhere_arrow_texture
 			else:

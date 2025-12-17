@@ -2,6 +2,11 @@ extends Spell
 
 @export var rock_scene: PackedScene = preload("res://scenes/units/Rock.tscn")
 
+
+func _ready():
+	super()
+	life_time = 8
+	
 func cast(caster: Unit):
 	for direction in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
 		var target_cell = caster.location + direction
@@ -20,5 +25,3 @@ func cast(caster: Unit):
 			rock.position = caster.position
 			rock.location = target_cell
 			
-	
-	queue_free()

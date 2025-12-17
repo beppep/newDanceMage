@@ -1,24 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://cwp2wv3i4pp6j"]
+[gd_scene load_steps=5 format=3 uid="uid://cwp2wv3i4pp6j"]
 
 [ext_resource type="Script" uid="uid://dxsqagio0qcx" path="res://scenes/spell_card.gd" id="1_1hghx"]
 [ext_resource type="Texture2D" uid="uid://b3rmogt8ilc0y" path="res://assets/sprites/particles/fire.png" id="1_a47th"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1hghx"]
-font_size = 24
+font_size = 36
 font_color = Color(0.97593325, 0.78164965, 0.49972385, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_r3umk"]
+font_size = 24
+
 [node name="Control" type="Control"]
-custom_minimum_size = Vector2(400, 500)
+custom_minimum_size = Vector2(350, 450)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -250.0
-offset_right = 200.0
-offset_bottom = 250.0
+offset_left = -175.0
+offset_top = -225.0
+offset_right = 175.0
+offset_bottom = 225.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -61,11 +64,13 @@ texture = ExtResource("1_a47th")
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 text = "Damages all enemies around you."
+label_settings = SubResource("LabelSettings_r3umk")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Button/VBoxContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 alignment = 1

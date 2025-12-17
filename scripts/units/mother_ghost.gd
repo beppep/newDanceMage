@@ -20,6 +20,9 @@ func _ready():
 	health = 3
 	
 
+func should_attack(target):
+	return target is Player or target is Egg
+
 func do_move():
 	var offset = ALL_DIRECTIONS.pick_random()
 	if world.is_empty(location + offset, fatness, self):

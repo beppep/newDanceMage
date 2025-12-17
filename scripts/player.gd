@@ -75,12 +75,18 @@ func process_turn():
 		location += buffered_input
 	buffered_input = null
 
-	await get_tree().create_timer(World.TILE_SIZE / speed).timeout
+	await get_tree().create_timer(World.TILE_SIZE / speed).timeout # why
+	var ui_node = world.get_node("MainUI")
+	ui_node._on_spells_changed()
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
 		var recipe = recipe_book[current_spell_nr]
-		world.get_node("MainUI")._on_spells_changed()
+		print("yohoo")
+		await get_tree().process_frame # we need to have this line for the tween to work i have no clue
+		# like if you edit a tween on an object thats not ready yet nothing happens
+		
 		if check_recipe_alignment(recipe) == recipe.size():
+			ui_node.flash_icon(ui_node.spell_container.get_children()[current_spell_nr].get_children()[0])
 			await cast_spell(spell_book[current_spell_nr])
 		current_spell_nr += 1
 	
