@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://bow4fjvo2ihcs"]
+
+[ext_resource type="Texture2D" uid="uid://cfh5q0t0eiqdd" path="res://assets/sprites/units/rock.png" id="1_jt3hl"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_uxaof"]
+[ext_resource type="Script" uid="uid://dga8usea6sh36" path="res://scripts/spells/rock_spell.gd" id="3_prdm6"]
+
+[resource]
+script = ExtResource("2_uxaof")
+name = "Rocks"
+image = ExtResource("1_jt3hl")
+description = "Summon a devastating column of rocks in front of you."
+dance_length = 2
+spell_script = ExtResource("3_prdm6")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

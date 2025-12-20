@@ -1,7 +1,7 @@
 extends Control
 class_name Spell_card
 
-@onready var world = get_tree().current_scene
+@onready var world : World = get_tree().current_scene
 
 
 @onready var arrow_texture := preload("res://assets/sprites/ui/arrow.png")

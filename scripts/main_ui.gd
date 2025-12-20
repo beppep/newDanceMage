@@ -118,13 +118,14 @@ func _on_upgrade_button_pressed() -> void:
 	if player.coins >= upgrade_cost:
 		var possible_upgrades = []
 		for i in range(len(player.spell_book)):
-			if len(player.recipe_book[i])>1:
+			if len(player.recipe_book[i])>1 and player.upgrade_count_book[i]==0:
 				possible_upgrades.append(i)
 		if possible_upgrades:
 			player.coins -= upgrade_cost
 			var upgraded_i = possible_upgrades.pick_random()
 			var removed_arrow = randi() % player.recipe_book[upgraded_i].size()
 			player.recipe_book[upgraded_i].pop_at(removed_arrow)
+			player.upgrade_count_book[upgraded_i]+=1
 			_on_spells_changed()
 			_on_health_changed()
 	

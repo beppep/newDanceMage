@@ -8,8 +8,9 @@ const FROZEN_SPRITE = preload("res://assets/sprites/particles/front_ice.png")
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var world : World = get_tree().current_scene
 
-var fatness = Vector2i(1,1)
+@export var fatness = Vector2i(1,1)
 var tween: Tween
+var shaking = false
 
 var max_health := 1
 var health := 1:
@@ -44,6 +45,10 @@ func _ready():
 	frozen_indicator.scale = Vector2(fatness)
 	frozen_indicator.z_index = 100  # draws above the unit
 	frozen_indicator.position = world.TILE_SIZE * (Vector2(fatness) - Vector2(1,1))*0.5
+
+func _process(_delta: float):
+	if shaking and not frozen:
+		position = World.loc_to_pos(location) + Vector2(randf()-randf(), randf()-randf())*1
 
 func process_turn_unless_frozen():
 	if frozen>0:

@@ -49,7 +49,7 @@ func generate_shop(first_floor=false):
 	
 	_create_borders(-SHOPSIZE_X, SHOPSIZE_X, -SHOPSIZE_Y, SHOPSIZE_Y)
 	
-	_paint_area(ground_tilemap, Vector2i(-SHOPSIZE_X,-SHOPSIZE_Y),Vector2i(SHOPSIZE_X,SHOPSIZE_Y), tile_ids["SAND"]) # sand
+	_paint_area(ground_tilemap, Vector2i(-SHOPSIZE_X,-SHOPSIZE_Y),Vector2i(SHOPSIZE_X,SHOPSIZE_Y), tile_ids["WOOD"]) # sand
 
 	
 	var random_pos = Vector2i(-SHOPSIZE_X, -SHOPSIZE_Y)
@@ -132,16 +132,16 @@ func generate_map():
 	
 	# ROCKS
 	var random_pos
-	for i in range(MAPSIZE_X**2):
+	for i in range(2*MAPSIZE_X**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 1:
-			if randf()<0.9:
+			if randf()<0.6:
 				_create_unit_at(random_pos, rock_scene)
 			else:
 				floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
 	
 	# ENEMIES
-	for i in range(MAPSIZE_X**2 + world.current_floor**2):
+	for i in range(MAPSIZE_X**2 + world.current_floor):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 1:
 			var enemy_pool = all_enemies + hard_enemies if world.current_floor>4 else all_enemies
@@ -176,7 +176,8 @@ func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_locati
 			tilemap_layer.set_cell(Vector2i(x, y), tile_id , Vector2i(0, 0))
 
 func _create_unit_at(location: Vector2i, scene : PackedScene):
-	if world.is_empty(location):
+	#var fatness = Globals.get_attribute_from_packed_scene(scene, "fatness")
+	if world.is_empty(location):#,fatness): # TODO: ACCESS FATNESS OF A PACKED SCENE! (IMPOSSIBLE?!?!)
 		var thing: Unit = scene.instantiate()
 		thing.position = World.loc_to_pos(location)
 		world.units.add_child(thing)

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 SwipeInput="*res://scripts/swipe_input.gd"
 GlobalTimers="*res://scripts/global_timers.gd"
+Globals="*res://globals.gd"
 
 [display]
 

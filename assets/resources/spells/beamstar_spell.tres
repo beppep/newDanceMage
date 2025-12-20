@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://7aft0crmuqvw"]
+
+[ext_resource type="Texture2D" uid="uid://drhgvf3tkbubp" path="res://assets/sprites/spells/octobeam.png" id="1_4dqjv"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_54n27"]
+[ext_resource type="Script" uid="uid://b5ysvrwrf4dqn" path="res://scripts/spells/beamstar_spell.gd" id="3_4dqjv"]
+
+[resource]
+script = ExtResource("2_54n27")
+name = "Octobeams"
+image = ExtResource("1_4dqjv")
+description = "Fires deadly beams in all 8 directions."
+spell_script = ExtResource("3_4dqjv")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

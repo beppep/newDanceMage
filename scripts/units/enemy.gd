@@ -34,7 +34,9 @@ var attack_offsets: Array[Vector2i] = []:
 		attack_offsets = val
 		if val:
 			anim.play("windup")
+			shaking = true
 		else:
+			shaking = false
 			anim.play("default")
 		queue_redraw()
 
@@ -48,6 +50,7 @@ func _ready():
 	indicator_drawer = Node2D.new()
 	add_child(indicator_drawer)
 	indicator_drawer.z_index = -1      # always below the enemy
+	
 
 func should_attack(target) -> bool:
 	return target is Player
@@ -148,8 +151,8 @@ func process_turn():
 
 func die():
 	super()
-	if randf() < 0.9:
-		world.floor_tilemap.set_cell(location, 2, Vector2i(0,0))
-	else:
-		world.floor_tilemap.set_cell(location, 1, Vector2i(0,0))
+	#if randf() < 0.9:
+	#	world.floor_tilemap.set_cell(location, 2, Vector2i(0,0))
+	#else:
+	#	world.floor_tilemap.set_cell(location, 1, Vector2i(0,0))
 		

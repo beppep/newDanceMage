@@ -36,7 +36,7 @@ func _check_collision():
 		queue_free()
 		return
 
-	for unit in $"/root/World/Units".get_children():
+	for unit in $"/root/World/Level/Units".get_children():
 		if not is_instance_valid(unit) or unit.is_queued_for_deletion():
 			continue
 		if unit.location == location and unit != player:

@@ -14,12 +14,15 @@ var locked_spells = [
 	preload("res://assets/resources/spells/dash_spell.tres"),
 	preload("res://assets/resources/spells/magnet_spell.tres"),
 	preload("res://assets/resources/spells/everything_spell.tres"),
+	preload("res://assets/resources/spells/random_spell.tres"),
+	preload("res://assets/resources/spells/beamstar_spell.tres"),
 ]
 
 var buffered_input = null
 var move_history: Array[Vector2i] = []
 var recipe_book = [[Vector2i.ZERO]]
 var spell_book = [stab_spell]
+var upgrade_count_book = [0]
 var coins = 0
 
 func _ready() -> void:
@@ -129,14 +132,15 @@ func create_card_reward():
 	main_ui.show_card_reward(spell_options, recipe_options)
 
 func unlock(spell: SpellResource, recipe: Array):
-	print("unlocked ", spell, recipe)
+	print("Unlocked: ", spell, recipe)
 	spell_book.append(spell)
 	recipe_book.append(recipe)
+	upgrade_count_book.append(0)
 
-func unlock_random_spell():
-	var new_spell = locked_spells.pick_random()
-	spell_book.append(new_spell)
-	recipe_book.append(create_random_recipe(new_spell.dance_length))
+#func unlock_random_spell():
+#	var new_spell = locked_spells.pick_random()
+#	spell_book.append(new_spell)
+#	recipe_book.append(create_random_recipe(new_spell.dance_length))
 
 func create_random_recipe(recipe_length :int):
 	var all_inputs = [Vector2i.RIGHT, Vector2i.UP, -Vector2i.RIGHT, Vector2i.DOWN, Vector2i.ZERO]

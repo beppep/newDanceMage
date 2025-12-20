@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://b6vdsnw2k8m3y"]
+
+[ext_resource type="Texture2D" uid="uid://3ek8rsxkl3wv" path="res://assets/sprites/spells/random.png" id="1_1a778"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_7ebdp"]
+[ext_resource type="Script" uid="uid://cdjtlsrnxap3u" path="res://scripts/spells/random_spell.gd" id="3_1a778"]
+
+[resource]
+script = ExtResource("2_7ebdp")
+name = "Miracle"
+image = ExtResource("1_1a778")
+description = "Cast a random spell."
+dance_length = 2
+spell_script = ExtResource("3_1a778")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"
