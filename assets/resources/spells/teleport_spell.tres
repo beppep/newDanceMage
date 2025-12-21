@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://dn5rjqvnvyjyj"]
+
+[ext_resource type="Texture2D" uid="uid://bis7ps4xn5b7j" path="res://assets/sprites/spells/teleport.png" id="1_oly8e"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_qtfsu"]
+[ext_resource type="Script" uid="uid://rf7kofmee7e4" path="res://scripts/spells/teleport_spell.gd" id="3_oly8e"]
+
+[resource]
+script = ExtResource("2_qtfsu")
+name = "Teleport"
+image = ExtResource("1_oly8e")
+description = "Teleport randomly."
+spell_script = ExtResource("3_oly8e")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

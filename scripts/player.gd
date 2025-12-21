@@ -1,7 +1,7 @@
 extends Unit
 class_name Player
 
-var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
+var stab_spell = preload("res://assets/resources/spells/lightning_storm_spell.tres")
 
 var locked_spells = [
 	preload("res://assets/resources/spells/explode_spell.tres"),
@@ -12,10 +12,12 @@ var locked_spells = [
 	preload("res://assets/resources/spells/lightning_storm_spell.tres"),
 	preload("res://assets/resources/spells/freeze_spell.tres"),
 	preload("res://assets/resources/spells/dash_spell.tres"),
+	preload("res://assets/resources/spells/hook_spell.tres"),
 	preload("res://assets/resources/spells/magnet_spell.tres"),
 	preload("res://assets/resources/spells/everything_spell.tres"),
 	preload("res://assets/resources/spells/random_spell.tres"),
 	preload("res://assets/resources/spells/beamstar_spell.tres"),
+	preload("res://assets/resources/spells/extra_turn_spell.tres"),
 ]
 
 var buffered_input = null
@@ -24,6 +26,8 @@ var recipe_book = [[Vector2i.ZERO]]
 var spell_book = [stab_spell]
 var upgrade_count_book = [0]
 var coins = 0
+
+var extra_turn = 0
 
 func _ready() -> void:
 	super()
@@ -97,7 +101,16 @@ func process_turn():
 func check_recipe_alignment(recipe):
 	for i in range(recipe.size()):
 		var alignment_size = recipe.size()-i
-		if move_history.slice(-alignment_size, move_history.size()) == recipe.slice(0, alignment_size):
+		if move_history.size() < alignment_size: # no hhistory
+			continue
+		var move_history_tail = move_history.slice(-alignment_size, move_history.size())
+		var recipe_tail = recipe.slice(0, alignment_size)
+		var alignment = true
+		for j in range(alignment_size):
+			if not (move_history_tail[j]==recipe_tail[j] or recipe_tail[j]==null): # wildcard
+				alignment = false
+				break
+		if alignment:
 			return alignment_size
 	return 0
 

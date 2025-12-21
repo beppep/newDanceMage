@@ -3,7 +3,7 @@ extends Spell
 @export var lightning_scene: PackedScene = preload("res://scenes/particles/Lightning.tscn")
 
 var remaining_lightnings = 3
-const RADIUS = 3
+const RADIUS = 4
 const TIME_BETWEEN_STRIKES = 8
 
 var time_until_next_strike = 0
@@ -28,7 +28,7 @@ func _random_lightning_strike(caster):
 	targets.erase(caster)
 	
 	if targets:
-		var target = targets.pick_random()
+		var best_target = null
 		var closest_distance = INF
 
 		# CODE FOR FINDING CLOSEST ENEMY AND SNIPE IT
@@ -36,13 +36,19 @@ func _random_lightning_strike(caster):
 			var distance = Vector2(unit.location - caster.location).length()
 			if distance < closest_distance and distance < RADIUS:
 				closest_distance = distance
-				target = unit
-	
-		world.deal_damage_at(target.location)
+				best_target = unit
+		
+		var strike_pos
+		if best_target:
+			world.deal_damage_at(best_target.location)
+			strike_pos = best_target.global_position
+		else:
+			strike_pos = World.loc_to_pos(Vector2i(randi_range(-2,2),randi_range(-2,2)) + caster.location)
+			
 				
 		var lightning = lightning_scene.instantiate()
 		add_child(lightning)
-		lightning.global_position = target.global_position
+		lightning.global_position = strike_pos
 		
 		time_until_next_strike = TIME_BETWEEN_STRIKES
 	else:

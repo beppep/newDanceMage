@@ -11,7 +11,7 @@ const FROZEN_SPRITE = preload("res://assets/sprites/particles/front_ice.png")
 @export var fatness = Vector2i(1,1)
 var tween: Tween
 var shaking = false
-
+var shield = false
 var max_health := 1
 var health := 1:
 	set(val):

@@ -11,7 +11,7 @@ func cast(caster: Unit):
 		for i in range(10):
 			world.deal_damage_at(caster.location + dloc*(i+1))
 	
-		spawn_beam(caster.global_position, dloc, 1000, 8, 0.2)
+		spawn_beam(caster.global_position, dloc, 500, 8, 0.2)
 
 func spawn_beam(pos: Vector2, direction: Vector2, length := 5000, thickness := 20, lifetime := 0.1):
 	# Normalize the direction to avoid scaling issues

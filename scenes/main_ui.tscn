@@ -59,10 +59,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -302.0
-offset_top = -200.0
-offset_right = 302.0
-offset_bottom = 200.0
+offset_left = -10.0
+offset_top = -4.0
+offset_right = 10.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -106,4 +106,46 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="UpgradeButton2" type="Button" parent="Shop"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Shop/UpgradeButton2"]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 400.0
+
+[node name="title" type="Label" parent="Shop/UpgradeButton2/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "Upgrade Spell"
+label_settings = SubResource("LabelSettings_ktt6o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Shop/UpgradeButton2/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_w37m7")
+
+[node name="description" type="Label" parent="Shop/UpgradeButton2/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "Replace a dance step with a wildcard free any-direction dance step."
+label_settings = SubResource("LabelSettings_513t2")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="cost" type="Label" parent="Shop/UpgradeButton2/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "$10"
+label_settings = SubResource("LabelSettings_e6fyy")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [connection signal="pressed" from="Shop/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="Shop/UpgradeButton2" to="." method="_on_upgrade_button_2_pressed"]
+[connection signal="pressed" from="Shop/UpgradeButton2" to="." method="_on_upgrade_button_pressed"]

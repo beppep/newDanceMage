@@ -13,6 +13,8 @@ extends CanvasLayer
 @onready var dark_arrow_texture := preload("res://assets/sprites/ui/darkarrow.png")
 @onready var nowhere_arrow_texture := preload("res://assets/sprites/ui/dot.png")
 @onready var dark_nowhere_arrow_texture := preload("res://assets/sprites/ui/darkdot.png")
+@onready var wildcard_arrow_texture := preload("res://assets/sprites/ui/wildcard.png")
+@onready var dark_wildcard_arrow_texture := preload("res://assets/sprites/ui/darkwildcard.png")
 
 var arrow_textures
 var dark_arrow_textures
@@ -98,6 +100,8 @@ func _on_spells_changed():
 			var arrow = TextureRect.new()
 			if arrow_vector == Vector2i.ZERO:
 				arrow.texture = nowhere_arrow_texture if x < alignment else dark_nowhere_arrow_texture
+			elif arrow_vector == null:
+				arrow.texture = wildcard_arrow_texture if x < alignment else dark_wildcard_arrow_texture
 			else:
 				arrow.texture = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90] if x < alignment else dark_arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
 			if x==alignment-1:
@@ -129,3 +133,19 @@ func _on_upgrade_button_pressed() -> void:
 			_on_spells_changed()
 			_on_health_changed()
 	
+
+
+func _on_upgrade_button_2_pressed() -> void:
+	if player.coins >= upgrade_cost:
+		var possible_upgrades = []
+		for i in range(len(player.spell_book)):
+			if len(player.recipe_book[i])>1 and player.upgrade_count_book[i]==0:
+				possible_upgrades.append(i)
+		if possible_upgrades:
+			player.coins -= upgrade_cost
+			var upgraded_i = possible_upgrades.pick_random()
+			var transformed_arrow = randi() % player.recipe_book[upgraded_i].size()
+			player.recipe_book[upgraded_i][transformed_arrow] = null # wildcard
+			player.upgrade_count_book[upgraded_i]+=1
+			_on_spells_changed()
+			_on_health_changed()

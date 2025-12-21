@@ -18,13 +18,22 @@ func start():
 		await _process_turn()
 		await get_tree().create_timer(1.0 / 165.0).timeout
 
-func _process_turn():
+func player_take_turns_until_no_more_extra_turns():
+	#take player turn
 	await world.player.process_turn_unless_frozen()
+	# do all of your extra player turns unless you won the level
+	while world.player.extra_turn > 0 and not world.ground_tilemap.get_cell_source_id(world.player.location)==4:
+		world.player.extra_turn -=1
+		await world.player.process_turn_unless_frozen()
+		
+func _process_turn():
 	
+	await player_take_turns_until_no_more_extra_turns()
 	# next floor check (should this be here?)
 	if world.ground_tilemap.get_cell_source_id(world.player.location)==4:
 		world.next_floor()
-		await world.player.process_turn_unless_frozen() # extra turn
+		await player_take_turns_until_no_more_extra_turns() # extra turn on new floor
+	
 	
 	var bombs_first: Array[Unit] = []
 	var moves_first: Array[Unit] = []

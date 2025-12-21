@@ -9,6 +9,6 @@ script = ExtResource("2_gn6fk")
 name = "Rocks"
 image = ExtResource("1_yu4kl")
 description = "Summon a devastating column of rocks in front of you."
-dance_length = 2
+dance_length = 3
 spell_script = ExtResource("3_yu4kl")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"
