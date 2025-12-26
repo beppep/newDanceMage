@@ -1,7 +1,7 @@
 extends Unit
 class_name Player
 
-var stab_spell = preload("res://assets/resources/spells/lightning_storm_spell.tres")
+var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
 
 var locked_spells = [
 	preload("res://assets/resources/spells/explode_spell.tres"),
@@ -19,6 +19,9 @@ var locked_spells = [
 	preload("res://assets/resources/spells/beamstar_spell.tres"),
 	preload("res://assets/resources/spells/extra_turn_spell.tres"),
 ]
+
+@onready var ui_node : MainUI = world.get_node("MainUI")
+
 
 var buffered_input = null
 var move_history: Array[Vector2i] = []
@@ -47,6 +50,8 @@ func _process(_delta: float) -> void:
 		buffered_input = input
 
 func get_input():
+	if ui_node.get_card_reward_is_shown():
+		return null
 	if Input.is_action_just_pressed("move_up"):
 		return Vector2i.UP
 	elif Input.is_action_just_pressed("move_down"):
@@ -55,7 +60,7 @@ func get_input():
 		return Vector2i.LEFT
 	elif Input.is_action_just_pressed("move_right"):
 		return Vector2i.RIGHT
-	elif Input.is_action_just_pressed("move_nowhere"):
+	elif Input.is_action_just_pressed("move_nowhere") and not ui_node.get_shop_is_shown():
 		return Vector2i.ZERO
 	return null
 
@@ -83,7 +88,6 @@ func process_turn():
 	buffered_input = null
 
 	await get_tree().create_timer(World.TILE_SIZE / speed).timeout # why
-	var ui_node = world.get_node("MainUI")
 	ui_node._on_spells_changed()
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():

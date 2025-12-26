@@ -62,6 +62,7 @@ func process_turn():
 
 func take_damage(amount=1):
 	health -= amount
+	world.particles.make_cloud(location, "attack_indicator")
 	if health <= 0:
 		if not is_queued_for_deletion():
 			await die()
@@ -97,5 +98,4 @@ func teleport_to(loc: Vector2i):
 
 func die():
 	print(name, " died a horrible death.")
-	world.particles.make_cloud(location, "smoke")
 	queue_free()

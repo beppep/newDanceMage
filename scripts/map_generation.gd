@@ -16,6 +16,7 @@ var troll_scene = preload("res://scenes/units/Troll.tscn")
 var knight_scene = preload("res://scenes/enemies/knight.tscn")
 var bishop_scene = preload("res://scenes/enemies/bishop.tscn")
 var rook_scene = preload("res://scenes/enemies/rook.tscn")
+var pawn_scene = preload("res://scenes/enemies/pawn.tscn")
 
 var trader_scene = preload("res://scenes/units/Trader.tscn")
 
@@ -30,7 +31,8 @@ var all_enemies = [
 	preload("res://scenes/enemies/ghost.tscn"),
 	preload("res://scenes/enemies/mortar.tscn"),
 	knight_scene,
-	rook_scene
+	rook_scene,
+	pawn_scene,
 ]
 var hard_enemies = [
 	preload("res://scenes/units/Worm.tscn"),
@@ -84,11 +86,13 @@ func generate_chessboard():
 	_create_unit_at(Vector2i(1,0), knight_scene)
 	_create_unit_at(Vector2i(2,0), bishop_scene)
 	_create_unit_at(Vector2i(3,0), rook_scene)
+	# here is the staircase aka king
 	_create_unit_at(Vector2i(5,0), bishop_scene)
 	_create_unit_at(Vector2i(6,0), knight_scene)
 	_create_unit_at(Vector2i(7,0), rook_scene)
 	for x in range(8):
-		_create_unit_at(Vector2i(x,1), troll_scene)
+		var pwn = _create_unit_at(Vector2i(x,1), pawn_scene)
+		pwn.pawn_direction = Vector2i.DOWN
 		
 	ground_tilemap.set_cell(Vector2i(4,0), tile_ids["STAIRS"] , Vector2i(0, 0))
 	
@@ -181,7 +185,7 @@ func _create_unit_at(location: Vector2i, scene : PackedScene):
 		var thing: Unit = scene.instantiate()
 		thing.position = World.loc_to_pos(location)
 		world.units.add_child(thing)
-		return true
+		return thing
 	return false
 
 func _create_spell_room(center_loc: Vector2i) -> void:

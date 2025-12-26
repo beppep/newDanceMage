@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://bn00a4wrtijio"]
+
+[ext_resource type="Script" uid="uid://ddccmp6hppaic" path="res://scripts/units/pawn.gd" id="1_6u4b5"]
+[ext_resource type="Texture2D" uid="uid://doo77ifb0k6lp" path="res://assets/sprites/enemies/pawn/pawn.png" id="2_6u4b5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xauds"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_6u4b5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_6u4b5")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
+}]
+
+[node name="Pawn" type="Node2D"]
+script = ExtResource("1_6u4b5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_xauds")

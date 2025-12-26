@@ -1,6 +1,5 @@
 extends Spell
 
-@export var rock_scene: PackedScene = preload("res://scenes/units/Rock.tscn")
 
 			
 func cast(caster: Unit):
@@ -8,7 +7,7 @@ func cast(caster: Unit):
 	if target:
 		target.location = caster.location + caster.get_facing()
 		await GlobalTimers.delay_frames(8)
-		await target.take_damage()
+		await world.deal_damage_at(caster.location + caster.get_facing())
 	
 	life_time = 8
 	#queue_free()

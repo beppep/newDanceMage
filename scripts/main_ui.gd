@@ -1,4 +1,5 @@
 extends CanvasLayer
+class_name MainUI
 
 @onready var player: Player = $"/root/World/Level/Units/Player"
 @onready var health_container := $VBoxContainer/Health
@@ -19,8 +20,9 @@ extends CanvasLayer
 var arrow_textures
 var dark_arrow_textures
 
-var upgrade_cost = 10
-
+var upgrade_cost = 1
+var selected_spell_in_shop = null
+var selected_arrow_in_shop = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -65,6 +67,10 @@ func show_shop():
 func hide_shop():
 	$Shop.hide()
 	
+func get_shop_is_shown() -> bool:
+	return $Shop.visible
+func get_card_reward_is_shown() -> bool:
+	return $CardRewards.get_child_count() > 0
 
 func _on_health_changed():
 	for child in health_container.get_children():
@@ -76,7 +82,11 @@ func _on_health_changed():
 		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		health_container.add_child(heart)
 
-func _on_spells_changed():
+func _on_spells_changed(shop_version = false):
+	"""
+	This method draws the arrows of the spells to show the dancing progress.
+	If shopversion == true, it instead lights up only the selected arrow for upgrading.
+	"""
 	for child in spell_container.get_children():
 		child.queue_free()
 	
@@ -87,8 +97,8 @@ func _on_spells_changed():
 		var spell_HBox = HBoxContainer.new()
 		spell_container.add_child(spell_HBox)
 		
-		var spell_icon = TextureRect.new()
-		spell_icon.texture = player.spell_book[i].image
+		var spell_icon = TextureButton.new()
+		spell_icon.texture_normal = player.spell_book[i].image
 		#spell_icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 		#spell_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		spell_HBox.add_child(spell_icon)
@@ -97,18 +107,48 @@ func _on_spells_changed():
 		
 		for x in range(player.recipe_book[i].size()):
 			var arrow_vector = player.recipe_book[i][x]
-			var arrow = TextureRect.new()
+			var arrow = TextureButton.new()
+			var texture_is_light: bool
+			
+			# select arrow lightness
+			if not shop_version: # using alignment
+				texture_is_light = (x < alignment)
+			else: # according to shop selection
+				texture_is_light = (selected_spell_in_shop == i and selected_arrow_in_shop == x)
+			
+			# select arrow type
 			if arrow_vector == Vector2i.ZERO:
-				arrow.texture = nowhere_arrow_texture if x < alignment else dark_nowhere_arrow_texture
+				arrow.texture_normal = nowhere_arrow_texture if texture_is_light else dark_nowhere_arrow_texture
 			elif arrow_vector == null:
-				arrow.texture = wildcard_arrow_texture if x < alignment else dark_wildcard_arrow_texture
+				arrow.texture_normal = wildcard_arrow_texture if texture_is_light else dark_wildcard_arrow_texture
 			else:
-				arrow.texture = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90] if x < alignment else dark_arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
-			if x==alignment-1:
+				arrow.texture_normal = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90] if texture_is_light else dark_arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
+			
+			if x==alignment-1 and not shop_version:
 				flash_icon(arrow)
-			arrow.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-			arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			arrow.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 			spell_HBox.add_child(arrow)
+			arrow.pressed.connect(_on_arrow_icon_pressed.bind(i, x))
+		spell_icon.pressed.connect(_on_spell_icon_pressed.bind(i))
+
+func _on_spell_icon_pressed(spell_nr): # swap two spells in the order
+	if spell_nr > 0:
+		var tmp = player.spell_book[spell_nr]
+		player.spell_book[spell_nr] = player.spell_book[spell_nr-1]
+		player.spell_book[spell_nr-1] = tmp
+		
+		tmp = player.recipe_book[spell_nr]
+		player.recipe_book[spell_nr] = player.recipe_book[spell_nr-1]
+		player.recipe_book[spell_nr-1] = tmp
+		
+		tmp = player.upgrade_count_book[spell_nr]
+		player.upgrade_count_book[spell_nr] = player.upgrade_count_book[spell_nr-1]
+		player.upgrade_count_book[spell_nr-1] = tmp
+	
+func _on_arrow_icon_pressed(spell_nr, arrow_nr): # select an arrow in the shop
+	selected_spell_in_shop = spell_nr
+	selected_arrow_in_shop = arrow_nr
+	_on_spells_changed(true)
 
 func flash_icon(node: Node):
 	var tween = get_tree().create_tween()
@@ -119,6 +159,16 @@ func flash_icon(node: Node):
 
 
 func _on_upgrade_button_pressed() -> void:
+	print( player.coins, "  ", upgrade_cost, " h ", player.upgrade_count_book[selected_spell_in_shop])
+	if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0 and len(player.recipe_book[selected_spell_in_shop])>1:
+		player.coins -= upgrade_cost
+		player.recipe_book[selected_spell_in_shop].pop_at(selected_arrow_in_shop)
+		player.upgrade_count_book[selected_spell_in_shop]+=1
+		_on_spells_changed()
+		_on_health_changed()
+	
+	
+func old_rng_upgrade_code():
 	if player.coins >= upgrade_cost:
 		var possible_upgrades = []
 		for i in range(len(player.spell_book)):
@@ -136,6 +186,15 @@ func _on_upgrade_button_pressed() -> void:
 
 
 func _on_upgrade_button_2_pressed() -> void:
+	if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0:
+		player.coins -= upgrade_cost
+		player.recipe_book[selected_spell_in_shop][selected_arrow_in_shop] = null # wildcard
+		player.upgrade_count_book[selected_spell_in_shop]+=1
+		_on_spells_changed()
+		_on_health_changed()
+	
+
+func old_rng_upgrade_code_2() -> void:
 	if player.coins >= upgrade_cost:
 		var possible_upgrades = []
 		for i in range(len(player.spell_book)):
