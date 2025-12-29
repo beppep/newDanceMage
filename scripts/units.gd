@@ -52,7 +52,7 @@ func _process_turn():
 
 func process_units(units: Array[Unit]):
 	for unit in units:
-		if not is_instance_valid(unit) or unit.is_queued_for_deletion():
+		if not is_instance_valid(unit) or unit.is_queued_for_deletion() or Vector2(unit.location - world.player.location).length() > 10:
 			continue
 		await unit.process_turn_unless_frozen()
 

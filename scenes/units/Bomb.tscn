@@ -40,6 +40,14 @@ animations = [{
 "loop": true,
 "name": &"age2",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_tt6da")
+}],
+"loop": true,
+"name": &"tnt_barrel",
+"speed": 5.0
 }]
 
 [node name="Bomb" type="Node2D"]
@@ -47,4 +55,4 @@ script = ExtResource("1_tt6da")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_wmx41")
-animation = &"age2"
+animation = &"tnt_barrel"

@@ -47,6 +47,7 @@ func process_turn():
 		bomb.position = World.loc_to_pos(location)
 		bomb.location = target_loc + Vector2i(0, -7)
 		bomb.location = target_loc
+		bomb.is_tnt_barrel = false
 		world.particles.make_cloud(location, "smoke")
 		world.particles.make_cloud(target_loc, "smoke")
 

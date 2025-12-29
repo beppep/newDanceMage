@@ -37,7 +37,7 @@ func next_floor():
 		if current_floor % 6 == 0:
 			$map_generator.generate_chessboard()
 		else:
-			$map_generator.generate_map()
+			$map_generator.generate_map_cavestyle()
 	#units.start() # DONT!! Then it will run multiple instances of turn order (!!?!)
 
 func _process(_delta):

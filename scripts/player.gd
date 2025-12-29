@@ -18,6 +18,9 @@ var locked_spells = [
 	preload("res://assets/resources/spells/random_spell.tres"),
 	preload("res://assets/resources/spells/beamstar_spell.tres"),
 	preload("res://assets/resources/spells/extra_turn_spell.tres"),
+	preload("res://assets/resources/spells/shield_spell.tres"),
+	preload("res://assets/resources/spells/teleport_spell.tres"),
+	preload("res://assets/resources/spells/heal_spell.tres"),
 ]
 
 @onready var ui_node : MainUI = world.get_node("MainUI")

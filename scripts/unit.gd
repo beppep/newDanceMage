@@ -4,6 +4,7 @@ class_name Unit
 signal health_changed
 
 const FROZEN_SPRITE = preload("res://assets/sprites/particles/front_ice.png")
+const SHIELD_SPRITE = preload("res://assets/sprites/particles/shield.png")
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var world : World = get_tree().current_scene
@@ -11,19 +12,24 @@ const FROZEN_SPRITE = preload("res://assets/sprites/particles/front_ice.png")
 @export var fatness = Vector2i(1,1)
 var tween: Tween
 var shaking = false
-var shield = false
+var shield_indicator : Sprite2D
+var shield := 0:
+	set(val):
+		shield = val
+		print(self)
+		shield_indicator.visible = (val > 0)
+		queue_redraw()
 var max_health := 1
 var health := 1:
 	set(val):
 		health = min(val, max_health)
 		health_changed.emit()
-		
 var frozen_indicator : Sprite2D
 var frozen := 0:
 	set(val):
 		frozen = val
 		print(self)
-		frozen_indicator.visible = frozen > 0
+		frozen_indicator.visible = (frozen > 0)
 		queue_redraw()
 
 		
@@ -38,19 +44,28 @@ var speed := 260.0
 		tween.tween_property(self, "position", new_position, 0.1)
 
 func _ready():
-	frozen_indicator = Sprite2D.new()
-	frozen_indicator.texture = FROZEN_SPRITE
-	frozen_indicator.visible = false
-	add_child(frozen_indicator)
-	frozen_indicator.scale = Vector2(fatness)
-	frozen_indicator.z_index = 100  # draws above the unit
-	frozen_indicator.position = world.TILE_SIZE * (Vector2(fatness) - Vector2(1,1))*0.5
+	
+	# create the standard frozen-, and shield-texture-child
+	for i in range(2):
+		var the_indicator = Sprite2D.new()
+		the_indicator.texture = [FROZEN_SPRITE, SHIELD_SPRITE][i]
+		the_indicator.visible = false
+		add_child(the_indicator)
+		the_indicator.scale = Vector2(fatness)
+		the_indicator.z_index = 100  # draws above the unit
+		the_indicator.position = world.TILE_SIZE * (Vector2(fatness) - Vector2(1,1))*0.5
+		if i == 0:
+			frozen_indicator = the_indicator
+		else:
+			shield_indicator = the_indicator
 
 func _process(_delta: float):
 	if shaking and not frozen:
 		position = World.loc_to_pos(location) + Vector2(randf()-randf(), randf()-randf())*1
 
 func process_turn_unless_frozen():
+	if shield > 0:
+		shield -= 1
 	if frozen>0:
 		print(self, " frozen: ",frozen)
 		frozen -= 1
@@ -61,8 +76,12 @@ func process_turn():
 	pass #subclass behaviour
 
 func take_damage(amount=1):
-	health -= amount
-	world.particles.make_cloud(location, "attack_indicator")
+	if shield:
+		shield = 0
+		world.particles.make_cloud(location, "shield")
+	else:
+		health -= amount
+		world.particles.make_cloud(location, "attack_indicator")
 	if health <= 0:
 		if not is_queued_for_deletion():
 			await die()

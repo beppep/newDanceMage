@@ -16,3 +16,4 @@ func cast(caster: Unit):
 		world.units.add_child(bomb)
 		bomb.position = caster.position
 		bomb.location = target_cell
+		bomb.is_tnt_barrel = false

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://bd7a2j67otgnf"]
+
+[ext_resource type="Texture2D" uid="uid://rkdhm0sgde2p" path="res://assets/sprites/ui/shield.png" id="1_jhaaw"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_g4okm"]
+[ext_resource type="Script" uid="uid://2xt5866qk0fg" path="res://scripts/spells/shield_spell.gd" id="3_jhaaw"]
+
+[resource]
+script = ExtResource("2_g4okm")
+name = "Shield"
+image = ExtResource("1_jhaaw")
+description = "Gain a temporary shield."
+dance_length = 3
+spell_script = ExtResource("3_jhaaw")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

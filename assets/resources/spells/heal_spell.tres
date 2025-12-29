@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://d1a3yngpl4xkm"]
+
+[ext_resource type="Texture2D" uid="uid://clleiojhorbc1" path="res://assets/sprites/ui/heart.png" id="1_hug3k"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_yf3ha"]
+[ext_resource type="Script" uid="uid://hepsmau5mcdo" path="res://scripts/spells/heal_spell.gd" id="3_yf3ha"]
+
+[resource]
+script = ExtResource("2_yf3ha")
+name = "Heal"
+image = ExtResource("1_hug3k")
+description = "Heal."
+dance_length = 3
+spell_script = ExtResource("3_yf3ha")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

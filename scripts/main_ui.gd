@@ -8,19 +8,20 @@ class_name MainUI
 
 @onready var spell_card_scene := preload("res://scenes/spell_card.tscn")
 
-@onready var heart_texture := preload("res://assets/sprites/ui/heart.png")
-@onready var dark_heart_texture := preload("res://assets/sprites/ui/darkheart.png")
-@onready var arrow_texture := preload("res://assets/sprites/ui/arrow.png")
-@onready var dark_arrow_texture := preload("res://assets/sprites/ui/darkarrow.png")
-@onready var nowhere_arrow_texture := preload("res://assets/sprites/ui/dot.png")
-@onready var dark_nowhere_arrow_texture := preload("res://assets/sprites/ui/darkdot.png")
-@onready var wildcard_arrow_texture := preload("res://assets/sprites/ui/wildcard.png")
-@onready var dark_wildcard_arrow_texture := preload("res://assets/sprites/ui/darkwildcard.png")
+const SHIELD_TEXTURE := preload("res://assets/sprites/ui/shield.png")
+const heart_texture := preload("res://assets/sprites/ui/heart.png")
+const dark_heart_texture := preload("res://assets/sprites/ui/darkheart.png")
+const arrow_texture := preload("res://assets/sprites/ui/arrow.png")
+const dark_arrow_texture := preload("res://assets/sprites/ui/darkarrow.png")
+const nowhere_arrow_texture := preload("res://assets/sprites/ui/dot.png")
+const dark_nowhere_arrow_texture := preload("res://assets/sprites/ui/darkdot.png")
+const wildcard_arrow_texture := preload("res://assets/sprites/ui/wildcard.png")
+const dark_wildcard_arrow_texture := preload("res://assets/sprites/ui/darkwildcard.png")
 
 var arrow_textures
 var dark_arrow_textures
 
-var upgrade_cost = 1
+var upgrade_cost = 5
 var selected_spell_in_shop = null
 var selected_arrow_in_shop = null
 
@@ -81,6 +82,12 @@ func _on_health_changed():
 		heart.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		health_container.add_child(heart)
+	if player.shield:
+		var shield = TextureRect.new()
+		shield.texture = SHIELD_TEXTURE
+		shield.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+		shield.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		health_container.add_child(shield)
 
 func _on_spells_changed(shop_version = false):
 	"""
