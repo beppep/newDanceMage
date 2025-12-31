@@ -52,15 +52,16 @@ func _ready() -> void:
 	
 
 func show_card_reward(spells, recipes):
-	#$CardRewards.visible = true
+	$CardRewards.visible = true
 	for i in range(spells.size()):
 		var spell_card : Spell_card = spell_card_scene.instantiate()
 		spell_card.spell = spells[i]
-		$CardRewards.add_child(spell_card)
+		$"CardRewards/Cards".add_child(spell_card)
 		spell_card.recipe = recipes[i]
 
 func remove_card_rewards():
-	for child in $CardRewards.get_children():
+	$CardRewards.visible = false
+	for child in $"CardRewards/Cards".get_children():
 		child.queue_free()
 	
 func show_shop():
@@ -71,7 +72,7 @@ func hide_shop():
 func get_shop_is_shown() -> bool:
 	return $Shop.visible
 func get_card_reward_is_shown() -> bool:
-	return $CardRewards.get_child_count() > 0
+	return $"CardRewards/Cards".get_child_count() > 0
 
 func _on_health_changed():
 	for child in health_container.get_children():

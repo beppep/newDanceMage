@@ -1,7 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1r37xlv72lnf"]
+[gd_scene load_steps=7 format=3 uid="uid://b1r37xlv72lnf"]
 
 [ext_resource type="Script" uid="uid://d2rswpfdl28b2" path="res://scripts/main_ui.gd" id="1_2ppmm"]
 [ext_resource type="Texture2D" uid="uid://inwjj0lddvkd" path="res://assets/sprites/units/crystal.png" id="2_w37m7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_j6a7c"]
+font_size = 100
+font_color = Color(1, 0.8, 0.5176471, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ktt6o"]
 font_size = 36
@@ -39,18 +43,30 @@ scale = Vector2(4, 4)
 text = "0$"
 horizontal_alignment = 2
 
-[node name="CardRewards" type="HBoxContainer" parent="."]
+[node name="CardRewards" type="VBoxContainer" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -302.0
+offset_left = -300.0
 offset_top = -200.0
-offset_right = 302.0
+offset_right = 300.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="RichTextLabel2" type="Label" parent="CardRewards"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "CHOOSE"
+label_settings = SubResource("LabelSettings_j6a7c")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cards" type="HBoxContainer" parent="CardRewards"]
+layout_mode = 2
 
 [node name="Shop" type="HBoxContainer" parent="."]
 visible = false
