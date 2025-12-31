@@ -31,6 +31,8 @@ var all_enemies = [
 	bishop_scene,
 	preload("res://scenes/enemies/ghost.tscn"),
 	preload("res://scenes/enemies/mortar.tscn"),
+	preload("res://scenes/units/slime.tscn"),
+	preload("res://scenes/units/mother_slime.tscn"),
 	knight_scene,
 	rook_scene,
 	pawn_scene,
@@ -39,7 +41,7 @@ var all_enemies = [
 var hard_enemies = [
 	preload("res://scenes/units/Worm.tscn"),
 	preload("res://scenes/enemies/mother_ghost.tscn"),
-	
+	preload("res://scenes/units/mother_slime.tscn"),
 ]
 
 var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4, "WHITE":5, "BLACK":6, "HEART":1, "COIN":2} # SKETCHY because it has to align with the tileset at all times
@@ -118,7 +120,14 @@ func find_wall(MAPSIZE_X, MAPSIZE_Y):
 	# used for generating treasures deep inside walls
 	# maybe ask for more stone around it?
 	var random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-	while wall_tilemap.get_cell_source_id(random_loc) == -1:
+	while true:
+		var all_stone = true
+		for x in [-1,0,1]:
+			for y in [-1,0,1]:
+				if wall_tilemap.get_cell_source_id(random_loc+Vector2i(x,y)) != tile_ids["STONE"]:
+					all_stone = false
+		if all_stone:
+			break
 		random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 	return random_loc
 
@@ -167,8 +176,24 @@ func generate_map_cavestyle():
 		randomwalk_loc += prev_step
 	for loc in visited:
 		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
+	_paint_area(wall_tilemap, visited[0]+Vector2i(-1,-1), visited[0]+Vector2i(1,1), -1)
 	_create_unit_at(visited[0], crystal_scene) # after putting air
 		
+	# RANDOM WALK: SHOP -> AIR
+	randomwalk_loc = find_wall(MAPSIZE_X, MAPSIZE_Y)
+	visited = []
+	while true: # air density is about a quarter?
+		if world.is_empty(randomwalk_loc):
+			break
+		visited.append(randomwalk_loc)
+		prev_step = take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
+		randomwalk_loc += prev_step
+	for loc in visited:
+		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
+	_paint_area(ground_tilemap, visited[0]+Vector2i(-1,0), visited[0]+Vector2i(1,1), tile_ids["WOOD"])
+	_paint_area(wall_tilemap, visited[0]+Vector2i(-1,0), visited[0]+Vector2i(1,1), -1)
+	_create_unit_at(visited[0], trader_scene) # after putting air
+	
 	# ROCKS
 	var random_pos #loc
 	for i in range(2*MAPSIZE_X**2):

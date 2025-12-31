@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://ci34rselcnhkp"]
+
+[ext_resource type="Script" uid="uid://bxrclx41tgyac" path="res://scripts/units/mother_slime.gd" id="1_leqks"]
+[ext_resource type="Texture2D" uid="uid://ids70urnp84v" path="res://assets/sprites/enemies/slime/bigslime.png" id="2_leqks"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ui7np"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_leqks")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_leqks")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
+}]
+
+[node name="mother_Slime" type="Node2D"]
+script = ExtResource("1_leqks")
+fatness = Vector2i(2, 2)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ui7np")
+animation = &"windup"
+offset = Vector2(8, 8)

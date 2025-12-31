@@ -4,6 +4,8 @@ class_name Units
 var is_running := true
 @onready var world = $"/root/World"
 
+var SIMULATION_DISTANCE = 10
+
 func _ready() -> void:
 	child_exiting_tree.connect(_on_child_exit)
 
@@ -17,6 +19,7 @@ func start():
 	while is_running:
 		await _process_turn()
 		await get_tree().create_timer(1.0 / 165.0).timeout
+	# game over?
 
 func player_take_turns_until_no_more_extra_turns():
 	#take player turn
@@ -52,7 +55,7 @@ func _process_turn():
 
 func process_units(units: Array[Unit]):
 	for unit in units:
-		if not is_instance_valid(unit) or unit.is_queued_for_deletion() or Vector2(unit.location - world.player.location).length() > 10:
+		if not is_instance_valid(unit) or unit.is_queued_for_deletion() or Vector2(unit.location - world.player.location).length() > SIMULATION_DISTANCE:
 			continue
 		await unit.process_turn_unless_frozen()
 

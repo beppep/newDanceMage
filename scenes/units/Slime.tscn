@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://rfs80iqlxdtp"]
+
+[ext_resource type="Script" uid="uid://ka7ldsx0dg15" path="res://scripts/units/slime.gd" id="1_mg2nh"]
+[ext_resource type="Texture2D" uid="uid://cp51y7n6komo4" path="res://assets/sprites/enemies/slime/slime.png" id="2_mg2nh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ui7np"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mg2nh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mg2nh")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
+}]
+
+[node name="Slime" type="Node2D"]
+script = ExtResource("1_mg2nh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ui7np")

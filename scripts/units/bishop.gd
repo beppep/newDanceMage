@@ -19,6 +19,6 @@ func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]:
 	return target_with_directions([direction])
 
 func perform_attack():
-	var offset = attack_offsets.front()
+	var offset = attack_offsets.back()
 	var direction: Vector2i = offset / abs(offset.x)
-	perform_moving_attack(direction, attack_range)
+	perform_moving_attack(direction, abs(offset.x))

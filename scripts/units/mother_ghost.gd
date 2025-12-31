@@ -28,7 +28,7 @@ func do_move():
 func get_possible_targets() -> Array[Vector2i]:
 	return target_with_offsets(TARGET_OFFSETS)
 
-func get_attack_offsets(_target: Vector2i) -> Array[Vector2i]:
+func get_attack_offsets(_offset: Vector2i) -> Array[Vector2i]:
 	return target_with_offsets(TARGET_OFFSETS)
 
 

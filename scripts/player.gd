@@ -95,7 +95,6 @@ func process_turn():
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
 		var recipe = recipe_book[current_spell_nr]
-		print("yohoo")
 		await get_tree().process_frame # we need to have this line for the tween to work i have no clue
 		# like if you edit a tween on an object thats not ready yet nothing happens
 		

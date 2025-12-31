@@ -1,5 +1,5 @@
 extends Unit
-
+class_name Crystal
 
 
 func die():

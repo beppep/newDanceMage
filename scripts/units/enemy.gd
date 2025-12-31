@@ -40,7 +40,7 @@ var attack_offsets: Array[Vector2i] = []:
 			anim.play("default")
 		queue_redraw()
 
-@abstract func get_possible_targets() -> Array[Vector2i]
+@abstract func get_possible_targets() -> Array[Vector2i] # used to check if it should attack
 @abstract func do_move()
 
 var indicator_drawer: Node2D
@@ -52,10 +52,12 @@ func _ready():
 	indicator_drawer.z_index = -1      # always below the enemy
 	
 
+# should_attack() is used for calculating intent but pushing results in friendly fire.
+
 func should_attack(target) -> bool:
 	return target is Player
 
-func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]:
+func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]: # get the rest of the attack offsets for a given target??
 	return [offset]
 
 func perform_attack_effects():
@@ -67,7 +69,6 @@ func _draw():
 	if frozen:
 		return
 	for target in attack_offsets:
-		#indicator_drawer.draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 		draw_texture(attack_indicator, World.loc_to_pos(target - Vector2i(1, 1)))
 
 func target_with_offsets(offsets: Array[Vector2i]) -> Array[Vector2i]:
@@ -86,6 +87,9 @@ func target_with_directions(directions: Array[Vector2i]) -> Array[Vector2i]:
 			var target = location + direction * i
 			if world.is_wall_at(target):
 				break
+			if world.units.get_unit_at(target):
+				if world.units.get_unit_at(target) != world.player:
+					break
 			targets.append(direction * i)
 	return targets
 
@@ -101,18 +105,16 @@ func perform_moving_attack(offset: Vector2i, length: int = 1):
 	var unit = get_unit_in_direction(offset, length)
 
 	if unit:
-		if should_attack(unit):
-			location = unit.location
-			# Play hitting particle animation
-			var p = Particles.new()
-			add_child(p)
-			p.make_particle_cloud_at(World.loc_to_pos(location), "smoke")
+		location = unit.location
+		if true:# should_attack(unit): 
+			world.particles.make_cloud(location, "smoke")
 			# Move back one step if unit will still be alive after attack
 			if unit.health > attack_power:
 				location -= offset
 			unit.take_damage(attack_power)
 		else:
-			move_in_direction(offset, length)
+			# Move back one step if you wont kill that type of unit
+			location -= offset
 	else:
 		move_in_direction(offset, length)
 
@@ -120,7 +122,7 @@ func perform_attack():
 	print(name, " attacks.")
 	var targets = attack_offsets.map(func (offset): return location + offset)
 	for target in targets:
-		if should_attack(world.units.get_unit_at(target)):
+		if not world.units.get_unit_at(target) is Crystal: # and should_attack(world.units.get_unit_at(target)):
 			world.deal_damage_at(target, attack_power)
 	perform_attack_effects()
 	attack_offsets = []
@@ -133,13 +135,15 @@ func process_turn():
 		return
 
 	var possible_targets = get_possible_targets()
+	#if fatness.x == 2:
+	#	print(world.player.location - location, " yooo ", possible_targets)
 	if possible_targets.has(world.player.location - location):
 		print(name, " winds up for attack.")
 		attack_offsets = get_attack_offsets(world.player.location - location)
 	elif randf() < 0.3:
 		for offset in possible_targets:
 			var target = location + offset
-			if target.distance_squared_to(world.player.location) <= 1:
+			if target.distance_squared_to(world.player.location) <= 1 and should_attack(world.units.get_unit_at(target)):
 				attack_offsets = get_attack_offsets(offset)
 				break
 	
