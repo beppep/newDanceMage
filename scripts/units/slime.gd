@@ -12,3 +12,6 @@ func get_possible_targets() -> Array[Vector2i]:
 func perform_attack_effects():
 	if world.is_empty(location + attack_offsets[-1]):
 		location += attack_offsets[-1]
+	else:
+		location += attack_offsets[-1]
+		location -= attack_offsets[-1]

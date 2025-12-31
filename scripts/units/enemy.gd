@@ -52,10 +52,9 @@ func _ready():
 	indicator_drawer.z_index = -1      # always below the enemy
 	
 
-# should_attack() is used for calculating intent but pushing results in friendly fire.
 
 func should_attack(target) -> bool:
-	return target is Player
+	return target is Player or target == null # true for player and null
 
 func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]: # get the rest of the attack offsets for a given target??
 	return [offset]
@@ -122,7 +121,7 @@ func perform_attack():
 	print(name, " attacks.")
 	var targets = attack_offsets.map(func (offset): return location + offset)
 	for target in targets:
-		if not world.units.get_unit_at(target) is Crystal: # and should_attack(world.units.get_unit_at(target)):
+		if not world.units.get_unit_at(target) is Crystal and should_attack(world.units.get_unit_at(target)):
 			world.deal_damage_at(target, attack_power)
 	perform_attack_effects()
 	attack_offsets = []
@@ -135,8 +134,6 @@ func process_turn():
 		return
 
 	var possible_targets = get_possible_targets()
-	#if fatness.x == 2:
-	#	print(world.player.location - location, " yooo ", possible_targets)
 	if possible_targets.has(world.player.location - location):
 		print(name, " winds up for attack.")
 		attack_offsets = get_attack_offsets(world.player.location - location)

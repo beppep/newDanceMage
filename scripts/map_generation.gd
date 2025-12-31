@@ -151,7 +151,7 @@ func generate_map_cavestyle():
 	
 	
 	# RANDOM WALK CAVE: PLAYER -> EXIT
-	var cave_volume = 0
+	var cave_volume = 0 + 999 # no requirement
 	var randomwalk_loc = PLAYER_SPAWN
 	var prev_step = Vector2i.ZERO
 	while cave_volume < MAPSIZE_X * MAPSIZE_Y*2 or Vector2(randomwalk_loc).length() < MAPSIZE_X or Vector2(randomwalk_loc-PLAYER_SPAWN).length() < MAPSIZE_X: # air density is about a quarter?

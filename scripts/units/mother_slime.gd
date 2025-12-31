@@ -3,6 +3,17 @@ extends Enemy
 
 const SLIME_SCENE: PackedScene = preload("res://scenes/units/Slime.tscn")
 
+func has_air_or_attackable(loc):
+	if world.is_empty(loc):
+		return true # air
+	var occupant = world.units.get_unit_at(loc)
+	if occupant:
+		if should_attack(occupant):
+			return true # attackable
+		else:
+			return false # not attackable
+	else:
+		return false # wall
 
 var TARGET_OFFSETS = [
 		[Vector2i(-1,0),Vector2i(-1,1)], # -x
@@ -31,25 +42,27 @@ func get_possible_targets() -> Array[Vector2i]:
 	for offsets in TARGET_OFFSETS:
 		possible_jumps.append(offsets)
 		for offset in offsets:
-			if not (world.is_empty(location+offset) or (world.units.get_unit_at(location+offset) and world.units.get_unit_at(location+offset)==world.player)):
+			if not has_air_or_attackable(location+offset):
 				possible_jumps.erase(offsets)
 	
 	# step 2: flatten
 	var possible_targets : Array[Vector2i] = []
 	possible_jumps.map(func(a): possible_targets.append_array(a))
 	
-	print(possible_targets, ":)")
 	return target_with_offsets(possible_targets)
 
 func perform_attack_effects():
+	var move_direction = attack_offsets[0]/abs(attack_offsets[0].x+attack_offsets[0].y) # hack to find jump vector
 	if world.is_empty(location + attack_offsets[0]) and world.is_empty(location + attack_offsets[1]):
-		location += attack_offsets[0]/abs(attack_offsets[0].x+attack_offsets[0].y) # hack to find jump vector
-
+		location += move_direction
+	else:
+		location += move_direction
+		location -= move_direction
+		
 
 func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]:
 	# return the pair containing the one
 	for offsets in TARGET_OFFSETS:
-		print(offset, " in ", offsets)
 		if offset in offsets: # ie target in offsets+location
 			var nicely_typed_but_otherwise_identical_to_offsets : Array[Vector2i] = Array(offsets, TYPE_VECTOR2I, "", "" )
 			return target_with_offsets(nicely_typed_but_otherwise_identical_to_offsets)
