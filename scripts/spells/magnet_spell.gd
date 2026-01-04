@@ -1,7 +1,6 @@
 extends Spell
 
-@export var fireball_scene: PackedScene = preload("res://scenes/particles/Fireball.tscn")
-@onready var wall_tileset := $"/root/World/TileMapLayerWalls"
+#@onready var wall_tileset := $"/root/World/TileMapLayerWalls"
 
 
 var RANGE = 5

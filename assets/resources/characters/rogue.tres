@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=6 format=3 uid="uid://n70wno1bgl2l"]
+
+[ext_resource type="Script" uid="uid://bg10mrpssxaig" path="res://scripts/CharacterResource.gd" id="1_jnv2q"]
+[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/player.png" id="1_q5nnc"]
+[ext_resource type="Resource" uid="uid://dljwcvy4otsno" path="res://assets/resources/spells/stab_spell.tres" id="3_pk5j8"]
+[ext_resource type="Script" uid="uid://val26tm8c0s5" path="res://scripts/StepResource.gd" id="3_w0kju"]
+
+[sub_resource type="Resource" id="Resource_w0kju"]
+script = ExtResource("3_w0kju")
+metadata/_custom_type_script = "uid://val26tm8c0s5"
+
+[resource]
+script = ExtResource("1_jnv2q")
+name = "The Rogue"
+image = ExtResource("1_q5nnc")
+description = "Uses a knife."
+starting_spell = ExtResource("3_pk5j8")
+starting_dance = Array[ExtResource("3_w0kju")]([SubResource("Resource_w0kju")])
+metadata/_custom_type_script = "uid://bg10mrpssxaig"

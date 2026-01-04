@@ -114,7 +114,7 @@ func _on_spells_changed(shop_version = false):
 		var alignment = player.check_recipe_alignment(player.recipe_book[i])
 		
 		for x in range(player.recipe_book[i].size()):
-			var arrow_vector = player.recipe_book[i][x]
+			var step : Step = player.recipe_book[i][x]
 			var arrow = TextureButton.new()
 			var texture_is_light: bool
 			
@@ -124,13 +124,14 @@ func _on_spells_changed(shop_version = false):
 			else: # according to shop selection
 				texture_is_light = (selected_spell_in_shop == i and selected_arrow_in_shop == x)
 			
-			# select arrow type
-			if arrow_vector == Vector2i.ZERO:
-				arrow.texture_normal = nowhere_arrow_texture if texture_is_light else dark_nowhere_arrow_texture
-			elif arrow_vector == null:
+			# select arrow texture
+			if step.kind == Step.Kind.WILDCARD:
 				arrow.texture_normal = wildcard_arrow_texture if texture_is_light else dark_wildcard_arrow_texture
+			elif step.direction == Vector2i.ZERO:
+				arrow.texture_normal = nowhere_arrow_texture if texture_is_light else dark_nowhere_arrow_texture
 			else:
-				arrow.texture_normal = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90] if texture_is_light else dark_arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
+				var _index = rad_to_deg(Vector2(step.direction).angle())/90
+				arrow.texture_normal = arrow_textures[_index] if texture_is_light else dark_arrow_textures[_index]
 			
 			if x==alignment-1 and not shop_version:
 				flash_icon(arrow)
@@ -167,13 +168,14 @@ func flash_icon(node: Node):
 
 
 func _on_upgrade_button_pressed() -> void:
-	print( player.coins, "  ", upgrade_cost, " h ", player.upgrade_count_book[selected_spell_in_shop])
-	if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0 and len(player.recipe_book[selected_spell_in_shop])>1:
-		player.coins -= upgrade_cost
-		player.recipe_book[selected_spell_in_shop].pop_at(selected_arrow_in_shop)
-		player.upgrade_count_book[selected_spell_in_shop]+=1
-		_on_spells_changed()
-		_on_health_changed()
+	if selected_spell_in_shop!=null and selected_arrow_in_shop!=null:
+		print( player.coins, "  ", upgrade_cost, " h ", player.upgrade_count_book[selected_spell_in_shop])
+		if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0 and len(player.recipe_book[selected_spell_in_shop])>1:
+			player.coins -= upgrade_cost
+			player.recipe_book[selected_spell_in_shop].pop_at(selected_arrow_in_shop)
+			player.upgrade_count_book[selected_spell_in_shop]+=1
+			_on_spells_changed()
+			_on_health_changed()
 	
 	
 func old_rng_upgrade_code():
@@ -194,12 +196,13 @@ func old_rng_upgrade_code():
 
 
 func _on_upgrade_button_2_pressed() -> void:
-	if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0:
-		player.coins -= upgrade_cost
-		player.recipe_book[selected_spell_in_shop][selected_arrow_in_shop] = null # wildcard
-		player.upgrade_count_book[selected_spell_in_shop]+=1
-		_on_spells_changed()
-		_on_health_changed()
+	if selected_spell_in_shop!=null and selected_arrow_in_shop!=null:
+		if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0:
+			player.coins -= upgrade_cost
+			player.recipe_book[selected_spell_in_shop][selected_arrow_in_shop] = null # wildcard
+			player.upgrade_count_book[selected_spell_in_shop]+=1
+			_on_spells_changed()
+			_on_health_changed()
 	
 
 func old_rng_upgrade_code_2() -> void:

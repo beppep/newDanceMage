@@ -35,7 +35,7 @@ func next_floor():
 		$map_generator.generate_shop()
 	else:
 		if current_floor % 6 == 0:
-			$map_generator.generate_chessboard()
+			$map_generator.generate_boss_room()
 		else:
 			$map_generator.generate_map_cavestyle()
 	#units.start() # DONT!! Then it will run multiple instances of turn order (!!?!)
@@ -52,13 +52,11 @@ func debug():
 	for i in units.get_children(): # Calling this does crazy shit. :/
 		i.location = i.location
 
-func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null, _log=false) -> bool:
+func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null) -> bool:
 	for x in range(fatness.x):
 		for y in range(fatness.y):
 			var loc = location + Vector2i(x,y)
-			if _log:
-				print(x,y, " : ", loc, is_wall_at(loc),units.get_unit_at(loc))
-			if is_wall_at(loc) or (units.get_unit_at(loc, _log) and units.get_unit_at(loc)!=except):
+			if is_wall_at(loc) or (units.get_unit_at(loc) and units.get_unit_at(loc)!=except):
 				return false
 	return true
 

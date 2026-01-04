@@ -9,5 +9,6 @@ script = ExtResource("2_qtfsu")
 name = "Teleport"
 image = ExtResource("1_oly8e")
 description = "Teleport randomly."
+dance_length = 3
 spell_script = ExtResource("3_oly8e")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

@@ -23,12 +23,12 @@ var dark_arrow_textures
 	set(value):
 		recipe = value
 		for x in range(recipe.size()):
-			var arrow_vector = recipe[x]
+			var step = recipe[x]
 			var arrow := TextureRect.new()
-			if arrow_vector == Vector2i.ZERO:
+			if step.direction == Vector2i.ZERO:
 				arrow.texture = nowhere_arrow_texture
 			else:
-				arrow.texture = arrow_textures[rad_to_deg(Vector2(arrow_vector).angle())/90]
+				arrow.texture = arrow_textures[rad_to_deg(Vector2(step.direction).angle())/90]
 			arrow.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 			arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			#arrow.custom_minimum_size *= 4  # 4x bigger than default (if already has min size)

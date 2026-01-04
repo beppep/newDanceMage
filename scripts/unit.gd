@@ -65,7 +65,7 @@ func _process(_delta: float):
 
 func process_turn_unless_frozen():
 	if shield > 0:
-		shield -= 1
+		pass#shield -= 1
 	if frozen>0:
 		print(self, " frozen: ",frozen)
 		frozen -= 1

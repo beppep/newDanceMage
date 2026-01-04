@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://gv852tyslnt"]
+
+[ext_resource type="Script" uid="uid://cymmlrb7nw4e" path="res://scenes/particles/projectile.gd" id="1_328sq"]
+[ext_resource type="Texture2D" uid="uid://cwgiiwcjxlkve" path="res://assets/sprites/particles/fireball.png" id="2_2020i"]
+[ext_resource type="Texture2D" uid="uid://b3rmogt8ilc0y" path="res://assets/sprites/particles/fire.png" id="3_6hex7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_087v8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2020i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6hex7")
+}],
+"loop": true,
+"name": &"fireball",
+"speed": 5.0
+}]
+
+[node name="Projectile" type="Node2D"]
+script = ExtResource("1_328sq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_087v8")
+animation = &"fireball"

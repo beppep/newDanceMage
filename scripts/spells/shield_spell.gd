@@ -7,4 +7,4 @@ func _ready():
 	
 	
 func cast(caster: Unit):
-	caster.shield = 2
+	caster.shield = 1

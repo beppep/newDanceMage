@@ -1,6 +1,5 @@
 extends Enemy
 
-@export var egg_scene: PackedScene = preload("res://scenes/units/Egg.tscn")
 @export var bomb_scene: PackedScene = preload("res://scenes/units/Bomb.tscn")
 
 

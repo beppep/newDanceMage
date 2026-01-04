@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvhrggsk1jycp"]
+
+[ext_resource type="Script" uid="uid://diohhrdup4fv4" path="res://scripts/main_scene.gd" id="1_gubc5"]
+[ext_resource type="PackedScene" uid="uid://dfm2hqcff5htw" path="res://scenes/tutorial_level.tscn" id="2_rt2n2"]
+[ext_resource type="PackedScene" uid="uid://b1r37xlv72lnf" path="res://scenes/main_ui.tscn" id="3_c16ls"]
+[ext_resource type="Script" uid="uid://cto6b6cn0sh74" path="res://scripts/map_generation.gd" id="4_18nlu"]
+[ext_resource type="Script" uid="uid://3quawpdbegmg" path="res://scripts/particle_spawner.gd" id="5_c1pb6"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_gubc5")
+
+[node name="Level" parent="." instance=ExtResource("2_rt2n2")]
+
+[node name="MainUI" parent="." instance=ExtResource("3_c16ls")]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
+color = Color(0.39215687, 0.39215687, 0.39215687, 1)
+
+[node name="map_generator" type="Node" parent="."]
+script = ExtResource("4_18nlu")
+
+[node name="Particles" type="Node" parent="."]
+script = ExtResource("5_c1pb6")

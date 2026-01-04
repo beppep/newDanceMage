@@ -1,7 +1,7 @@
 extends Unit
 class_name Player
 
-var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
+var stab_spell = preload("res://assets/resources/spells/dash_spell.tres")
 
 var locked_spells = [
 	preload("res://assets/resources/spells/explode_spell.tres"),
@@ -28,10 +28,11 @@ var locked_spells = [
 
 var buffered_input = null
 var move_history: Array[Vector2i] = []
-var recipe_book = [[Vector2i.ZERO]]
-var spell_book = [stab_spell]
+var recipe_book: Array = [Globals.selected_character.starting_dance]
+var spell_book: Array[SpellResource] = [Globals.selected_character.starting_spell]
 var upgrade_count_book = [0]
 var coins = 0
+var items = {"exploding_rocks":1}
 
 var extra_turn = 0
 
@@ -95,10 +96,9 @@ func process_turn():
 	var current_spell_nr = 0
 	while current_spell_nr < spell_book.size():
 		var recipe = recipe_book[current_spell_nr]
-		await get_tree().process_frame # we need to have this line for the tween to work i have no clue
-		# like if you edit a tween on an object thats not ready yet nothing happens
-		
 		if check_recipe_alignment(recipe) == recipe.size():
+			await get_tree().process_frame # we need to have this line for the tween to work i have no clue
+			# like if you edit a tween on an object thats not ready yet nothing happens
 			ui_node.flash_icon(ui_node.spell_container.get_children()[current_spell_nr].get_children()[0])
 			await cast_spell(spell_book[current_spell_nr])
 		current_spell_nr += 1
@@ -113,7 +113,7 @@ func check_recipe_alignment(recipe):
 		var recipe_tail = recipe.slice(0, alignment_size)
 		var alignment = true
 		for j in range(alignment_size):
-			if not (move_history_tail[j]==recipe_tail[j] or recipe_tail[j]==null): # wildcard
+			if not recipe_tail[j].matches(move_history_tail[j]): # wildcard
 				alignment = false
 				break
 		if alignment:
@@ -162,8 +162,17 @@ func unlock(spell: SpellResource, recipe: Array):
 #	recipe_book.append(create_random_recipe(new_spell.dance_length))
 
 func create_random_recipe(recipe_length :int):
-	var all_inputs = [Vector2i.RIGHT, Vector2i.UP, -Vector2i.RIGHT, Vector2i.DOWN, Vector2i.ZERO]
+	var all_inputs = [Vector2i.RIGHT, Vector2i.UP, Vector2i.LEFT, Vector2i.DOWN, Vector2i.ZERO]
 	var recipe = []
 	for i in range(recipe_length):
-		recipe.append(all_inputs.pick_random())
+		recipe.append(Step.make_direction(all_inputs.pick_random()))
 	return recipe
+
+
+
+func die():
+	print(name, " died a horrible death.")
+	#queue_free()
+	world.units.is_running = false
+	await get_tree().create_timer(5.0).timeout
+	get_tree().change_scene_to_file("res://scenes/character_select.tscn")

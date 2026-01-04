@@ -8,7 +8,7 @@
 script = ExtResource("1_o1k0s")
 name = "Wind"
 image = ExtResource("1_7m644")
-description = "Pushes enemies idk i dont really like it."
+description = "Pushes enemies in each direction."
 dance_length = 2
 spell_script = ExtResource("2_o1k0s")
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

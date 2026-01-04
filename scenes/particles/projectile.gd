@@ -10,7 +10,7 @@ extends Node2D
 @onready var player = world.player
 
 
-var direction := Vector2.RIGHT
+var direction := Vector2i.RIGHT
 var caster # player (or enemy!?) casting the spell
 var age = 0
 var location = World.pos_to_loc(position)
@@ -21,7 +21,7 @@ func _ready():
 
 func _physics_process(_delta):
 	# Move continuously (async?!)
-	global_position += direction * move_speed
+	global_position += Vector2(direction) * move_speed
 	age += 1
 	if age > LIFETIME:
 		queue_free()
@@ -39,7 +39,7 @@ func _check_collision():
 	for unit in $"/root/World/Level/Units".get_children():
 		if not is_instance_valid(unit) or unit.is_queued_for_deletion():
 			continue
-		if unit.location == location and unit != player:
+		if unit.location == location and unit != caster:
 			await unit.take_damage()
 			queue_free()
 			

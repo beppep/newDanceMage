@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="NewDanceMage"
-run/main_scene="uid://dvhrggsk1jycp"
+run/main_scene="uid://dt23qvhocyrdo"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -25,6 +25,7 @@ Globals="*res://globals.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/stretch/mode="viewport"
 
 [input]
 

@@ -66,11 +66,9 @@ func get_units() -> Array[Unit]:
 			units.append(child)
 	return units
 
-func get_unit_at(location: Vector2i , _log = false) -> Unit:
+func get_unit_at(location: Vector2i) -> Unit:
 	for unit in get_units():
 		if is_instance_valid(unit) and not unit.is_queued_for_deletion():
-			if _log:
-				print("compare: ", location, unit.location)
 			if location.x >= unit.location.x and location.x < unit.location.x + unit.fatness.x and location.y >= unit.location.y and location.y < unit.location.y + unit.fatness.y:
 				return unit
 	return null

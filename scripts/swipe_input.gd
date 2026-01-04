@@ -1,13 +1,10 @@
 extends Node
 
-@onready var world : World = get_tree().current_scene
-@onready var ui_node : MainUI = world.get_node("MainUI")
-
 var start_pos := Vector2.ZERO
 var min_swipe_dist := 40.0
 
 func _input(event):
-	if event is InputEventScreenTouch and not ui_node.get_card_reward_is_shown():
+	if event is InputEventScreenTouch:
 		if event.pressed:
 			start_pos = event.position
 		else:

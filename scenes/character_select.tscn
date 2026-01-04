@@ -1,0 +1,114 @@
+[gd_scene load_steps=7 format=3 uid="uid://dt23qvhocyrdo"]
+
+[ext_resource type="Script" uid="uid://02yjss8p4xin" path="res://scripts/character_select.gd" id="1_fa52j"]
+[ext_resource type="Texture2D" uid="uid://bdtdte2iyhvkk" path="res://assets/sprites/menus/char_select_thing.png" id="1_jgus3"]
+[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/player.png" id="2_bow2h"]
+[ext_resource type="Texture2D" uid="uid://c6g1yf4exs6wc" path="res://assets/sprites/ui/darkarrow.png" id="4_5wdeo"]
+[ext_resource type="Texture2D" uid="uid://5acupw0pnup6" path="res://assets/sprites/ui/arrow.png" id="5_w1hxv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fa52j"]
+font_size = 48
+font_color = Color(0.11764706, 0.14901961, 0.07058824, 1)
+
+[node name="CharacterSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fa52j")
+
+[node name="BackgroundTexture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_jgus3")
+expand_mode = 5
+
+[node name="CharacterTexture" type="TextureRect" parent="BackgroundTexture"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 300.0
+offset_right = 20.0
+offset_bottom = 340.0
+grow_horizontal = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("2_bow2h")
+
+[node name="Name" type="Label" parent="BackgroundTexture"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -136.10004
+offset_top = 43.0
+offset_right = 116.8999
+offset_bottom = -968.0
+grow_horizontal = 2
+text = "The Rogue"
+label_settings = SubResource("LabelSettings_fa52j")
+
+[node name="RightButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 377.0
+offset_top = 213.0
+offset_right = -549.0
+offset_bottom = -833.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+texture_normal = ExtResource("4_5wdeo")
+texture_pressed = ExtResource("4_5wdeo")
+texture_hover = ExtResource("5_w1hxv")
+stretch_mode = 4
+
+[node name="LeftButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 377.0
+offset_top = 213.0
+offset_right = -549.0
+offset_bottom = -833.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+texture_normal = ExtResource("4_5wdeo")
+texture_pressed = ExtResource("4_5wdeo")
+texture_hover = ExtResource("5_w1hxv")
+stretch_mode = 4
+flip_h = true
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -454.0
+offset_right = -74.0
+offset_bottom = -423.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(4, 4)
+text = "START"
+
+[connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed" binds= [1]]
+[connection signal="pressed" from="LeftButton" to="." method="_on_right_button_pressed" binds= [-1]]
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

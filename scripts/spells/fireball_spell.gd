@@ -1,15 +1,18 @@
 extends Spell
 
-@export var fireball_scene: PackedScene = preload("res://scenes/particles/Fireball.tscn")
+@export var projectile_scene: PackedScene = preload("res://scenes/particles/Projectile.tscn")
 
 
-func cast(_caster: Unit):
-	for direction in [Vector2.UP, Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT]:
-		var fireball = fireball_scene.instantiate()
+func cast(caster: Unit):
+	var directions = []#caster.get_facing()
+	#if caster.items.get("four_way_shot", 0):
+	directions = [Vector2i.UP,Vector2i.DOWN,Vector2i.LEFT,Vector2i.RIGHT]
+	for direction in directions:
+		var fireball = projectile_scene.instantiate()
 		#fireball.global_position = caster.global_position
-		fireball.rotation = direction.angle()  # rotate to match direction
-		fireball.direction = direction.normalized()
-
+		fireball.rotation = Vector2(direction).angle()  # rotate to match direction
+		fireball.direction = direction
+		fireball.caster = caster
 		add_child(fireball)
 
 
