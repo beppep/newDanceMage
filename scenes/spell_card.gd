@@ -19,7 +19,7 @@ var dark_arrow_textures
 		$Button/VBoxContainer/description.text = spell.description
 		$Button/VBoxContainer/TextureRect.texture = spell.image
 
-@export var recipe: Array:
+@export var recipe: Array[Step]:
 	set(value):
 		recipe = value
 		for x in range(recipe.size()):
@@ -56,7 +56,8 @@ func _ready() -> void:
 		
 
 func _on_button_pressed() -> void:
-	print("yo",spell,recipe)
+	#print("yo",spell,recipe)
+	assert(recipe[0] is Step)
 	world.player.unlock(spell, recipe)
 	world.get_node("MainUI").remove_card_rewards()
 	

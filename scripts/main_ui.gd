@@ -21,7 +21,8 @@ const dark_wildcard_arrow_texture := preload("res://assets/sprites/ui/darkwildca
 var arrow_textures
 var dark_arrow_textures
 
-var upgrade_cost = 5
+const UPGRADE_COST = 5
+const UPGRADE_SCALING = 5
 var selected_spell_in_shop = null
 var selected_arrow_in_shop = null
 
@@ -111,10 +112,10 @@ func _on_spells_changed(shop_version = false):
 		#spell_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		spell_HBox.add_child(spell_icon)
 		
-		var alignment = player.check_recipe_alignment(player.recipe_book[i])
+		var alignment = player.check_recipe_alignment(player.spell_book[i])
 		
-		for x in range(player.recipe_book[i].size()):
-			var step : Step = player.recipe_book[i][x]
+		for x in range(player.spell_book[i].recipe.size()):
+			var step : Step = player.spell_book[i].recipe[x]
 			var arrow = TextureButton.new()
 			var texture_is_light: bool
 			
@@ -145,19 +146,19 @@ func _on_spell_icon_pressed(spell_nr): # swap two spells in the order
 		var tmp = player.spell_book[spell_nr]
 		player.spell_book[spell_nr] = player.spell_book[spell_nr-1]
 		player.spell_book[spell_nr-1] = tmp
-		
-		tmp = player.recipe_book[spell_nr]
-		player.recipe_book[spell_nr] = player.recipe_book[spell_nr-1]
-		player.recipe_book[spell_nr-1] = tmp
-		
-		tmp = player.upgrade_count_book[spell_nr]
-		player.upgrade_count_book[spell_nr] = player.upgrade_count_book[spell_nr-1]
-		player.upgrade_count_book[spell_nr-1] = tmp
 	
 func _on_arrow_icon_pressed(spell_nr, arrow_nr): # select an arrow in the shop
 	selected_spell_in_shop = spell_nr
 	selected_arrow_in_shop = arrow_nr
+	_on_prices_changed()
 	_on_spells_changed(true)
+
+func _on_prices_changed():
+	var spell = player.spell_book[selected_spell_in_shop]
+	var cost = UPGRADE_COST + UPGRADE_SCALING * spell.upgrade_count
+	$"Shop/UpgradeButton/VBoxContainer/cost".text = str(cost) + "$"
+	$"Shop/UpgradeButton2/VBoxContainer/cost".text = str(cost) + "$"
+	
 
 func flash_icon(node: Node):
 	var tween = get_tree().create_tween()
@@ -169,53 +170,24 @@ func flash_icon(node: Node):
 
 func _on_upgrade_button_pressed() -> void:
 	if selected_spell_in_shop!=null and selected_arrow_in_shop!=null:
-		print( player.coins, "  ", upgrade_cost, " h ", player.upgrade_count_book[selected_spell_in_shop])
-		if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0 and len(player.recipe_book[selected_spell_in_shop])>1:
-			player.coins -= upgrade_cost
-			player.recipe_book[selected_spell_in_shop].pop_at(selected_arrow_in_shop)
-			player.upgrade_count_book[selected_spell_in_shop]+=1
+		var spell = player.spell_book[selected_spell_in_shop]
+		var cost = UPGRADE_COST + UPGRADE_SCALING * spell.upgrade_count
+		if player.coins >= cost and len(player.spell_book[selected_spell_in_shop].recipe)>1:
+			player.coins -= cost
+			spell.recipe.pop_at(selected_arrow_in_shop)
+			spell.upgrade_count+=1
 			_on_spells_changed()
 			_on_health_changed()
-	
-	
-func old_rng_upgrade_code():
-	if player.coins >= upgrade_cost:
-		var possible_upgrades = []
-		for i in range(len(player.spell_book)):
-			if len(player.recipe_book[i])>1 and player.upgrade_count_book[i]==0:
-				possible_upgrades.append(i)
-		if possible_upgrades:
-			player.coins -= upgrade_cost
-			var upgraded_i = possible_upgrades.pick_random()
-			var removed_arrow = randi() % player.recipe_book[upgraded_i].size()
-			player.recipe_book[upgraded_i].pop_at(removed_arrow)
-			player.upgrade_count_book[upgraded_i]+=1
-			_on_spells_changed()
-			_on_health_changed()
-	
 
 
 func _on_upgrade_button_2_pressed() -> void:
 	if selected_spell_in_shop!=null and selected_arrow_in_shop!=null:
-		if player.coins >= upgrade_cost and player.upgrade_count_book[selected_spell_in_shop]==0:
-			player.coins -= upgrade_cost
-			player.recipe_book[selected_spell_in_shop][selected_arrow_in_shop] = null # wildcard
-			player.upgrade_count_book[selected_spell_in_shop]+=1
+		var spell = player.spell_book[selected_spell_in_shop]
+		var cost = UPGRADE_COST + UPGRADE_SCALING * spell.upgrade_count
+		if player.coins >= cost:
+			player.coins -= cost
+			spell.recipe[selected_arrow_in_shop] = Step.make_wildcard()
+			spell.upgrade_count+=1
 			_on_spells_changed()
 			_on_health_changed()
 	
-
-func old_rng_upgrade_code_2() -> void:
-	if player.coins >= upgrade_cost:
-		var possible_upgrades = []
-		for i in range(len(player.spell_book)):
-			if len(player.recipe_book[i])>1 and player.upgrade_count_book[i]==0:
-				possible_upgrades.append(i)
-		if possible_upgrades:
-			player.coins -= upgrade_cost
-			var upgraded_i = possible_upgrades.pick_random()
-			var transformed_arrow = randi() % player.recipe_book[upgraded_i].size()
-			player.recipe_book[upgraded_i][transformed_arrow] = null # wildcard
-			player.upgrade_count_book[upgraded_i]+=1
-			_on_spells_changed()
-			_on_health_changed()

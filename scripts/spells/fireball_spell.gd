@@ -4,9 +4,9 @@ extends Spell
 
 
 func cast(caster: Unit):
-	var directions = []#caster.get_facing()
-	#if caster.items.get("four_way_shot", 0):
-	directions = [Vector2i.UP,Vector2i.DOWN,Vector2i.LEFT,Vector2i.RIGHT]
+	var directions = [caster.get_facing()]
+	if caster.items.get("four_way_shot", 0):
+		directions = [Vector2i.UP,Vector2i.DOWN,Vector2i.LEFT,Vector2i.RIGHT]
 	for direction in directions:
 		var fireball = projectile_scene.instantiate()
 		#fireball.global_position = caster.global_position

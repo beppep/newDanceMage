@@ -2,6 +2,7 @@ extends Control
 
 
 const ALL_CHARACTERS : Array[CharacterResource] = [
+	preload("res://assets/resources/characters/wizard.tres"),
 	preload("res://assets/resources/characters/rogue.tres"),
 	preload("res://assets/resources/characters/armadillo.tres"),
 ]

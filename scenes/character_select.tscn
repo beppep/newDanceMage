@@ -54,7 +54,7 @@ offset_top = 43.0
 offset_right = 116.8999
 offset_bottom = -968.0
 grow_horizontal = 2
-text = "The Rogue"
+text = "Wizard"
 label_settings = SubResource("LabelSettings_fa52j")
 
 [node name="RightButton" type="TextureButton" parent="."]

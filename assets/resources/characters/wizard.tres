@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=6 format=3 uid="uid://csey5ildfcoic"]
+
+[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/player.png" id="1_cdqvv"]
+[ext_resource type="Script" uid="uid://bg10mrpssxaig" path="res://scripts/CharacterResource.gd" id="2_l2na7"]
+[ext_resource type="Script" uid="uid://val26tm8c0s5" path="res://scripts/StepResource.gd" id="3_5uhno"]
+[ext_resource type="Resource" uid="uid://dsty1ew11tf5k" path="res://assets/resources/spells/fireball_spell.tres" id="4_cdqvv"]
+
+[sub_resource type="Resource" id="Resource_w0kju"]
+script = ExtResource("3_5uhno")
+metadata/_custom_type_script = "uid://val26tm8c0s5"
+
+[resource]
+script = ExtResource("2_l2na7")
+name = "Wizard"
+image = ExtResource("1_cdqvv")
+description = "Classic fireball."
+starting_spell = ExtResource("4_cdqvv")
+starting_dance = Array[ExtResource("3_5uhno")]([SubResource("Resource_w0kju")])
+metadata/_custom_type_script = "uid://bg10mrpssxaig"

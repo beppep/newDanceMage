@@ -5,6 +5,7 @@ class_name CharacterResource
 @export var name: String = "Some Cool Spell"
 @export var image: Texture2D
 @export var description: String = "Some cool spell does something cool"
+@export var health: int = 3
 @export var starting_spell: SpellResource
 @export var starting_dance: Array[Step]
 

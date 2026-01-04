@@ -1,8 +1,18 @@
-[gd_resource type="Resource" script_class="SpellResource" load_steps=4 format=3 uid="uid://cfs0q2j42t4rp"]
+[gd_resource type="Resource" script_class="SpellResource" load_steps=7 format=3 uid="uid://cfs0q2j42t4rp"]
 
 [ext_resource type="Texture2D" uid="uid://dbbiii6afobno" path="res://assets/sprites/particles/smoke.png" id="1_sxfcu"]
 [ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="2_1fbbx"]
+[ext_resource type="Script" uid="uid://val26tm8c0s5" path="res://scripts/StepResource.gd" id="2_pi865"]
 [ext_resource type="Script" uid="uid://dm1n2pys02cul" path="res://scripts/spells/dash_spell.gd" id="3_sxfcu"]
+
+[sub_resource type="Resource" id="Resource_wt484"]
+script = ExtResource("2_pi865")
+metadata/_custom_type_script = "uid://val26tm8c0s5"
+
+[sub_resource type="Resource" id="Resource_xs1v4"]
+script = ExtResource("2_pi865")
+kind = 1
+metadata/_custom_type_script = "uid://val26tm8c0s5"
 
 [resource]
 script = ExtResource("2_1fbbx")
@@ -11,4 +21,6 @@ image = ExtResource("1_sxfcu")
 description = "Dash forward and deal damage in front of you."
 dance_length = 2
 spell_script = ExtResource("3_sxfcu")
+recipe = Array[ExtResource("2_pi865")]([SubResource("Resource_wt484"), SubResource("Resource_xs1v4")])
+upgrade_count = 1
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

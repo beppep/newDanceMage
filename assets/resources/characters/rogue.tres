@@ -14,6 +14,7 @@ script = ExtResource("1_jnv2q")
 name = "The Rogue"
 image = ExtResource("1_q5nnc")
 description = "Uses a knife."
+health = 2
 starting_spell = ExtResource("3_pk5j8")
 starting_dance = Array[ExtResource("3_w0kju")]([SubResource("Resource_w0kju")])
 metadata/_custom_type_script = "uid://bg10mrpssxaig"
