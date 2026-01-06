@@ -14,10 +14,10 @@ var age = 0
 
 func _ready():
 	anim.play("default")
-	print("born")
+	#print("born")
 
 func _physics_process(_delta):
 	age += 1
 	if age > LIFETIME:
-		print("rip")
+		#print("rip")
 		queue_free()

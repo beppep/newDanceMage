@@ -41,7 +41,6 @@ var attack_offsets: Array[Vector2i] = []:
 		queue_redraw()
 
 @abstract func get_possible_targets() -> Array[Vector2i] # used to check if it should attack
-@abstract func do_move()
 
 var indicator_drawer: Node2D
 
@@ -62,6 +61,22 @@ func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]: # get the rest of 
 func perform_attack_effects():
 	pass
 	
+
+func do_move():
+	var offset = CARDINAL_DIRECTIONS.pick_random() #no. they are smarter now;
+	if randf()< 0.5 and world.player.location.x != location.x:
+		if world.player.location.x < location.x:
+			offset = Vector2i(-1,0)
+		else:
+			offset = Vector2i(1,0)
+	else:
+		if world.player.location.y < location.y:
+			offset = Vector2i(0,-1)
+		else:
+			offset = Vector2i(0,1)
+		
+	if world.is_empty(location + offset):
+		location += offset
 
 func _draw():
 	#print("frozen ",frozen)
@@ -138,9 +153,10 @@ func process_turn():
 		print(name, " winds up for attack.")
 		attack_offsets = get_attack_offsets(world.player.location - location)
 	elif randf() < 0.3:
+		possible_targets.shuffle()
 		for offset in possible_targets:
 			var target = location + offset
-			if target.distance_squared_to(world.player.location) <= 1 and should_attack(world.units.get_unit_at(target)):
+			if target.distance_squared_to(world.player.location) <= 3 and should_attack(world.units.get_unit_at(target)):
 				attack_offsets = get_attack_offsets(offset)
 				break
 	

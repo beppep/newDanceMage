@@ -46,7 +46,7 @@ var hard_enemies = [
 	mother_ghost_scene
 ]
 
-var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4, "WHITE":5, "BLACK":6, "HEART":1, "COIN":2} # SKETCHY because it has to align with the tileset at all times
+var tile_ids = Globals.tile_ids
 
 func generate_shop(first_floor=false):
 	ground_tilemap.clear()
@@ -163,8 +163,8 @@ func generate_map_cavestyle():
 	wall_tilemap.clear()
 	
 	
-	var MAPSIZE_X = 5 + floor(world.current_floor*0.5) # mapsize depends on current floor
-	var MAPSIZE_Y = 5 + floor(world.current_floor*0.5) # mapsize then decides things for worldgen (like amount of stuff)
+	var MAPSIZE_X = 7 + floor(world.current_floor*0.5) # mapsize depends on current floor
+	var MAPSIZE_Y = 7 + floor(world.current_floor*0.5) # mapsize then decides things for worldgen (like amount of stuff)
 
 	_create_borders(-MAPSIZE_X, MAPSIZE_X, -MAPSIZE_Y, MAPSIZE_Y)
 
@@ -176,7 +176,7 @@ func generate_map_cavestyle():
 	
 	
 	# RANDOM WALK CAVE: PLAYER -> EXIT
-	var cave_volume = 0 + 999 # unsure about the volume requirement. now its disabled
+	var cave_volume = 0 # unsure about the volume requirement.
 	var randomwalk_loc = PLAYER_SPAWN
 	var prev_step = Vector2i.ZERO
 	while cave_volume < MAPSIZE_X * MAPSIZE_Y or Vector2(randomwalk_loc).length() < MAPSIZE_X or Vector2(randomwalk_loc-PLAYER_SPAWN).length() < MAPSIZE_X: # air density is about a quarter?
@@ -210,6 +210,8 @@ func generate_map_cavestyle():
 		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
 		randomwalk_loc += prev_step
 	for loc in visited:
+		if randf()<0.05: # spike ground
+			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
 		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
 	_paint_area(wall_tilemap, visited[0]+Vector2i(-1,-1), visited[0]+Vector2i(1,1), -1)
 	_create_unit_at(visited[0], crystal_scene) # after putting air
@@ -224,6 +226,8 @@ func generate_map_cavestyle():
 		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
 		randomwalk_loc += prev_step
 	for loc in visited:
+		if randf()<0.05: # spike ground
+			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
 		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
 	_paint_area(ground_tilemap, visited[0]+Vector2i(-1,0), visited[0]+Vector2i(1,1), tile_ids["WOOD"])
 	_paint_area(wall_tilemap, visited[0]+Vector2i(-1,0), visited[0]+Vector2i(1,1), -1)
@@ -233,10 +237,7 @@ func generate_map_cavestyle():
 	for i in range(2*MAPSIZE_X**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 1:
-			if randf()<0.6:
-				_create_unit_at(random_pos, rock_scene)
-			else:
-				floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
+			_create_unit_at(random_pos, rock_scene)
 	
 	# EGGS
 	if MAPSIZE_X>6:
@@ -245,6 +246,25 @@ func generate_map_cavestyle():
 			random_pos = Vector2i(clamp(random_pos.x + randi_range(-2, 2), -MAPSIZE_X, MAPSIZE_X), clamp(random_pos.y + randi_range(-2, 2), -MAPSIZE_Y, MAPSIZE_Y))
 			if random_pos.length() > 3:
 				_create_unit_at(random_pos, egg_scene)
+	
+	# COIN/DIAMOND
+	random_pos = _find_wall(MAPSIZE_X, MAPSIZE_X)
+	floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
+	wall_tilemap.set_cell(random_pos, -1, Vector2i(0, 0))
+	for i in range(10):
+		var offset = Vector2i(randi_range(-2,2), randi_range(-2,2))
+		if not wall_tilemap.get_cell_source_id(random_pos + offset)==tile_ids["OBSIDIAN"]:
+			wall_tilemap.set_cell(random_pos+offset, -1, Vector2i(0, 0))
+			if randf()<0.5:
+				ground_tilemap.set_cell(random_pos+offset, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
+	
+	world.all_spike_locations = []
+	for x in range(-MAPSIZE_X, MAPSIZE_X):
+		for y in range(-MAPSIZE_Y, MAPSIZE_Y):
+			var cell = ground_tilemap.get_cell_source_id(Vector2i(x,y))
+			if cell in [tile_ids["SPIKES"], tile_ids["NOSPIKES"]]:
+				world.all_spike_locations.append(Vector2i(x,y))
+	
 		
 
 func generate_map():
@@ -297,7 +317,7 @@ func generate_map():
 	for i in range(MAPSIZE_X**2 + world.current_floor):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 1:
-			var enemy_pool = all_enemies + hard_enemies if world.current_floor>4 else all_enemies
+			var enemy_pool = all_enemies + hard_enemies if world.current_floor>3 else all_enemies
 			_create_unit_at(random_pos, enemy_pool.pick_random())
 	
 	# EGGS

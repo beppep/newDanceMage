@@ -25,4 +25,4 @@ func cast(_caster: Unit): # could use ready for this instead?
 func _physics_process(_delta): # called at 60 fps
 	life_time -= 1
 	if life_time <=0:
-		queue_free()
+		free()

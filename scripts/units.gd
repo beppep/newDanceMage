@@ -39,6 +39,7 @@ func _process_turn():
 		world.next_floor()
 		await player_take_turns_until_no_more_extra_turns() # extra turn on new floor
 	
+	world.toggle_spikes()
 	
 	var bombs_first: Array[Unit] = []
 	var moves_first: Array[Unit] = []

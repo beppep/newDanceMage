@@ -1,0 +1,13 @@
+[gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://dek778mhsdpu8"]
+
+[sub_resource type="Gradient" id="Gradient_n52ot"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 0, 0, 0.29411766)
+metadata/_snap_count = 16
+
+[resource]
+gradient = SubResource("Gradient_n52ot")
+width = 192
+height = 108
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+repeat = 2

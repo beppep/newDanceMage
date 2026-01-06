@@ -1,13 +1,13 @@
 extends Enemy
 
 
-func should_attack(target) -> bool:
+func should_attack(_target) -> bool:
 	return true
 	
-func do_move():
-	var offset = CARDINAL_DIRECTIONS.pick_random()
-	if world.is_empty(location + offset):
-		location += offset
+#func do_move():
+#	var offset = CARDINAL_DIRECTIONS.pick_random() #no. they are smarter now;
+#	if world.is_empty(location + offset):
+#		location += offset
 
 func get_possible_targets() -> Array[Vector2i]:
 	return target_with_offsets(CARDINAL_DIRECTIONS)

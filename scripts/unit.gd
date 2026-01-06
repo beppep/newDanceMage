@@ -100,10 +100,28 @@ func move_to(target: Vector2i):
 	if world.is_empty(target, fatness):
 		location = target
 
+func push_units(pusher_location: Vector2i, direction: Vector2i, knockback: int = 1):
+	for t in range(knockback):
+		#calculate number of consecutive units in this direction
+		var _range = 0
+		for i in range(1, 20):
+			if world.units.get_unit_at(pusher_location + direction*i) == null:
+				_range = i
+				break
+		# push them (in reverse order)
+		for i in range(_range):
+			var _dist = _range - i
+			var target_cell = pusher_location + direction * _dist
+			var unit = world.units.get_unit_at(target_cell)
+			if unit:
+				unit.move_in_direction(direction)
+			else:
+				print("THIS SHOULD NOT HAPPEN??")
+
 func move_in_direction(direction: Vector2i, length: int = 1):
 	var goal = location
 	for i in range(length):
-		if not world.is_empty(goal + direction, fatness):
+		if not world.is_empty(goal + direction, fatness, self):
 			break
 		goal += direction
 	location = goal

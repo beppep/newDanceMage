@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxv3jdldnivki"]
+[gd_scene load_steps=8 format=3 uid="uid://bxv3jdldnivki"]
 
 [ext_resource type="Script" uid="uid://cii2ibyg5vuxy" path="res://scripts/units/bomb.gd" id="1_tt6da"]
 [ext_resource type="Texture2D" uid="uid://byt745kvk4slh" path="res://assets/sprites/enemies/bomb/bomb1.png" id="2_tt6da"]
 [ext_resource type="Texture2D" uid="uid://bqluvv8gem857" path="res://assets/sprites/enemies/bomb/bomb2.png" id="3_bqb2d"]
 [ext_resource type="Texture2D" uid="uid://dn3aqgakroc2w" path="res://assets/sprites/enemies/bomb/bomb3.png" id="4_m4axb"]
 [ext_resource type="Texture2D" uid="uid://db0fnf17n24bj" path="res://assets/sprites/enemies/bomb/bomb4.png" id="5_ctx50"]
+[ext_resource type="Texture2D" uid="uid://b83rq3o5syv10" path="res://assets/sprites/units/tnt2.png" id="6_m4axb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wmx41"]
 animations = [{
@@ -43,11 +44,11 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_tt6da")
+"texture": ExtResource("6_m4axb")
 }],
 "loop": true,
 "name": &"tnt_barrel",
-"speed": 5.0
+"speed": 1.0
 }]
 
 [node name="Bomb" type="Node2D"]

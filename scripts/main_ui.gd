@@ -5,6 +5,8 @@ class_name MainUI
 @onready var health_container := $VBoxContainer/Health
 @onready var spell_container := $VBoxContainer/Spells
 @onready var upgrade_button := $Shop/UpgradeButton
+@onready var damage_flash := $DamageFlash
+
 
 @onready var spell_card_scene := preload("res://scenes/spell_card.tscn")
 
@@ -21,8 +23,8 @@ const dark_wildcard_arrow_texture := preload("res://assets/sprites/ui/darkwildca
 var arrow_textures
 var dark_arrow_textures
 
-const UPGRADE_COST = 5
-const UPGRADE_SCALING = 5
+const UPGRADE_COST = 1
+const UPGRADE_SCALING = 1
 var selected_spell_in_shop = null
 var selected_arrow_in_shop = null
 
@@ -190,4 +192,14 @@ func _on_upgrade_button_2_pressed() -> void:
 			spell.upgrade_count+=1
 			_on_spells_changed()
 			_on_health_changed()
-	
+			
+
+
+
+func flash_damage():
+	damage_flash.visible = true
+	damage_flash.modulate.a = 1
+
+	var tween := create_tween()
+	tween.tween_property(damage_flash, "modulate:a", 0.0, 0.5)
+	tween.finished.connect(func():damage_flash.visible = false)

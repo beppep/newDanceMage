@@ -1,26 +1,27 @@
 extends Unit
 class_name Player
 
-var stab_spell = preload("res://assets/resources/spells/dash_spell.tres")
+var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
 
 var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spellresources in a list. for some reason preload returns like a weird reference
-	"res://assets/resources/spells/explode_spell.tres",
-	"res://assets/resources/spells/fireball_spell.tres",
-	"res://assets/resources/spells/wind_spell.tres",
-	"res://assets/resources/spells/rock_spell.tres",
-	"res://assets/resources/spells/bomb_spell.tres",
-	"res://assets/resources/spells/lightning_storm_spell.tres",
-	"res://assets/resources/spells/freeze_spell.tres",
-	"res://assets/resources/spells/dash_spell.tres",
-	"res://assets/resources/spells/hook_spell.tres",
-	"res://assets/resources/spells/magnet_spell.tres",
-	"res://assets/resources/spells/everything_spell.tres",
-	"res://assets/resources/spells/random_spell.tres",
 	"res://assets/resources/spells/beamstar_spell.tres",
+	"res://assets/resources/spells/bomb_spell.tres",
+	"res://assets/resources/spells/crystal_spell.tres",
+	"res://assets/resources/spells/dash_spell.tres",
+	"res://assets/resources/spells/everything_spell.tres",
+	"res://assets/resources/spells/explode_spell.tres",
 	"res://assets/resources/spells/extra_turn_spell.tres",
+	"res://assets/resources/spells/fireball_spell.tres",
+	"res://assets/resources/spells/freeze_spell.tres",
+	"res://assets/resources/spells/heal_spell.tres",
+	"res://assets/resources/spells/hook_spell.tres",
+	"res://assets/resources/spells/lightning_storm_spell.tres",
+	"res://assets/resources/spells/magnet_spell.tres",
+	"res://assets/resources/spells/random_spell.tres",
+	"res://assets/resources/spells/rock_spell.tres",
 	"res://assets/resources/spells/shield_spell.tres",
 	"res://assets/resources/spells/teleport_spell.tres",
-	"res://assets/resources/spells/heal_spell.tres",
+	"res://assets/resources/spells/wind_spell.tres",
 ]
 
 @onready var ui_node : MainUI = world.get_node("MainUI")
@@ -32,7 +33,7 @@ var move_history: Array[Vector2i] = []
 var spell_book: Array[SpellResource] = [Globals.selected_character.starting_spell.duplicate()]
 #var upgrade_count_book = [0]
 var coins = 0
-var items = {"exploding_rocks":1}
+var items = {"exploding_rocks":0, "four_way_shot":0}
 
 var extra_turn = 0
 
@@ -97,18 +98,24 @@ func process_turn():
 	move_history.append(buffered_input)
 	if world.is_empty(location + buffered_input):
 		location += buffered_input
+	elif items.get("push", 0):
+		push_units(location, buffered_input)
+		if world.is_empty(location + buffered_input):
+			location += buffered_input
 	buffered_input = null
 
 	await get_tree().create_timer(World.TILE_SIZE / speed).timeout # why
 	ui_node._on_spells_changed()
 	var current_spell_nr = 0
-	while current_spell_nr < spell_book.size():
-		var spell = spell_book[current_spell_nr]
+	var _to_be_cast = spell_book.duplicate()
+	while current_spell_nr < _to_be_cast.size():
+		var spell = _to_be_cast[current_spell_nr]
 		if check_recipe_alignment(spell) == spell.recipe.size():
 			await get_tree().process_frame # we need to have this line for the tween to work i have no clue
 			# like if you edit a tween on an object thats not ready yet nothing happens
 			ui_node.flash_icon(ui_node.spell_container.get_children()[current_spell_nr].get_children()[0])
-			await cast_spell(spell_book[current_spell_nr])
+			
+			await cast_spell(_to_be_cast[current_spell_nr]) # cast copy
 		current_spell_nr += 1
 	
 
@@ -131,14 +138,18 @@ func check_recipe_alignment(spell : SpellResource):
 func cast_spell(spell_resource: SpellResource):
 	print("Casting ", spell_resource.name)
 	var spell
-	if spell_resource.spell_script:
+	var _did_resolve # for temp spells
+	if spell_resource.spell_script: #why would this not happen?
 		spell = spell_resource.spell_script.new()  # instantiate makes a node2D?
 		add_child(spell)
-		spell.cast(self)
-	while spell in get_children():
+		_did_resolve = await spell.cast(self)
+	else:
+		print("NO SPELL SCRIPT for ", spell_resource)
+		print("with name ",spell_resource.name)
+	while is_instance_valid(spell) and spell in get_children():
 		await get_tree().process_frame
 	print("Done casting",spell_resource.name)
-	if spell_resource.temporary:
+	if spell_resource.temporary and _did_resolve:
 		spell_book.erase(spell_resource)
 
 func get_facing() -> Vector2i:
@@ -181,7 +192,10 @@ func create_random_recipe(recipe_length :int):
 		recipe.append(Step.make_direction(all_inputs.pick_random()))
 	return recipe
 
-
+func take_damage(amount=1):
+	super(amount)
+	ui_node.flash_damage()
+	await get_tree().create_timer(0.5).timeout
 
 func die():
 	print(name, " died a horrible death.")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://dfm2hqcff5htw"]
+[gd_scene load_steps=30 format=4 uid="uid://dfm2hqcff5htw"]
 
 [ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_jjf0l"]
 [ext_resource type="Texture2D" uid="uid://b1j5y10ckc80i" path="res://assets/sprites/tiles/rock.png" id="2_vj1s7"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://bxb3i4d6d082o" path="res://assets/sprites/tiles/white.png" id="6_gnurf"]
 [ext_resource type="Texture2D" uid="uid://c5ugh0410ghil" path="res://assets/sprites/tiles/black.png" id="7_lhmm1"]
 [ext_resource type="Texture2D" uid="uid://b6tbvcewt1oj2" path="res://assets/sprites/tiles/diamond.png" id="8_6lba3"]
+[ext_resource type="Texture2D" uid="uid://b56idb077o1da" path="res://assets/sprites/tiles/spikes.png" id="8_q0em4"]
+[ext_resource type="Texture2D" uid="uid://b4sbsc00ut8dh" path="res://assets/sprites/tiles/no_spikes.png" id="9_0phbf"]
 [ext_resource type="Texture2D" uid="uid://clleiojhorbc1" path="res://assets/sprites/ui/heart.png" id="9_2h3h0"]
 [ext_resource type="Texture2D" uid="uid://u0kthw8kmx5w" path="res://assets/sprites/particles/coin.png" id="10_6jlns"]
 [ext_resource type="Script" uid="uid://duu3jyqjhp3f1" path="res://scripts/units.gd" id="11_qhnon"]
@@ -42,6 +44,14 @@ texture = ExtResource("6_gnurf")
 texture = ExtResource("7_lhmm1")
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnurf"]
+texture = ExtResource("8_q0em4")
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lhmm1"]
+texture = ExtResource("9_0phbf")
+0:0/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_7fvey"]
 sources/0 = SubResource("TileSetAtlasSource_18xev")
 sources/1 = SubResource("TileSetAtlasSource_c1o4b")
@@ -50,6 +60,8 @@ sources/3 = SubResource("TileSetAtlasSource_4rud1")
 sources/4 = SubResource("TileSetAtlasSource_xn55d")
 sources/5 = SubResource("TileSetAtlasSource_j008o")
 sources/6 = SubResource("TileSetAtlasSource_tfagm")
+sources/7 = SubResource("TileSetAtlasSource_gnurf")
+sources/8 = SubResource("TileSetAtlasSource_lhmm1")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7bxi3"]
 texture = ExtResource("8_6lba3")
@@ -89,6 +101,7 @@ script = ExtResource("11_qhnon")
 
 [node name="Player" parent="Units" instance=ExtResource("12_qvjt5")]
 position = Vector2(8, 7)
+fatness = Vector2i(1, 1)
 
 [node name="Camera2D" type="Camera2D" parent="Units/Player"]
 zoom = Vector2(6, 6)

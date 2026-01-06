@@ -3,7 +3,7 @@ extends Spell
 
 
 func cast(caster: Unit):
-	var _to_be_casted = caster.spell_book.copy()
+	var _to_be_casted = caster.spell_book.duplicate()
 	for i in range(len(_to_be_casted)):
 		var subspell_res = caster.spell_book[i]
 		if subspell_res.spell_script and subspell_res.name != "Omegapotence":

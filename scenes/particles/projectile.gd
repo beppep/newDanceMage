@@ -6,8 +6,8 @@ extends Node2D
 @export var LIFETIME = 100
 
 @onready var wall_tileset : TileMapLayer = $"/root/World/Level/TileMapLayerWalls"
-@onready var world = get_tree().current_scene
-@onready var player = world.player
+@onready var world: World = get_tree().current_scene
+@onready var player: Player = world.player
 
 
 var direction := Vector2i.RIGHT
@@ -31,15 +31,7 @@ func _physics_process(_delta):
 	_check_collision()
 
 func _check_collision():
-	var cell = wall_tileset.get_cell_source_id(location)
-	if cell != -1:
+	if not world.is_empty(location) and not location == caster.location:
+		world.deal_damage_at(location)
 		queue_free()
-		return
-
-	for unit in $"/root/World/Level/Units".get_children():
-		if not is_instance_valid(unit) or unit.is_queued_for_deletion():
-			continue
-		if unit.location == location and unit != caster:
-			await unit.take_damage()
-			queue_free()
 			

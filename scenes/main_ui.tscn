@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1r37xlv72lnf"]
+[gd_scene load_steps=8 format=3 uid="uid://b1r37xlv72lnf"]
 
 [ext_resource type="Script" uid="uid://d2rswpfdl28b2" path="res://scripts/main_ui.gd" id="1_2ppmm"]
 [ext_resource type="Texture2D" uid="uid://inwjj0lddvkd" path="res://assets/sprites/units/crystal.png" id="2_w37m7"]
+[ext_resource type="Texture2D" uid="uid://dek778mhsdpu8" path="res://assets/resources/damage_gradient.tres" id="3_e6fyy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j6a7c"]
 font_size = 100
@@ -216,6 +217,15 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="DamageFlash" type="TextureRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_e6fyy")
+
 [connection signal="pressed" from="Shop/UpgradeButton/Button" to="." method="_on_upgrade_button_pressed"]
 [connection signal="pressed" from="Shop/UpgradeButton2/Button" to="." method="_on_upgrade_button_2_pressed"]
-[connection signal="pressed" from="Shop/UpgradeButton2/Button" to="." method="_on_upgrade_button_pressed"]

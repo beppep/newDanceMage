@@ -13,9 +13,10 @@ func _ready() -> void:
 func process_turn():
 	if not is_tnt_barrel:
 		age += 1
-		anim.play("age"+str(age))
 		if age >= 3:
 			await die()
+		else:
+			anim.play("age"+str(age))
 	else:
 		anim.play("tnt_barrel")
 		
@@ -30,5 +31,8 @@ func die():
 	world.particles.make_cloud(location, "fire")
 	for offset in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i(1,1), Vector2i(1,-1), Vector2i(-1,1), Vector2i(-1,-1)]:
 		await world.deal_damage_at(location + offset)
+		if world.wall_tilemap.get_cell_source_id(location + offset) == 1:
+			world.wall_tilemap.set_cell(location + offset, -1, Vector2i.ZERO)
+
 	
 	super() # freeing and waiting stops the code after so we must free at the end.

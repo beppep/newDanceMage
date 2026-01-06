@@ -19,6 +19,10 @@ func do_move():
 
 
 func process_turn():
+	
+	if Vector2(world.player.location - location).length() > 6:
+		return
+	
 	charge += 1
 	if charge == 1:
 		if randf() < 0.5:
@@ -34,7 +38,7 @@ func process_turn():
 		for i in range(100):
 			var player_dist = Vector2(target_loc - world.player.location).length() 
 			var self_dist = Vector2(target_loc-location).length()
-			if world.is_empty(target_loc) and player_dist < 4 and self_dist >= 2:
+			if world.is_empty(target_loc) and player_dist <= 3 and self_dist >= 2:
 				break
 			else:
 				target_loc = location + Vector2i(randi_range(-3,3),randi_range(-3,3))
