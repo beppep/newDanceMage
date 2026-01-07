@@ -2,7 +2,7 @@ extends Enemy
 
 func _ready() -> void:
 	super()
-	attack_range = 7
+	attack_range = 6
 	speed = 500.0
 
 func do_move():

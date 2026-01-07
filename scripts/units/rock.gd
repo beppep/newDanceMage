@@ -11,6 +11,8 @@ func die():
 	await get_tree().create_timer(0.1).timeout
 	
 	world.particles.make_cloud(location, "rocks")
+	visible = false
+	
 	if world.player.items.get("exploding_rocks", 0):
 		print("special exf")
 		for offset in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i(1,1), Vector2i(1,-1), Vector2i(-1,1), Vector2i(-1,-1)]:

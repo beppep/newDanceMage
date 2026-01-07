@@ -98,16 +98,21 @@ func process_turn():
 	move_history.append(buffered_input)
 	if world.is_empty(location + buffered_input):
 		location += buffered_input
-	elif items.get("push", 0):
-		push_units(location, buffered_input)
-		if world.is_empty(location + buffered_input):
-			location += buffered_input
+	else: # someone in the way?
+		if items.get("walk_damage"): # spiked chest?
+			world.deal_damage_at(location + buffered_input)
+		if items.get("push", 0):
+			push_units(location, buffered_input)
+			if world.is_empty(location + buffered_input):
+				location += buffered_input
+	
 	buffered_input = null
 
 	await get_tree().create_timer(World.TILE_SIZE / speed).timeout # why
 	ui_node._on_spells_changed()
 	var current_spell_nr = 0
 	var _to_be_cast = spell_book.duplicate()
+	var _emergency_debugging_frame_limit = 0
 	while current_spell_nr < _to_be_cast.size():
 		var spell = _to_be_cast[current_spell_nr]
 		if check_recipe_alignment(spell) == spell.recipe.size():
@@ -117,6 +122,10 @@ func process_turn():
 			
 			await cast_spell(_to_be_cast[current_spell_nr]) # cast copy
 		current_spell_nr += 1
+		
+		_emergency_debugging_frame_limit += 1
+		if _emergency_debugging_frame_limit > 500:
+			print("ERROR::: CASTING OVER 500 SPELLS!??!?!")
 	
 
 func check_recipe_alignment(spell : SpellResource):
@@ -146,8 +155,12 @@ func cast_spell(spell_resource: SpellResource):
 	else:
 		print("NO SPELL SCRIPT for ", spell_resource)
 		print("with name ",spell_resource.name)
+	var _emergency_debugging_frame_limit = 0
 	while is_instance_valid(spell) and spell in get_children():
 		await get_tree().process_frame
+		_emergency_debugging_frame_limit += 1
+		if _emergency_debugging_frame_limit > 500:
+			print("ERROR::: STUCK WAITING FOR CHILD TO DIE")
 	print("Done casting",spell_resource.name)
 	if spell_resource.temporary and _did_resolve:
 		spell_book.erase(spell_resource)
@@ -177,8 +190,6 @@ func unlock(spell: SpellResource, recipe: Array):
 	spell_book.append(spell)
 	assert(recipe is Array[Step])
 	spell.recipe = recipe
-	#recipe_book.append(recipe)
-	#upgrade_count_book.append(0)
 
 #func unlock_random_spell():
 #	var new_spell = locked_spell_resources.pick_random()
@@ -201,4 +212,4 @@ func die():
 	print(name, " died a horrible death.")
 	#queue_free()
 	world.units.is_running = false
-	await get_tree().create_timer(5.0).timeout
+	#await get_tree().create_timer(5.0).timeout

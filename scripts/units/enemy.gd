@@ -123,9 +123,9 @@ func perform_moving_attack(offset: Vector2i, length: int = 1):
 		if true:# should_attack(unit): 
 			world.particles.make_cloud(location, "smoke")
 			# Move back one step if unit will still be alive after attack
-			if unit.health > attack_power:
-				location -= offset
 			unit.take_damage(attack_power)
+			if not world.is_empty(location):
+				location -= offset
 		else:
 			# Move back one step if you wont kill that type of unit
 			location -= offset

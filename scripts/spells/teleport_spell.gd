@@ -1,7 +1,5 @@
 extends Spell
 
-@onready var wall_tileset := $"/root/World/TileMapLayerWalls"
-
 
 var RANGE = 10
 

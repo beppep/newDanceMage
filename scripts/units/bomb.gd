@@ -29,10 +29,11 @@ func die():
 	await get_tree().create_timer(0.1).timeout
 	
 	world.particles.make_cloud(location, "fire")
+	visible = false
+	
 	for offset in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i(1,1), Vector2i(1,-1), Vector2i(-1,1), Vector2i(-1,-1)]:
 		await world.deal_damage_at(location + offset)
 		if world.wall_tilemap.get_cell_source_id(location + offset) == 1:
 			world.wall_tilemap.set_cell(location + offset, -1, Vector2i.ZERO)
 
-	
 	super() # freeing and waiting stops the code after so we must free at the end.

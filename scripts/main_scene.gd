@@ -29,10 +29,7 @@ func next_floor():
 		if child != player:
 			child.queue_free()
 	
-	if current_floor % 3 == 0:
-		$map_generator.generate_boss_room()
-	else:
-		$map_generator.generate_map_cavestyle()
+	$map_generator.generate_map()
 	#units.start() # DONT!! Then it will run multiple instances of turn order (!!?!)
 
 func _process(_delta):

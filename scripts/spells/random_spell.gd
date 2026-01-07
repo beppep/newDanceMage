@@ -3,7 +3,9 @@ extends Spell
 
 
 func cast(caster: Unit):
-	var subspell_res = load(caster.locked_spell_paths.pick_random())
+	var subspell_res:SpellResource = load(caster.locked_spell_paths.pick_random())
+	while(subspell_res.temporary):
+		subspell_res = load(caster.locked_spell_paths.pick_random())
 	if subspell_res.spell_script:
 		var subspell = subspell_res.spell_script.new()  # instantiate makes a node2D?
 		add_child(subspell)

@@ -9,6 +9,7 @@ var SIMULATION_DISTANCE = 10
 #func _ready() -> void:
 #	child_exiting_tree.connect(_on_child_exit)
 
+
 #func _on_child_exit(_node: Node):
 #	print("why???")
 	#for unit in get_units():
@@ -20,6 +21,9 @@ func start():
 	while is_running:
 		await _process_turn()
 		await get_tree().create_timer(1.0 / 165.0).timeout
+	
+	# death
+	await get_tree().create_timer(3.0).timeout
 	get_tree().change_scene_to_file("res://scenes/character_select.tscn")
 
 
