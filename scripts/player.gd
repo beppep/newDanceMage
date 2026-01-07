@@ -1,7 +1,7 @@
 extends Unit
 class_name Player
 
-var stab_spell = preload("res://assets/resources/spells/stab_spell.tres")
+var stab_spell = load("res://assets/resources/spells/stab_spell.tres")
 
 var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spellresources in a list. for some reason preload returns like a weird reference
 	"res://assets/resources/spells/beamstar_spell.tres",
