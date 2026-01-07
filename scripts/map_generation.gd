@@ -253,6 +253,22 @@ func generate_map_cavestyle():
 	_paint_area(wall_tilemap, visited[0]+Vector2i(-1,0), visited[0]+Vector2i(1,1), -1)
 	_create_unit_at(visited[0], trader_scene) # after putting air
 	
+	# RANDOM WALK: DIAMOND -> AIR
+	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
+	visited = []
+	while true:
+		if world.is_empty(randomwalk_loc):
+			break
+		visited.append(randomwalk_loc)
+		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
+		randomwalk_loc += prev_step
+	for loc in visited:
+		if randf()<0.1: # spike ground
+			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
+		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
+	floor_tilemap.set_cell(visited[0], tile_ids["COIN"], Vector2i(0, 0))
+	wall_tilemap.set_cell(visited[0], -1, Vector2i(0, 0))
+	
 	# ROCKS
 	for i in range(2*MAPSIZE_X**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
@@ -278,21 +294,6 @@ func generate_map_cavestyle():
 	#		if randf()<0.5:
 	#			ground_tilemap.set_cell(random_pos+offset, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
 	
-	# RANDOM WALK: DIAMOND -> AIR
-	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
-	visited = []
-	while true:
-		if world.is_empty(randomwalk_loc):
-			break
-		visited.append(randomwalk_loc)
-		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
-		randomwalk_loc += prev_step
-	for loc in visited:
-		if randf()<0.1: # spike ground
-			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
-		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
-	floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
-	wall_tilemap.set_cell(random_pos, -1, Vector2i(0, 0))
 	
 	world.all_spike_locations = []
 	for x in range(-MAPSIZE_X, MAPSIZE_X+1):

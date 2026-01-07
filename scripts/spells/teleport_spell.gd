@@ -3,10 +3,6 @@ extends Spell
 
 var RANGE = 10
 
-func _ready():
-	super()
-	life_time = 8
-
 func cast(caster: Unit):
 	world.particles.make_cloud(caster.location, "ectoplasm")
 	var test_loc = caster.location
@@ -19,3 +15,5 @@ func cast(caster: Unit):
 	caster.location = test_loc
 	world.particles.make_cloud(caster.location, "ectoplasm")
 				
+
+	life_time = 8

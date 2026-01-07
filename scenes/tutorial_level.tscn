@@ -101,7 +101,6 @@ script = ExtResource("11_qhnon")
 
 [node name="Player" parent="Units" instance=ExtResource("12_qvjt5")]
 position = Vector2(8, 7)
-fatness = Vector2i(1, 1)
 
 [node name="Camera2D" type="Camera2D" parent="Units/Player"]
 zoom = Vector2(6, 6)

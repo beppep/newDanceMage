@@ -5,10 +5,6 @@ extends Spell
 
 var RANGE = 5
 
-func _ready():
-	super()
-	life_time = 8
-
 func cast(caster: Unit):
 	for x in range(-RANGE,RANGE):
 		for y in range(-RANGE,RANGE):
@@ -16,3 +12,5 @@ func cast(caster: Unit):
 			if world.floor_tilemap.get_cell_source_id(location)==2:
 				world.floor_tilemap.set_cell(location, -1, Vector2i(0, 0))
 				caster.coins += 1
+	
+	life_time = 8

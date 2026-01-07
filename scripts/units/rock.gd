@@ -17,7 +17,11 @@ func die():
 		print("special exf")
 		for offset in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i(1,1), Vector2i(1,-1), Vector2i(-1,1), Vector2i(-1,-1)]:
 			#if not world.units.get_unit_at(location + offset) == world.player:
+			print(world.units.get_unit_at(location + offset), " is ", world.units.get_unit_at(location + offset) is Enemy, " a ", Enemy)
 			if world.units.get_unit_at(location + offset) is Enemy:
+				print("awaiting damg other")
 				await world.deal_damage_at(location + offset)
-
+	
+	print("bye")
 	super()
+	print("bye2")

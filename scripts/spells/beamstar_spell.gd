@@ -1,10 +1,6 @@
 extends Spell
 
 
-func _ready():
-	super()
-	life_time = 8
-
 func cast(caster: Unit):
 	
 	for dloc in [Vector2i(1,0), Vector2i(1,1), Vector2i(0,1), Vector2i(-1,1), Vector2i(-1,0), Vector2i(-1,-1), Vector2i(0,-1), Vector2i(1,-1)]:
@@ -12,6 +8,10 @@ func cast(caster: Unit):
 			world.deal_damage_at(caster.location + dloc*(i+1))
 	
 		spawn_beam(caster.global_position, dloc, 500, 8, 0.2)
+	life_time = 8
+
+
+
 
 func spawn_beam(pos: Vector2, direction: Vector2, length := 5000, thickness := 20, lifetime := 0.1):
 	# Normalize the direction to avoid scaling issues

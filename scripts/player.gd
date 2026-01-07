@@ -10,18 +10,18 @@ var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spe
 	"res://assets/resources/spells/dash_spell.tres",
 	"res://assets/resources/spells/everything_spell.tres",
 	"res://assets/resources/spells/explode_spell.tres",
-	"res://assets/resources/spells/extra_turn_spell.tres",
-	"res://assets/resources/spells/fireball_spell.tres",
-	"res://assets/resources/spells/freeze_spell.tres",
-	"res://assets/resources/spells/heal_spell.tres",
-	"res://assets/resources/spells/hook_spell.tres",
-	"res://assets/resources/spells/lightning_storm_spell.tres",
-	"res://assets/resources/spells/magnet_spell.tres",
-	"res://assets/resources/spells/random_spell.tres",
-	"res://assets/resources/spells/rock_spell.tres",
-	"res://assets/resources/spells/shield_spell.tres",
-	"res://assets/resources/spells/teleport_spell.tres",
-	"res://assets/resources/spells/wind_spell.tres",
+	#"res://assets/resources/spells/extra_turn_spell.tres",
+	#"res://assets/resources/spells/fireball_spell.tres",
+	#"res://assets/resources/spells/freeze_spell.tres",
+	#"res://assets/resources/spells/heal_spell.tres",
+	#"res://assets/resources/spells/hook_spell.tres",
+	#"res://assets/resources/spells/lightning_storm_spell.tres",
+	#"res://assets/resources/spells/magnet_spell.tres",
+	#"res://assets/resources/spells/random_spell.tres",
+	#"res://assets/resources/spells/rock_spell.tres",
+	#"res://assets/resources/spells/shield_spell.tres",
+	#"res://assets/resources/spells/teleport_spell.tres",
+	#"res://assets/resources/spells/wind_spell.tres",
 ]
 
 @onready var ui_node : MainUI = world.get_node("MainUI")
@@ -119,13 +119,16 @@ func process_turn():
 			await get_tree().process_frame # we need to have this line for the tween to work i have no clue
 			# like if you edit a tween on an object thats not ready yet nothing happens
 			ui_node.flash_icon(ui_node.spell_container.get_children()[current_spell_nr].get_children()[0])
-			
+			print("await cast")
 			await cast_spell(_to_be_cast[current_spell_nr]) # cast copy
+			# WARNING: if the spell is freed before cast() returns, the whole game will freeze. the only workaround for this is to not use await but instead make custom signals for everything we want to await
+			print("dun cast")
 		current_spell_nr += 1
 		
 		_emergency_debugging_frame_limit += 1
 		if _emergency_debugging_frame_limit > 500:
 			print("ERROR::: CASTING OVER 500 SPELLS!??!?!")
+	print("all casts done")
 	
 
 func check_recipe_alignment(spell : SpellResource):
@@ -146,7 +149,7 @@ func check_recipe_alignment(spell : SpellResource):
 
 func cast_spell(spell_resource: SpellResource):
 	print("Casting ", spell_resource.name)
-	var spell
+	var spell : Spell
 	var _did_resolve # for temp spells
 	if spell_resource.spell_script: #why would this not happen?
 		spell = spell_resource.spell_script.new()  # instantiate makes a node2D?
@@ -156,11 +159,14 @@ func cast_spell(spell_resource: SpellResource):
 		print("NO SPELL SCRIPT for ", spell_resource)
 		print("with name ",spell_resource.name)
 	var _emergency_debugging_frame_limit = 0
+	print("stuck?1")
 	while is_instance_valid(spell) and spell in get_children():
+		print("stuck?2")
 		await get_tree().process_frame
 		_emergency_debugging_frame_limit += 1
 		if _emergency_debugging_frame_limit > 500:
 			print("ERROR::: STUCK WAITING FOR CHILD TO DIE")
+	print("stuck?3")
 	print("Done casting",spell_resource.name)
 	if spell_resource.temporary and _did_resolve:
 		spell_book.erase(spell_resource)

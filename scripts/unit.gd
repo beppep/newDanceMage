@@ -83,8 +83,10 @@ func take_damage(amount=1):
 		health -= amount
 		world.particles.make_cloud(location, "attack_indicator")
 	if health <= 0:
-		if not is_queued_for_deletion():
+		if is_instance_valid(self) and not is_queued_for_deletion():
+			print("awaiting die")
 			await die()
+			print("completed die?")
 
 func is_adjacent_to(to: Vector2i) -> bool:
 	return is_in_range_of(to, 1)
@@ -134,5 +136,6 @@ func teleport_to(loc: Vector2i):
 	location = loc
 
 func die():
-	print(name, " died a horrible death.")
+	print(name, get_script().get_global_name(), " died a horrible death.")
 	queue_free()
+	print(name, get_script().get_global_name(), " died a horrible death...again")

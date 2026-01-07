@@ -6,10 +6,6 @@ extends Spell
 
 var RANGE = 10
 
-func _ready():
-	super()
-	life_time = 8
-
 func cast(caster: Unit):
 	for direction in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
 		# push in reverse order
@@ -21,6 +17,8 @@ func cast(caster: Unit):
 				unit.move_in_direction(direction)
 				
 		spawn_beam(caster.global_position, direction, 500, 16, 0.2)
+
+	life_time = 8
 
 
 func spawn_beam(pos: Vector2, direction: Vector2, length := 5000, thickness := 20, lifetime := 0.1):

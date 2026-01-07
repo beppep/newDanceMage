@@ -68,7 +68,9 @@ func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null) -> bool:
 func deal_damage_at(location: Vector2i, damage: int = 1, except: Unit = null):
 	var unit = units.get_unit_at(location)
 	if unit and is_instance_valid(unit) and not unit.is_queued_for_deletion() and not unit==except:
+		print("awaiting take dmgs")
 		await unit.take_damage(damage)
+	print("complted deal dmg at")
 		
 func get_closest_wall(from: Vector2i, direction: Vector2i, max_range: int = 20):
 	for i in range(1, max_range + 1):
