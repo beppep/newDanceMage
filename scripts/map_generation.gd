@@ -161,8 +161,24 @@ func _find_wall(MAPSIZE_X, MAPSIZE_Y):
 		random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 	return random_loc
 
+func randomwalk_to_air(start_loc : Vector2i, MAPSIZE_X: int, MAPSIZE_Y: int):
+	var randomwalk_loc: Vector2i = start_loc
+	var visited = []
+	var prev_step := Vector2i.ZERO
+	while true:
+		if world.is_empty(randomwalk_loc):
+			break
+		visited.append(randomwalk_loc)
+		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
+		randomwalk_loc += prev_step
+	for loc in visited:
+		if randf()<0.05: # spike ground
+			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
+		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
+
 
 func generate_map():
+	world.pentagram_location = null
 	world.all_spike_locations = []
 	if world.current_floor % 3 == 0:
 		if randf() < 0.5:
@@ -174,7 +190,6 @@ func generate_map():
 			generate_map_cavestyle()
 		else:
 			generate_map_chess_style()
-	
 
 
 func generate_map_cavestyle():
@@ -222,52 +237,31 @@ func generate_map_cavestyle():
 	
 	# RANDOM WALK: SPELL CRYSTAL -> AIR
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
-	var visited = []
-	while true:
-		if world.is_empty(randomwalk_loc):
-			break
-		visited.append(randomwalk_loc)
-		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
-		randomwalk_loc += prev_step
-	for loc in visited:
-		if randf()<0.05: # spike ground
-			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
-		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
-	_paint_area(wall_tilemap, visited[0]+Vector2i(-1,-1), visited[0]+Vector2i(1,1), -1)
-	_create_unit_at(visited[0], crystal_scene) # after putting air
+	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
+	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,-1), randomwalk_loc+Vector2i(1,1), -1)
+	_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
 		
 	# RANDOM WALK: SHOP -> AIR
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
-	visited = []
-	while true:
-		if world.is_empty(randomwalk_loc):
-			break
-		visited.append(randomwalk_loc)
-		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
-		randomwalk_loc += prev_step
-	for loc in visited:
-		if randf()<0.05: # spike ground
-			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
-		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
-	_paint_area(ground_tilemap, visited[0]+Vector2i(-1,0), visited[0]+Vector2i(1,1), tile_ids["WOOD"])
-	_paint_area(wall_tilemap, visited[0]+Vector2i(-1,0), visited[0]+Vector2i(1,1), -1)
-	_create_unit_at(visited[0], trader_scene) # after putting air
+	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
+	_paint_area(ground_tilemap, randomwalk_loc+Vector2i(-1,0), randomwalk_loc+Vector2i(1,1), tile_ids["WOOD"])
+	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,0), randomwalk_loc+Vector2i(1,1), -1)
+	_create_unit_at(randomwalk_loc, trader_scene) # after putting air
 	
 	# RANDOM WALK: DIAMOND -> AIR
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
-	visited = []
-	while true:
-		if world.is_empty(randomwalk_loc):
-			break
-		visited.append(randomwalk_loc)
-		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
-		randomwalk_loc += prev_step
-	for loc in visited:
-		if randf()<0.1: # spike ground
-			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
-		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
-	floor_tilemap.set_cell(visited[0], tile_ids["COIN"], Vector2i(0, 0))
-	wall_tilemap.set_cell(visited[0], -1, Vector2i(0, 0))
+	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
+	floor_tilemap.set_cell(randomwalk_loc, tile_ids["DIAMOND"], Vector2i(0, 0))
+	wall_tilemap.set_cell(randomwalk_loc, -1, Vector2i(0, 0))
+	
+	if randf() < 0.5 or true:
+		# RANDOM WALK: PENTAGRAM -> AIR
+		randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
+		randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
+		ground_tilemap.set_cell(randomwalk_loc, tile_ids["PENTAGRAM"], Vector2i(0, 0))
+		wall_tilemap.set_cell(randomwalk_loc, -1, Vector2i(0, 0))
+		wall_tilemap.set_cell(randomwalk_loc+Vector2i(0, -1), -1, Vector2i(0, 0))
+		world.pentagram_location = randomwalk_loc
 	
 	# ROCKS
 	for i in range(2*MAPSIZE_X**2):
@@ -282,18 +276,6 @@ func generate_map_cavestyle():
 			random_pos = Vector2i(clamp(random_pos.x + randi_range(-2, 2), -MAPSIZE_X, MAPSIZE_X), clamp(random_pos.y + randi_range(-2, 2), -MAPSIZE_Y, MAPSIZE_Y))
 			if random_pos.length() > 3:
 				_create_unit_at(random_pos, egg_scene)
-	
-	# COIN/DIAMOND # nah we random walking now
-	#random_pos = _find_wall(MAPSIZE_X, MAPSIZE_X)
-	#floor_tilemap.set_cell(random_pos, tile_ids["COIN"], Vector2i(0, 0))
-	#wall_tilemap.set_cell(random_pos, -1, Vector2i(0, 0))
-	#for i in range(10):
-	#	var offset = Vector2i(randi_range(-2,2), randi_range(-2,2))
-	#	if not wall_tilemap.get_cell_source_id(random_pos + offset)==tile_ids["OBSIDIAN"]:
-	#		wall_tilemap.set_cell(random_pos+offset, -1, Vector2i(0, 0))
-	#		if randf()<0.5:
-	#			ground_tilemap.set_cell(random_pos+offset, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
-	
 	
 	world.all_spike_locations = []
 	for x in range(-MAPSIZE_X, MAPSIZE_X+1):
@@ -364,11 +346,11 @@ func generate_map_chess_style():
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
 	ground_tilemap.set_cell(random_pos, tile_ids["STAIRS"] , Vector2i(0, 0))
 	
-	# COIN
+	# DIAMOND
 	random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
 	while not world.is_empty(random_pos) or Vector2(random_pos - world.player.location).length()<MAPSIZE_Y*0.7:
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
-	floor_tilemap.set_cell(random_pos, tile_ids["COIN"] , Vector2i(0, 0))
+	floor_tilemap.set_cell(random_pos, tile_ids["DIAMOND"] , Vector2i(0, 0))
 
 func _create_borders(start_x, end_x, start_y, end_y):
 	_paint_area(wall_tilemap, Vector2i(start_x-2,start_y-2),Vector2i(start_x-1,end_y+2), tile_ids["OBSIDIAN"]) # left wall
@@ -385,7 +367,7 @@ func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_locati
 			tilemap_layer.set_cell(Vector2i(x, y), tile_id , Vector2i(0, 0))
 
 func _create_unit_at(location: Vector2i, scene : PackedScene):
-	#var fatness = Globals.get_attribute_from_packed_scene(scene, "fatness")
+	#var fatness = Globals.get_fatness_from_packed_scene(scene)
 	if world.is_empty(location):#,fatness): # TODO: ACCESS FATNESS OF A PACKED SCENE! (IMPOSSIBLE?!?!)
 		var thing: Unit = scene.instantiate()
 		thing.position = World.loc_to_pos(location)

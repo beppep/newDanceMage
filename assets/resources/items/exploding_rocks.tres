@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://o1pw7gojy5s8"]
+
+[ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="1_m4fai"]
+[ext_resource type="Texture2D" uid="uid://ckbwk1l4n0l0l" path="res://assets/sprites/items/rock.png" id="1_qpoiq"]
+
+[resource]
+script = ExtResource("1_m4fai")
+name = "Miner's Blessing"
+dev_name = "exploding_rocks"
+image = ExtResource("1_qpoiq")
+description = "Destroying rocks hurts enemies!"
+price = 6
+metadata/_custom_type_script = "uid://bql1e6egobbiv"

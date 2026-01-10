@@ -3,25 +3,25 @@ class_name Player
 
 var stab_spell = load("res://assets/resources/spells/stab_spell.tres")
 
-var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spellresources in a list. for some reason preload returns like a weird reference
+var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spellresources in a typed array. for some reason preload returns like a weird reference instead of a SpellResource
 	"res://assets/resources/spells/beamstar_spell.tres",
 	"res://assets/resources/spells/bomb_spell.tres",
 	"res://assets/resources/spells/crystal_spell.tres",
 	"res://assets/resources/spells/dash_spell.tres",
 	"res://assets/resources/spells/everything_spell.tres",
 	"res://assets/resources/spells/explode_spell.tres",
-	#"res://assets/resources/spells/extra_turn_spell.tres",
-	#"res://assets/resources/spells/fireball_spell.tres",
-	#"res://assets/resources/spells/freeze_spell.tres",
-	#"res://assets/resources/spells/heal_spell.tres",
-	#"res://assets/resources/spells/hook_spell.tres",
-	#"res://assets/resources/spells/lightning_storm_spell.tres",
-	#"res://assets/resources/spells/magnet_spell.tres",
-	#"res://assets/resources/spells/random_spell.tres",
-	#"res://assets/resources/spells/rock_spell.tres",
-	#"res://assets/resources/spells/shield_spell.tres",
-	#"res://assets/resources/spells/teleport_spell.tres",
-	#"res://assets/resources/spells/wind_spell.tres",
+	"res://assets/resources/spells/extra_turn_spell.tres",
+	"res://assets/resources/spells/fireball_spell.tres",
+	"res://assets/resources/spells/freeze_spell.tres",
+	"res://assets/resources/spells/heal_spell.tres",
+	"res://assets/resources/spells/hook_spell.tres",
+	"res://assets/resources/spells/lightning_storm_spell.tres",
+	"res://assets/resources/spells/magnet_spell.tres",
+	"res://assets/resources/spells/random_spell.tres",
+	"res://assets/resources/spells/rock_spell.tres",
+	"res://assets/resources/spells/shield_spell.tres",
+	"res://assets/resources/spells/teleport_spell.tres",
+	"res://assets/resources/spells/wind_spell.tres",
 ]
 
 @onready var ui_node : MainUI = world.get_node("MainUI")
@@ -32,7 +32,7 @@ var move_history: Array[Vector2i] = []
 #var recipe_book: Array = [Globals.selected_character.starting_dance]
 var spell_book: Array[SpellResource] = [Globals.selected_character.starting_spell.duplicate()]
 #var upgrade_count_book = [0]
-var coins = 0
+var diamonds = 0
 var items = {"exploding_rocks":0, "four_way_shot":0}
 
 var extra_turn = 0
@@ -51,12 +51,13 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if world.floor_tilemap.get_cell_source_id(location)==2:
+	if world.floor_tilemap.get_cell_source_id(location)==Globals.tile_ids["DIAMOND"]:
 		world.floor_tilemap.set_cell(location, -1, Vector2i(0, 0))
-		coins += 1
+		diamonds += 1
 	if world.floor_tilemap.get_cell_source_id(location)==1:
 		world.floor_tilemap.set_cell(location, -1, Vector2i(0, 0))
 		health += 1
+	world.items.pickup_item_at(location, self)
 	
 	var input = get_input()
 	if input != null:

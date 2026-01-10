@@ -1,6 +1,7 @@
 extends CanvasLayer
 class_name MainUI
 
+@onready var world: World = $"/root/World"
 @onready var player: Player = $"/root/World/Level/Units/Player"
 @onready var health_container := $VBoxContainer/Health
 @onready var spell_container := $VBoxContainer/Spells
@@ -101,7 +102,7 @@ func _on_spells_changed(shop_version = false):
 	for child in spell_container.get_children():
 		child.queue_free()
 	
-	$CoinLabel.text = str(player.coins)+"$"
+	$CoinLabel.text = str(player.diamonds)+"$, Floor: " + str(world.current_floor)
 
 	
 	for i in range(player.spell_book.size()):
@@ -174,8 +175,8 @@ func _on_upgrade_button_pressed() -> void:
 	if selected_spell_in_shop!=null and selected_arrow_in_shop!=null:
 		var spell = player.spell_book[selected_spell_in_shop]
 		var cost = UPGRADE_COST + UPGRADE_SCALING * spell.upgrade_count
-		if player.coins >= cost and len(player.spell_book[selected_spell_in_shop].recipe)>1:
-			player.coins -= cost
+		if player.diamonds >= cost and len(player.spell_book[selected_spell_in_shop].recipe)>1:
+			player.diamonds -= cost
 			spell.recipe.pop_at(selected_arrow_in_shop)
 			spell.upgrade_count+=1
 			_on_spells_changed()
@@ -186,8 +187,8 @@ func _on_upgrade_button_2_pressed() -> void:
 	if selected_spell_in_shop!=null and selected_arrow_in_shop!=null:
 		var spell = player.spell_book[selected_spell_in_shop]
 		var cost = UPGRADE_COST + UPGRADE_SCALING * spell.upgrade_count
-		if player.coins >= cost:
-			player.coins -= cost
+		if player.diamonds >= cost:
+			player.diamonds -= cost
 			spell.recipe[selected_arrow_in_shop] = Step.make_wildcard()
 			spell.upgrade_count+=1
 			_on_spells_changed()

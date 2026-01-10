@@ -32,7 +32,8 @@ func die():
 	visible = false
 	
 	for offset in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i(1,1), Vector2i(1,-1), Vector2i(-1,1), Vector2i(-1,-1)]:
-		await world.deal_damage_at(location + offset)
+		if not (world.units.get_unit_at(location + offset) == world.player and world.player.items.get("bomb_immune",0)>0):
+			await world.deal_damage_at(location + offset)
 		if world.wall_tilemap.get_cell_source_id(location + offset) == 1:
 			world.wall_tilemap.set_cell(location + offset, -1, Vector2i.ZERO)
 

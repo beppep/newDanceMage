@@ -3,6 +3,7 @@ extends Enemy
 
 const SLIME_SCENE: PackedScene = preload("res://scenes/units/Slime.tscn")
 
+
 func has_air_or_attackable(loc):
 	if world.is_empty(loc):
 		return true # air

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bf35l2rdbvvh0"]
+
+[ext_resource type="Texture2D" uid="uid://ckwk2meigycqy" path="res://assets/sprites/items/push_item.png" id="1_iqysw"]
+[ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="2_wgirg"]
+
+[resource]
+script = ExtResource("2_wgirg")
+name = "Wrestler's Blessing"
+dev_name = "push"
+image = ExtResource("1_iqysw")
+description = "Push anything when walking."
+price = 6
+metadata/_custom_type_script = "uid://bql1e6egobbiv"

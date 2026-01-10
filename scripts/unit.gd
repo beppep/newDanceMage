@@ -10,7 +10,6 @@ const SHIELD_SPRITE = preload("res://assets/sprites/particles/shield.png")
 @onready var world : World = get_tree().current_scene
 
 @export var fatness = Vector2i(1,1)
-var tween: Tween
 var shaking = false
 var shield_indicator : Sprite2D
 var shield := 0:
@@ -19,7 +18,11 @@ var shield := 0:
 		print(self)
 		shield_indicator.visible = (val > 0)
 		queue_redraw()
-var max_health := 1
+var max_health := 1:
+	set(val):
+		max_health = val
+		health = min(max_health, health) # or just health += 0 to trigger other setter. lol
+		health_changed.emit()
 var health := 1:
 	set(val):
 		health = min(val, max_health)
@@ -34,6 +37,7 @@ var frozen := 0:
 
 		
 var speed := 260.0
+var tween: Tween
 @onready var location := World.pos_to_loc(position):
 	set(loc):
 		location = loc
@@ -61,6 +65,8 @@ func _ready():
 
 func _process(_delta: float):
 	if shaking and not frozen:
+		position = World.loc_to_pos(location) + Vector2(randf()-randf(), randf()-randf())*1
+	elif Engine.get_frames_drawn()%32 == 0 and self is Enemy:
 		position = World.loc_to_pos(location) + Vector2(randf()-randf(), randf()-randf())*1
 
 func process_turn_unless_frozen():

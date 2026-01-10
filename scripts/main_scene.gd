@@ -4,6 +4,7 @@ class_name World
 const TILE_SIZE = 16
 
 @onready var units: Units = $Level/Units
+@onready var items: Items = $Items
 @onready var wall_tilemap : TileMapLayer = $Level/TileMapLayerWalls
 @onready var floor_tilemap : TileMapLayer = $Level/TileMapLayerFloor
 @onready var ground_tilemap : TileMapLayer = $Level/TileMapLayerGround
@@ -11,6 +12,7 @@ const TILE_SIZE = 16
 @onready var particles: Particle_spawner = $Particles
 var current_floor = 1
 var all_spike_locations: Array[Vector2i] = []
+var pentagram_location
 
 func _ready() -> void:
 	
@@ -40,7 +42,7 @@ func is_wall_at(location: Vector2i) -> bool:
 	var tile_id = wall_tilemap.get_cell_source_id(cell)
 	return tile_id != -1
 
-func toggle_spikes():
+func toggle_spikes(): # ground based effects rather?
 	var _to_go_up = [] # looks cooler if there is time in between imo
 	for spike_loc in all_spike_locations:
 		var cell = ground_tilemap.get_cell_source_id(spike_loc)
@@ -55,6 +57,18 @@ func toggle_spikes():
 		ground_tilemap.set_cell(spike_loc, Globals.tile_ids["SPIKES"], Vector2i(0, 0))
 		if not (units.get_unit_at(spike_loc) and units.get_unit_at(spike_loc) is Crystal):
 			deal_damage_at(spike_loc)
+	# pentagram logic (shoehorned in here lol)
+	if pentagram_location:
+		var _sacrifice = units.get_unit_at(pentagram_location)
+		if _sacrifice is Enemy:
+			_sacrifice.take_damage()
+			#if not _sacrifice.is_queued_for_deletion():
+			#	_sacrifice.die()
+			#items.spawn_random_item_at(pentagram_location+Vector2i(0, -1))
+		if _sacrifice is Player:
+			_sacrifice.take_damage()
+			_sacrifice.max_health -= 1
+			items.spawn_random_item_at(pentagram_location+Vector2i(0, -1))
 
 
 func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null) -> bool:
