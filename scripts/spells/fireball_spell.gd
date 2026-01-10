@@ -14,6 +14,7 @@ func cast(caster: Unit):
 		fireball.direction = direction
 		fireball.caster = caster
 		add_child(fireball)
+		fireball.anim.play("fireball")
 
 
 func _physics_process(_delta): # dies when children die

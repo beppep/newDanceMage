@@ -6,10 +6,12 @@ func cast(caster: Unit):
 	var subspell_res:SpellResource = load(caster.locked_spell_paths.pick_random())
 	while(subspell_res.temporary):
 		subspell_res = load(caster.locked_spell_paths.pick_random())
+	if subspell_res.name == "Health":
+		print("ERROR; random spell casted health spell")
 	if subspell_res.spell_script:
 		var subspell = subspell_res.spell_script.new()  # instantiate makes a node2D?
 		add_child(subspell)
-		subspell.cast(caster)
+		await subspell.cast(caster)
 		while subspell in get_children():
 			await get_tree().process_frame
 
