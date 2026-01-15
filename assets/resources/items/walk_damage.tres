@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://nu8yn1lj4uil"]
+
+[ext_resource type="Texture2D" uid="uid://b0kq2o7gpedd0" path="res://assets/sprites/items/cactus.png" id="1_qexu6"]
+[ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="2_f0o73"]
+
+[resource]
+script = ExtResource("2_f0o73")
+name = "Cacti's Blessing"
+dev_name = "walk_damage"
+image = ExtResource("1_qexu6")
+description = "Hurt enemies when walking into them."
+price = 8
+metadata/_custom_type_script = "uid://bql1e6egobbiv"

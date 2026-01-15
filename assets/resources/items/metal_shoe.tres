@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://b1ixicl5g7eul"]
+
+[ext_resource type="Texture2D" uid="uid://fc00sdjv7sue" path="res://assets/sprites/items/metal_shoe.png" id="1_82h0n"]
+[ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="2_hcnxd"]
+
+[resource]
+script = ExtResource("2_hcnxd")
+name = "Metal Boots"
+dev_name = "metal_shoe"
+image = ExtResource("1_82h0n")
+description = "Spike immunity."
+price = 5
+metadata/_custom_type_script = "uid://bql1e6egobbiv"

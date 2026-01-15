@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterResource" load_steps=7 format=3 uid="uid://dbdkannv703ha"]
 
-[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/player.png" id="1_0yv81"]
+[ext_resource type="Texture2D" uid="uid://hej4ghro864d" path="res://assets/sprites/player/armadillo/armadillo.png" id="1_rafny"]
 [ext_resource type="Script" uid="uid://bg10mrpssxaig" path="res://scripts/CharacterResource.gd" id="2_rafny"]
 [ext_resource type="Resource" uid="uid://cfs0q2j42t4rp" path="res://assets/resources/spells/dash_spell.tres" id="3_0yv81"]
 [ext_resource type="Script" uid="uid://val26tm8c0s5" path="res://scripts/StepResource.gd" id="3_rafny"]
@@ -17,7 +17,7 @@ metadata/_custom_type_script = "uid://val26tm8c0s5"
 [resource]
 script = ExtResource("2_rafny")
 name = "Armadillo"
-image = ExtResource("1_0yv81")
+image = ExtResource("1_rafny")
 description = "Uses a rolling attack."
 starting_spell = ExtResource("3_0yv81")
 starting_dance = Array[ExtResource("3_rafny")]([SubResource("Resource_7r5eo"), SubResource("Resource_q7gp0")])

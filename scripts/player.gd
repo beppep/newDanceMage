@@ -42,6 +42,11 @@ func _ready() -> void:
 	max_health = Globals.selected_character.health
 	health = Globals.selected_character.health
 	
+	if Globals.selected_character.name == "Armadillo":
+		anim.hide()
+		anim = $"armadillo"
+		anim.show()
+	
 	# debugging locked_spell_resources having weird references instead of SpellResources
 	#var fireball_spell = load(locked_spell_resources[1]
 	#print(fireball_spell, fireball_spell is SpellResource) # no
@@ -90,6 +95,8 @@ func update_animation(move: Vector2i):
 		Vector2i.RIGHT:
 			anim.play("right")
 			anim.flip_h = false
+		Vector2i.ZERO:
+			visual_armadillo_curl()
 
 func process_turn():
 	while buffered_input == null:
@@ -100,7 +107,7 @@ func process_turn():
 	if world.is_empty(location + buffered_input):
 		location += buffered_input
 	else: # someone in the way?
-		if items.get("walk_damage"): # spiked chest?
+		if items.get("walk_damage") and buffered_input!=Vector2i.ZERO: # spiked chest?
 			world.deal_damage_at(location + buffered_input)
 		if items.get("push", 0):
 			push_units(location, buffered_input)
@@ -160,16 +167,13 @@ func cast_spell(spell_resource: SpellResource):
 		print("NO SPELL SCRIPT for ", spell_resource)
 		print("with name ",spell_resource.name)
 	var _emergency_debugging_frame_limit = 0
-	print("stuck?1")
 	while is_instance_valid(spell) and spell in get_children():
-		print("stuck?2")
 		await get_tree().process_frame
 		_emergency_debugging_frame_limit += 1
 		if _emergency_debugging_frame_limit > 500:
 			print("ERROR::: STUCK WAITING FOR CHILD TO DIE")
-	print("stuck?3")
 	print("Done casting",spell_resource.name)
-	if spell_resource.temporary and _did_resolve:
+	if spell_resource.temporary and _did_resolve and not (items.get("strange_spoon", 0) and randf()<0.5):
 		spell_book.erase(spell_resource)
 
 func get_facing() -> Vector2i:
@@ -220,3 +224,13 @@ func die():
 	#queue_free()
 	world.units.is_running = false
 	#await get_tree().create_timer(5.0).timeout
+
+
+func visual_armadillo_curl():
+	var direction = get_facing()
+	if direction == Vector2i.UP:
+		anim.play("roll_up")
+	elif direction == Vector2i.DOWN:
+		anim.play("roll_down")
+	else:
+		anim.play("roll")

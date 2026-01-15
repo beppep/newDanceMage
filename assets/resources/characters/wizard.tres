@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterResource" load_steps=6 format=3 uid="uid://csey5ildfcoic"]
 
-[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/player.png" id="1_cdqvv"]
+[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/mage/player.png" id="1_cdqvv"]
 [ext_resource type="Script" uid="uid://bg10mrpssxaig" path="res://scripts/CharacterResource.gd" id="2_l2na7"]
 [ext_resource type="Script" uid="uid://val26tm8c0s5" path="res://scripts/StepResource.gd" id="3_5uhno"]
 [ext_resource type="Resource" uid="uid://dsty1ew11tf5k" path="res://assets/resources/spells/fireball_spell.tres" id="4_cdqvv"]

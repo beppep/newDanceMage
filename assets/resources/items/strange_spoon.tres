@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://74hw1gatql5r"]
+
+[ext_resource type="Texture2D" uid="uid://bpmdah4c5jsdn" path="res://assets/sprites/items/strange_spoon.png" id="1_b4l6a"]
+[ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="2_sml46"]
+
+[resource]
+script = ExtResource("2_sml46")
+name = "Strange Spoon"
+dev_name = "strange_spoon"
+image = ExtResource("1_b4l6a")
+description = "Temporary spells have a chance to not disappear."
+price = 6
+metadata/_custom_type_script = "uid://bql1e6egobbiv"

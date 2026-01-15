@@ -12,10 +12,6 @@ func _ready() -> void:
 	pass
 #	child_exiting_tree.connect(_on_child_exit)
 
-#func _on_child_exit(_node: Node) -> void:
-#	# Automatically free spell when all children are gone
-#	if get_child_count() == 0:
-#		queue_free()
 
 func cast(_caster: Unit): # could use ready for this instead?
 	print("cast() is not implemented for ", name)

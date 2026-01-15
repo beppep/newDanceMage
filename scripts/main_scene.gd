@@ -55,8 +55,9 @@ func toggle_spikes(): # ground based effects rather?
 	await get_tree().create_timer(0.1).timeout
 	for spike_loc in _to_go_up:
 		ground_tilemap.set_cell(spike_loc, Globals.tile_ids["SPIKES"], Vector2i(0, 0))
-		if not (units.get_unit_at(spike_loc) and units.get_unit_at(spike_loc) is Crystal):
-			deal_damage_at(spike_loc)
+		var target = units.get_unit_at(spike_loc)
+		if target and not (target is Crystal or (target is Player and player.items.get("metal_shoe", 0))):
+			target.take_damage()
 	# pentagram logic (shoehorned in here lol)
 	if pentagram_location:
 		var _sacrifice = units.get_unit_at(pentagram_location)

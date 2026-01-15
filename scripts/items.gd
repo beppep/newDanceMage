@@ -8,6 +8,9 @@ const ALL_ITEM_PATHS : Array = [
 	"res://assets/resources/items/exploding_rocks.tres",
 	"res://assets/resources/items/heart.tres",
 	"res://assets/resources/items/push.tres",
+	"res://assets/resources/items/walk_damage.tres",
+	"res://assets/resources/items/strange_spoon.tres",
+	"res://assets/resources/items/metal_shoe.tres",
 ]
 
 

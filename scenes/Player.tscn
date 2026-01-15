@@ -1,12 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://cm2di112011s2"]
+[gd_scene load_steps=14 format=3 uid="uid://cm2di112011s2"]
 
-[ext_resource type="Texture2D" uid="uid://cxjhbajekthbp" path="res://assets/sprites/player/player_down.png" id="1_3li8b"]
+[ext_resource type="Texture2D" uid="uid://cxjhbajekthbp" path="res://assets/sprites/player/mage/player_down.png" id="1_3li8b"]
 [ext_resource type="Script" uid="uid://c1utg37ualhgw" path="res://scripts/player.gd" id="1_mdl7e"]
-[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/player.png" id="2_mdl7e"]
-[ext_resource type="Texture2D" uid="uid://ca8rojs13chse" path="res://assets/sprites/player/player_up.png" id="3_qu4a1"]
+[ext_resource type="Texture2D" uid="uid://fo5skcrxabjw" path="res://assets/sprites/player/armadillo/down.png" id="2_70d11"]
+[ext_resource type="Texture2D" uid="uid://cxagkp8nxcvu6" path="res://assets/sprites/player/mage/player.png" id="2_mdl7e"]
+[ext_resource type="Texture2D" uid="uid://hej4ghro864d" path="res://assets/sprites/player/armadillo/armadillo.png" id="3_cw2d6"]
+[ext_resource type="Texture2D" uid="uid://ca8rojs13chse" path="res://assets/sprites/player/mage/player_up.png" id="3_qu4a1"]
+[ext_resource type="Texture2D" uid="uid://dxwyr46bd8e48" path="res://assets/sprites/player/armadillo/roll.png" id="4_khinc"]
+[ext_resource type="Texture2D" uid="uid://d3tdokeddswas" path="res://assets/sprites/player/armadillo/up.png" id="5_bruh7"]
+[ext_resource type="Texture2D" uid="uid://c5b0yx7crpnjt" path="res://assets/sprites/player/armadillo/down_roll.png" id="5_cw2d6"]
 [ext_resource type="Texture2D" uid="uid://dynt8xqk38d3y" path="res://assets/sprites/player/light.png" id="5_qu4a1"]
+[ext_resource type="Texture2D" uid="uid://doega2a2vey21" path="res://assets/sprites/player/armadillo/up_roll.png" id="6_khinc"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_kpjcp"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_d3wef"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -33,12 +39,68 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_kpjcp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_70d11")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_cw2d6")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_khinc")
+}],
+"loop": true,
+"name": &"roll",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_cw2d6")
+}],
+"loop": true,
+"name": &"roll_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_khinc")
+}],
+"loop": true,
+"name": &"roll_up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_bruh7")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
 [node name="Player" type="Node2D"]
 script = ExtResource("1_mdl7e")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_d3wef")
+animation = &"up"
+
+[node name="armadillo" type="AnimatedSprite2D" parent="."]
+visible = false
 sprite_frames = SubResource("SpriteFrames_kpjcp")
-animation = &"down"
+animation = &"roll_up"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 visible = false

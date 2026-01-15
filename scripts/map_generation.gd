@@ -23,6 +23,7 @@ var egg_scene = preload("res://scenes/units/Egg.tscn")
 var rock_scene = preload("res://scenes/units/Rock.tscn")
 
 var crystal_scene = preload("res://scenes/units/Crystal.tscn")
+var chest_scene = preload("res://scenes/units/Chest.tscn")
 
 var trader_scene = preload("res://scenes/units/Trader.tscn")
 
@@ -239,7 +240,10 @@ func generate_map_cavestyle():
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
 	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
 	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,-1), randomwalk_loc+Vector2i(1,1), -1)
-	_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
+	if world.current_floor > 2 and randf()<0.5:
+		_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
+	else:
+		_create_unit_at(randomwalk_loc, chest_scene)
 		
 	# RANDOM WALK: SHOP -> AIR
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
