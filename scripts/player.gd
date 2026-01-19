@@ -129,8 +129,8 @@ func process_turn():
 	var _to_be_cast = spell_book.duplicate()
 	var _emergency_debugging_frame_limit = 0
 	while current_spell_nr < _to_be_cast.size():
-		var spell = _to_be_cast[current_spell_nr]
-		if check_recipe_alignment(spell) == spell.recipe.size():
+		var spell_resource = _to_be_cast[current_spell_nr]
+		if check_recipe_alignment(spell_resource) == spell_resource.recipe.size():
 			await get_tree().process_frame # we need to have this line for the tween to work i have no clue
 			# like if you edit a tween on an object thats not ready yet nothing happens
 			ui_node.flash_icon(ui_node.spell_container.get_children()[current_spell_nr].get_children()[0])
@@ -138,8 +138,8 @@ func process_turn():
 			await cast_spell(_to_be_cast[current_spell_nr]) # cast copy
 			# WARNING: if the spell is freed before cast() returns, the whole game will freeze. the only workaround for this is to not use await but instead make custom signals for everything we want to await
 			# might restructure to like an effect queue or some other system instead of cursed awaits...
-			while spell in get_children():
-				await get_tree().process_frame
+			#while spell_node in get_children():
+			#	await get_tree().process_frame
 			#print("dun cast")
 		current_spell_nr += 1
 		
