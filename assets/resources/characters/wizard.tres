@@ -14,6 +14,7 @@ script = ExtResource("2_l2na7")
 name = "Wizard"
 image = ExtResource("1_cdqvv")
 description = "Classic fireball."
+health = 2
 starting_spell = ExtResource("4_cdqvv")
 starting_dance = Array[ExtResource("3_5uhno")]([SubResource("Resource_w0kju")])
 metadata/_custom_type_script = "uid://bg10mrpssxaig"

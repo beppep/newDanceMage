@@ -39,14 +39,13 @@ var all_enemies = [
 	troll_scene,
 	troll_scene,
 	preload("res://scenes/enemies/ghost.tscn"),
-	preload("res://scenes/enemies/mortar.tscn"),
 	preload("res://scenes/units/Slime.tscn"),
 	preload("res://scenes/units/Slime.tscn"),
-	preload("res://scenes/units/mother_slime.tscn"),
 	preload("res://scenes/units/Bomb.tscn"),
 ]
 
 var hard_enemies = [
+	preload("res://scenes/enemies/mortar.tscn"),
 	preload("res://scenes/units/Worm.tscn"),
 	preload("res://scenes/units/mother_slime.tscn"),
 	mother_ghost_scene
@@ -149,9 +148,12 @@ func _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y):
 
 func _find_wall(MAPSIZE_X, MAPSIZE_Y):
 	# used for generating treasures deep inside walls
-	# maybe ask for more stone around it?
 	var random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-	while true:
+	var _max_tries = 100
+	while _max_tries>0:
+		_max_tries -= 1
+		if _max_tries < 10 and wall_tilemap.get_cell_source_id(random_loc) != tile_ids["STONE"]:
+			return random_loc
 		var all_stone = true
 		for x in [-1,0,1]:
 			for y in [-1,0,1]:
@@ -199,8 +201,8 @@ func generate_map_cavestyle():
 	wall_tilemap.clear()
 	
 	
-	var MAPSIZE_X = 7 + floor(world.current_floor*0.5) # mapsize depends on current floor
-	var MAPSIZE_Y = 7 + floor(world.current_floor*0.5) # mapsize then decides things for worldgen (like amount of stuff)
+	var MAPSIZE_X = 5 + floor(world.current_floor*0.5) # mapsize depends on current floor
+	var MAPSIZE_Y = 5 + floor(world.current_floor*0.5) # mapsize then decides things for worldgen (like amount of stuff)
 
 	_create_borders(-MAPSIZE_X, MAPSIZE_X, -MAPSIZE_Y, MAPSIZE_Y)
 
@@ -212,7 +214,7 @@ func generate_map_cavestyle():
 	
 	
 	# RANDOM WALK CAVE: PLAYER -> EXIT
-	var cave_volume = 0 + 999# unsure about the volume requirement.
+	var cave_volume = 0 # unsure about the volume requirement.
 	var randomwalk_loc = PLAYER_SPAWN
 	var prev_step = Vector2i.ZERO
 	while cave_volume < MAPSIZE_X * MAPSIZE_Y or Vector2(randomwalk_loc).length() < MAPSIZE_X or Vector2(randomwalk_loc-PLAYER_SPAWN).length() < MAPSIZE_X: # air density is about a quarter?
@@ -227,20 +229,11 @@ func generate_map_cavestyle():
 	print("placed stairs with edgyness: ", Vector2(randomwalk_loc).length(), " distance: ",Vector2(randomwalk_loc-PLAYER_SPAWN).length(), " and volume: ", cave_volume)
 	
 	
-	# ENEMIES
-	var random_pos #loc
-	for i in range(MAPSIZE_X**2):
-		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-		if (random_pos-PLAYER_SPAWN).length() > 1:
-			var enemy_pool = all_enemies + hard_enemies if world.current_floor>4 else all_enemies
-			_create_unit_at(random_pos, enemy_pool.pick_random())
-	
-	
 	# RANDOM WALK: SPELL CRYSTAL -> AIR
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
 	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
 	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,-1), randomwalk_loc+Vector2i(1,1), -1)
-	if world.current_floor > 2 and randf()<0.5:
+	if world.current_floor < 2 or randf()<0.5:
 		_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
 	else:
 		_create_unit_at(randomwalk_loc, chest_scene)
@@ -266,6 +259,14 @@ func generate_map_cavestyle():
 		wall_tilemap.set_cell(randomwalk_loc, -1, Vector2i(0, 0))
 		wall_tilemap.set_cell(randomwalk_loc+Vector2i(0, -1), -1, Vector2i(0, 0))
 		world.pentagram_location = randomwalk_loc
+	
+	# ENEMIES
+	var random_pos #loc
+	for i in range(MAPSIZE_X**2):
+		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
+		if (random_pos-PLAYER_SPAWN).length() > 1:
+			var enemy_pool = all_enemies + hard_enemies if world.current_floor>3 else all_enemies
+			_create_unit_at(random_pos, enemy_pool.pick_random())
 	
 	# ROCKS
 	for i in range(2*MAPSIZE_X**2):
@@ -376,6 +377,8 @@ func _create_unit_at(location: Vector2i, scene : PackedScene):
 		var thing: Unit = scene.instantiate()
 		thing.position = World.loc_to_pos(location)
 		world.units.add_child(thing)
+		if thing is Enemy and randf() < 0.1:
+			thing.shield = 1
 		return thing
 	return false
 
@@ -385,10 +388,10 @@ func _create_spell_room(center_loc: Vector2i) -> void:
 	_paint_area(wall_tilemap, center_loc-Vector2i(1,1), center_loc+Vector2i(1,1), -1)
 	
 	#doorway
-	var door = [Vector2i.RIGHT,Vector2i.UP,Vector2i.LEFT,Vector2i.DOWN].pick_random()*2
-	wall_tilemap.set_cell(center_loc+door, -1 , Vector2i(0, 0))
-	_paint_area(wall_tilemap, center_loc, center_loc+door*2, -1)
-	_create_unit_at(center_loc+door, rock_scene)
+	var door_offset = (Vector2i.RIGHT if center_loc.x < 0 else Vector2i.LEFT)*2
+	wall_tilemap.set_cell(center_loc+door_offset, -1 , Vector2i(0, 0))
+	_paint_area(wall_tilemap, center_loc, center_loc+door_offset*2, -1)
+	_create_unit_at(center_loc+door_offset, rock_scene)
 	_create_unit_at(center_loc, crystal_scene)
 	
 	

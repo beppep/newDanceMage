@@ -15,6 +15,13 @@ func cast(caster: Unit):
 		fireball.caster = caster
 		add_child(fireball)
 		fireball.anim.play("fireball")
+		fireball.owner_spell = self
+
+func hit(proj, location):
+	world.deal_damage_at(location)
+	proj.queue_free()
+	life_time = 1
+	queue_free()#?
 
 
 func _physics_process(_delta): # dies when children die

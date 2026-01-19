@@ -95,12 +95,12 @@ script = ExtResource("1_mdl7e")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_d3wef")
-animation = &"up"
+animation = &"down"
 
 [node name="armadillo" type="AnimatedSprite2D" parent="."]
 visible = false
 sprite_frames = SubResource("SpriteFrames_kpjcp")
-animation = &"roll_up"
+animation = &"down"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 visible = false

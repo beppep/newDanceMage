@@ -25,7 +25,7 @@ func process_turn():
 	
 	charge += 1
 	if charge == 1:
-		if randf() < 0.5:
+		if randf() < 0.7:
 			charge = 0
 		else:
 			anim.play("windup")

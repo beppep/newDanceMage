@@ -22,5 +22,4 @@ description = "Dash forward and deal damage in front of you."
 dance_length = 2
 spell_script = ExtResource("3_sxfcu")
 recipe = Array[ExtResource("2_pi865")]([SubResource("Resource_wt484"), SubResource("Resource_xs1v4")])
-upgrade_count = 1
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

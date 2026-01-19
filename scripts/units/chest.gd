@@ -9,8 +9,8 @@ func die():
 	super()
 	if randf() < 0.9:
 		world.items.spawn_random_item_at(location)
-	elif randf() < 0.5:
-		world.floor_tilemap.set_cell(location, Globals.tile_ids["HEART"], Vector2i.ZERO)
+	elif randf() < 0.9:
+		world.floor_tilemap.set_cell(location, Globals.tile_ids["DIAMOND"], Vector2i.ZERO)
 	else:
 		var bomb = bomb_scene.instantiate()
 		world.units.add_child(bomb)

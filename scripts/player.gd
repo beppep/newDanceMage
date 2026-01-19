@@ -33,7 +33,7 @@ var move_history: Array[Vector2i] = []
 var spell_book: Array[SpellResource] = [Globals.selected_character.starting_spell.duplicate()]
 #var upgrade_count_book = [0]
 var diamonds = 0
-var items = {"exploding_rocks":0, "four_way_shot":0}
+var items = {"walk_damage":0, "push":0, "four_way_shot":0}
 
 var extra_turn = 0
 
@@ -104,15 +104,22 @@ func process_turn():
 
 	update_animation(buffered_input)
 	move_history.append(buffered_input)
-	if world.is_empty(location + buffered_input):
-		location += buffered_input
-	else: # someone in the way?
-		if items.get("walk_damage") and buffered_input!=Vector2i.ZERO: # spiked chest?
-			world.deal_damage_at(location + buffered_input)
-		if items.get("push", 0):
-			push_units(location, buffered_input)
-			if world.is_empty(location + buffered_input):
-				location += buffered_input
+	if buffered_input!=Vector2i.ZERO:
+		var _did_walk_damage_to_something = false
+		if not world.is_empty(location + buffered_input): # someone in the way?
+			if items.get("push", 0):
+				push_units(location, buffered_input)
+		if world.is_empty(location + buffered_input):
+			location += buffered_input
+		else:
+			#walking into something
+			var new_position = World.loc_to_pos(location) + Vector2(buffered_input)*4
+			tween = create_tween().set_trans(Tween.TRANS_LINEAR)
+			tween.tween_property(self, "position", new_position, 0.1)
+			tween.tween_property(self, "position", World.loc_to_pos(location), 0.1)
+			
+			if items.get("walk_damage"):
+				world.deal_damage_at(location + buffered_input)
 	
 	buffered_input = null
 
@@ -127,10 +134,13 @@ func process_turn():
 			await get_tree().process_frame # we need to have this line for the tween to work i have no clue
 			# like if you edit a tween on an object thats not ready yet nothing happens
 			ui_node.flash_icon(ui_node.spell_container.get_children()[current_spell_nr].get_children()[0])
-			print("await cast")
+			#print("await cast")
 			await cast_spell(_to_be_cast[current_spell_nr]) # cast copy
 			# WARNING: if the spell is freed before cast() returns, the whole game will freeze. the only workaround for this is to not use await but instead make custom signals for everything we want to await
-			print("dun cast")
+			# might restructure to like an effect queue or some other system instead of cursed awaits...
+			while spell in get_children():
+				await get_tree().process_frame
+			#print("dun cast")
 		current_spell_nr += 1
 		
 		_emergency_debugging_frame_limit += 1
