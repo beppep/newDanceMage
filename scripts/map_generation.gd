@@ -97,7 +97,7 @@ func generate_chessboard():
 	_create_unit_at(Vector2i(1,0), knight_scene)
 	_create_unit_at(Vector2i(2,0), bishop_scene)
 	_create_unit_at(Vector2i(3,0), rook_scene)
-	# here is the staircase aka king
+	_create_unit_at(Vector2i(4,0), chest_scene)
 	_create_unit_at(Vector2i(5,0), bishop_scene)
 	_create_unit_at(Vector2i(6,0), knight_scene)
 	_create_unit_at(Vector2i(7,0), rook_scene)
@@ -124,6 +124,8 @@ func generate_boss_room():
 	
 	var PLAYER_SPAWN = Vector2i(randi_range(-ARENA_SIZE,ARENA_SIZE), randi_range(-1,1)*ARENA_SIZE)
 	world.player.teleport_to(PLAYER_SPAWN)
+	
+	_create_unit_at(Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), -ARENA_SIZE), chest_scene)
 	
 	# EGGS
 	var random_pos = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, ARENA_SIZE))
@@ -233,7 +235,7 @@ func generate_map_cavestyle():
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
 	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
 	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,-1), randomwalk_loc+Vector2i(1,1), -1)
-	if world.current_floor < 2 or randf()<0.5:
+	if world.current_floor <= 2 or randf()<0.5:
 		_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
 	else:
 		_create_unit_at(randomwalk_loc, chest_scene)
@@ -323,17 +325,12 @@ func generate_map_chess_style():
 			random_room_pos = Vector2i(randi_range(-MAPSIZE_X+1, MAPSIZE_Y-1), randi_range(-MAPSIZE_X+1, MAPSIZE_Y-1))
 		_create_spell_room(random_room_pos)
 		
-	# STARTING ROOM
-	#_create_room(Vector2i(-2,-2),Vector2i(2,2))
-	#wall_tilemap.set_cell(Vector2i(2, 0), -1 , Vector2i(0, 0))
-	#_paint_area(wall_tilemap, Vector2i(1, 0), Vector2i(4, 0), -1)
-	#_create_rock_at(Vector2i(2, 0))
 	print(world.player.location)
 	_paint_area(wall_tilemap, world.player.location + Vector2i(-1, -1), world.player.location + Vector2i(1, 1), -1)
 	
 	# ROCKS
 	var random_pos
-	for i in range(MAPSIZE_X**2):
+	for i in range(MAPSIZE_X):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 1:
 			_create_unit_at(random_pos, rock_scene)
@@ -351,11 +348,11 @@ func generate_map_chess_style():
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
 	ground_tilemap.set_cell(random_pos, tile_ids["STAIRS"] , Vector2i(0, 0))
 	
-	# DIAMOND
+	# CHEST
 	random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
 	while not world.is_empty(random_pos) or Vector2(random_pos - world.player.location).length()<MAPSIZE_Y*0.7:
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
-	floor_tilemap.set_cell(random_pos, tile_ids["DIAMOND"] , Vector2i(0, 0))
+	_create_unit_at(random_pos, chest_scene)
 
 func _create_borders(start_x, end_x, start_y, end_y):
 	_paint_area(wall_tilemap, Vector2i(start_x-2,start_y-2),Vector2i(start_x-1,end_y+2), tile_ids["OBSIDIAN"]) # left wall

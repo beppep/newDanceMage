@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1r37xlv72lnf"]
+[gd_scene load_steps=10 format=3 uid="uid://b1r37xlv72lnf"]
 
 [ext_resource type="Script" uid="uid://d2rswpfdl28b2" path="res://scripts/main_ui.gd" id="1_2ppmm"]
 [ext_resource type="Texture2D" uid="uid://inwjj0lddvkd" path="res://assets/sprites/units/crystal.png" id="2_w37m7"]
@@ -17,6 +17,14 @@ font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6fyy"]
 font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_scoti"]
+font_size = 96
+font_color = Color(0.82, 0.62197, 0.2542, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_i1gbh"]
+font_size = 64
+font_color = Color(0.78039217, 0.7607843, 0.44705883, 1)
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_2ppmm")
@@ -144,7 +152,7 @@ autowrap_mode = 2
 [node name="cost" type="Label" parent="Shop/UpgradeButton/VBoxContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-text = "$10"
+text = "Click an arrow"
 label_settings = SubResource("LabelSettings_e6fyy")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -211,7 +219,7 @@ autowrap_mode = 2
 [node name="cost" type="Label" parent="Shop/UpgradeButton2/VBoxContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-text = "$10"
+text = "to see the price."
 label_settings = SubResource("LabelSettings_e6fyy")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -226,6 +234,57 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("3_e6fyy")
+
+[node name="PickupInfo" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_right = 300.0
+offset_bottom = 200.0
+grow_horizontal = 2
+
+[node name="PickupName" type="Label" parent="PickupInfo"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -242.0
+offset_right = 242.0
+offset_bottom = 88.0
+grow_horizontal = 2
+text = "Some Cool Item"
+label_settings = SubResource("LabelSettings_scoti")
+horizontal_alignment = 1
+
+[node name="PickupDescription" type="Label" parent="PickupInfo"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -330.5
+offset_top = -88.0
+offset_right = 330.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Does something cool."
+label_settings = SubResource("LabelSettings_i1gbh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Items" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(128, 128)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 100.0
+offset_bottom = 228.0
+grow_horizontal = 0
+columns = 3
 
 [connection signal="pressed" from="Shop/UpgradeButton/Button" to="." method="_on_upgrade_button_pressed"]
 [connection signal="pressed" from="Shop/UpgradeButton2/Button" to="." method="_on_upgrade_button_2_pressed"]

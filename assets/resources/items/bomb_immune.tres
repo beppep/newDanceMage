@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://ie51qadvvrkr"]
 
-[ext_resource type="Texture2D" uid="uid://b83rq3o5syv10" path="res://assets/sprites/units/tnt2.png" id="1_kn7gf"]
+[ext_resource type="Texture2D" uid="uid://dbhu7yxoqeivh" path="res://assets/sprites/items/bomb_immune.png" id="1_kn7gf"]
 [ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="2_415jc"]
 
 [resource]

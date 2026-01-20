@@ -8,7 +8,7 @@ func _ready() -> void:
 func do_move():
 	var offset = CARDINAL_DIRECTIONS.pick_random()
 	if not world.is_empty(location + offset):
-		offset = DIAGONAL_DIRECTIONS.pick_random() # 2 tries
+		offset = CARDINAL_DIRECTIONS.pick_random() # 2 tries
 	move_in_direction(offset)
 
 func get_possible_targets() -> Array[Vector2i]:

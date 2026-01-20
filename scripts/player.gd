@@ -3,6 +3,8 @@ class_name Player
 
 var stab_spell = load("res://assets/resources/spells/stab_spell.tres")
 
+const CHEAT = 0
+
 var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spellresources in a typed array. for some reason preload returns like a weird reference instead of a SpellResource
 	"res://assets/resources/spells/beamstar_spell.tres",
 	"res://assets/resources/spells/bomb_spell.tres",
@@ -29,11 +31,13 @@ var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spe
 
 var buffered_input = null
 var move_history: Array[Vector2i] = []
+var spell_book_max = 8 # not implemented
 #var recipe_book: Array = [Globals.selected_character.starting_dance]
 var spell_book: Array[SpellResource] = [Globals.selected_character.starting_spell.duplicate()]
 #var upgrade_count_book = [0]
 var diamonds = 0
-var items = {"walk_damage":0, "push":0, "four_way_shot":0}
+var items = {}
+var displayed_items = [] # maybe there should only be one items list, but having the dictionary can be handy for now...
 
 var extra_turn = 0
 
@@ -47,11 +51,11 @@ func _ready() -> void:
 		anim = $"armadillo"
 		anim.show()
 	
-	# debugging locked_spell_resources having weird references instead of SpellResources
-	#var fireball_spell = load(locked_spell_resources[1]
-	#print(fireball_spell, fireball_spell is SpellResource) # no
-	#fireball_spell = load("res://assets/resources/spells/fireball_spell.tres")
-	#print(fireball_spell, fireball_spell is SpellResource) #yes
+	# semi jank stuff thats still nice for now:
+	spell_book[0].upgrade_count = 9 # upgrading starting spell should not be allowed?
+	await get_tree().process_frame
+	world.main_ui.pickup_info.get_node("PickupName").text = Globals.selected_character.name # starting character name and descr.
+	world.main_ui.pickup_info.get_node("PickupDescription").text = Globals.selected_character.description
 
 
 
@@ -99,15 +103,18 @@ func update_animation(move: Vector2i):
 			visual_armadillo_curl()
 
 func process_turn():
+	if CHEAT:
+		health = 3
 	while buffered_input == null:
 		await get_tree().create_timer(1.0 / 100.0).timeout # let other stuff run while waiting
+	world.main_ui.pickup_info.hide() # shown if you picked up an item last turn.
 
 	update_animation(buffered_input)
 	move_history.append(buffered_input)
 	if buffered_input!=Vector2i.ZERO:
 		var _did_walk_damage_to_something = false
 		if not world.is_empty(location + buffered_input): # someone in the way?
-			if items.get("push", 0):
+			if items.get("push",0):
 				push_units(location, buffered_input)
 		if world.is_empty(location + buffered_input):
 			location += buffered_input
@@ -118,8 +125,8 @@ func process_turn():
 			tween.tween_property(self, "position", new_position, 0.1)
 			tween.tween_property(self, "position", World.loc_to_pos(location), 0.1)
 			
-			if items.get("walk_damage"):
-				world.deal_damage_at(location + buffered_input)
+			if items.get("walk_damage",0)>0:
+				world.deal_damage_at(location + buffered_input, items.get("walk_damage",0))
 	
 	buffered_input = null
 

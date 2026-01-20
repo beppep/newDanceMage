@@ -5,6 +5,7 @@ const TILE_SIZE = 16
 
 @onready var units: Units = $Level/Units
 @onready var items: Items = $Items
+@onready var main_ui: MainUI = $MainUI
 @onready var wall_tilemap : TileMapLayer = $Level/TileMapLayerWalls
 @onready var floor_tilemap : TileMapLayer = $Level/TileMapLayerFloor
 @onready var ground_tilemap : TileMapLayer = $Level/TileMapLayerGround
@@ -30,6 +31,8 @@ func next_floor():
 	for child in units.get_children():
 		if child != player:
 			child.queue_free()
+	for item in items.get_children():
+		item.queue_free()
 	
 	$map_generator.generate_map()
 	#units.start() # DONT!! Then it will run multiple instances of turn order (!!?!)

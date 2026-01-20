@@ -9,4 +9,5 @@ name = "Mushroom"
 dev_name = "heart"
 image = ExtResource("1_ib0hp")
 description = "Gain an additional heart."
+stackable = true
 metadata/_custom_type_script = "uid://bql1e6egobbiv"

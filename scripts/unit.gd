@@ -17,6 +17,7 @@ var shield := 0:
 		shield = val
 		print(self)
 		shield_indicator.visible = (val > 0)
+		health_changed.emit()
 		queue_redraw()
 var max_health := 1:
 	set(val):

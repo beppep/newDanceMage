@@ -3,7 +3,7 @@ class_name Items
 
 @onready var world = get_parent()
 
-const ALL_ITEM_PATHS : Array = [
+var ALL_ITEM_PATHS : Array = [
 	"res://assets/resources/items/bomb_immune.tres",
 	"res://assets/resources/items/exploding_rocks.tres",
 	"res://assets/resources/items/heart.tres",
@@ -11,6 +11,7 @@ const ALL_ITEM_PATHS : Array = [
 	"res://assets/resources/items/walk_damage.tres",
 	"res://assets/resources/items/strange_spoon.tres",
 	"res://assets/resources/items/metal_shoe.tres",
+	"res://assets/resources/items/recipe_shuffler.tres",
 ]
 
 
@@ -31,11 +32,17 @@ func pickup_item_at(location, _player):
 	
 	
 func spawn_random_item_at(loc):
-	var item_resource: ItemResource = load(ALL_ITEM_PATHS.pick_random())
+	var item_path = ALL_ITEM_PATHS.pick_random()
+	var item_resource: ItemResource = load(item_path)
 	var item_node = Item.new()
 	item_node.item_resource = item_resource
 	var sprite_node = Sprite2D.new()
-	item_node.add_child(sprite_node)
 	sprite_node.texture = item_resource.image
+	item_node.position = World.loc_to_pos(loc)
 	item_node.location = loc
+	item_node.add_child(sprite_node)
 	add_child(item_node)
+	
+	if not item_resource.stackable:
+		ALL_ITEM_PATHS.erase(item_path)
+		#print("remianing items : ", ALL_ITEM_PATHS.size())

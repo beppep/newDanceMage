@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bxf7af4jb8ew"]
+
+[ext_resource type="Texture2D" uid="uid://ch316qilrxdui" path="res://assets/sprites/items/enigma.png" id="1_u3hlc"]
+[ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="2_kq587"]
+
+[resource]
+script = ExtResource("2_kq587")
+name = "Enigma"
+dev_name = "recipe_shuffler"
+image = ExtResource("1_u3hlc")
+description = "Shuffles Your Dances."
+stackable = true
+metadata/_custom_type_script = "uid://bql1e6egobbiv"

@@ -5,8 +5,10 @@ class_name MainUI
 @onready var player: Player = $"/root/World/Level/Units/Player"
 @onready var health_container := $VBoxContainer/Health
 @onready var spell_container := $VBoxContainer/Spells
+@onready var item_container := $Items
 @onready var upgrade_button := $Shop/UpgradeButton
 @onready var damage_flash := $DamageFlash
+@onready var pickup_info = $PickupInfo
 
 
 @onready var spell_card_scene := preload("res://scenes/spell_card.tscn")
@@ -21,6 +23,8 @@ const dark_nowhere_arrow_texture := preload("res://assets/sprites/ui/darkdot.png
 const wildcard_arrow_texture := preload("res://assets/sprites/ui/wildcard.png")
 const dark_wildcard_arrow_texture := preload("res://assets/sprites/ui/darkwildcard.png")
 
+const UI_TILE_SIZE = 64
+
 var arrow_textures
 var dark_arrow_textures
 
@@ -31,7 +35,6 @@ var selected_arrow_in_shop = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
 	
 	arrow_textures = [arrow_texture]
 	dark_arrow_textures = [dark_arrow_texture]
@@ -52,7 +55,8 @@ func _ready() -> void:
 	
 	_on_health_changed()
 	_on_spells_changed()
-	$VBoxContainer.scale = Vector2(4, 4)
+	#$VBoxContainer.scale = Vector2(4, 4)
+	#item_container.scale = Vector2(4, 4)
 	
 
 func show_card_reward(spells, recipes):
@@ -84,15 +88,22 @@ func _on_health_changed():
 	for i in range(player.max_health):
 		var heart = TextureRect.new()
 		heart.texture = heart_texture if i < player.health else dark_heart_texture
-		heart.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		heart.custom_minimum_size = Vector2i(UI_TILE_SIZE,UI_TILE_SIZE)
 		health_container.add_child(heart)
 	if player.shield:
 		var shield = TextureRect.new()
 		shield.texture = SHIELD_TEXTURE
-		shield.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-		shield.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		shield.custom_minimum_size = Vector2i(UI_TILE_SIZE,UI_TILE_SIZE)
 		health_container.add_child(shield)
+
+func _on_items_changed():
+	for child in item_container.get_children():
+		child.queue_free()
+	for item_res in player.displayed_items:
+		var item = TextureRect.new()
+		item.texture = item_res.image
+		item.custom_minimum_size = Vector2i(UI_TILE_SIZE,UI_TILE_SIZE)
+		item_container.add_child(item)
 
 func _on_spells_changed(shop_version = false):
 	"""
@@ -111,8 +122,8 @@ func _on_spells_changed(shop_version = false):
 		
 		var spell_icon = TextureButton.new()
 		spell_icon.texture_normal = player.spell_book[i].image
-		#spell_icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-		#spell_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		spell_icon.custom_minimum_size = Vector2i(UI_TILE_SIZE,UI_TILE_SIZE)
+		spell_icon.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 		spell_HBox.add_child(spell_icon)
 		
 		var alignment = player.check_recipe_alignment(player.spell_book[i])
@@ -139,6 +150,7 @@ func _on_spells_changed(shop_version = false):
 			
 			if x==alignment-1 and not shop_version:
 				flash_icon(arrow)
+			arrow.custom_minimum_size = Vector2i(UI_TILE_SIZE,UI_TILE_SIZE)
 			arrow.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 			spell_HBox.add_child(arrow)
 			arrow.pressed.connect(_on_arrow_icon_pressed.bind(i, x))
@@ -195,7 +207,11 @@ func _on_upgrade_button_2_pressed() -> void:
 			_on_health_changed()
 			
 
-
+func _on_item_picked_up(item_resource : ItemResource):
+	pickup_info.get_node("PickupName").text = item_resource.name
+	pickup_info.get_node("PickupDescription").text = item_resource.description
+	pickup_info.show()
+	_on_items_changed()
 
 func flash_damage():
 	damage_flash.visible = true

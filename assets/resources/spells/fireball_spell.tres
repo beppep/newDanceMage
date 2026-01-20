@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SpellResource" load_steps=7 format=3 uid="uid://dsty1ew11tf5k"]
+[gd_resource type="Resource" script_class="SpellResource" load_steps=6 format=3 uid="uid://dsty1ew11tf5k"]
 
 [ext_resource type="Script" uid="uid://btl56hu7xqit5" path="res://scripts/spells/fireball_spell.gd" id="1_4wxvt"]
 [ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="1_eoktn"]
@@ -9,10 +9,6 @@
 script = ExtResource("2_rs7kg")
 metadata/_custom_type_script = "uid://val26tm8c0s5"
 
-[sub_resource type="Resource" id="Resource_0bs5b"]
-script = ExtResource("2_rs7kg")
-metadata/_custom_type_script = "uid://val26tm8c0s5"
-
 [resource]
 script = ExtResource("1_eoktn")
 name = "Fireball"
@@ -20,5 +16,5 @@ image = ExtResource("1_ovvll")
 description = "Shoot a fireball forwards."
 dance_length = 2
 spell_script = ExtResource("1_4wxvt")
-recipe = Array[ExtResource("2_rs7kg")]([SubResource("Resource_rs7kg"), SubResource("Resource_0bs5b")])
+recipe = Array[ExtResource("2_rs7kg")]([SubResource("Resource_rs7kg")])
 metadata/_custom_type_script = "uid://bol1wrrtmnshn"

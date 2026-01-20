@@ -9,6 +9,7 @@ class_name ItemResource
 @export var description: String = "Does something cool"
 @export var price: int = 4
 @export var pickup_script: Script
+@export var stackable = false
 
 func pickup(player : Player): #useless?
 	player.items[name] = player.items.get(dev_name, 0) + 1

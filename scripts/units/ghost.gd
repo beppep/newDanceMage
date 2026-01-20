@@ -6,7 +6,7 @@ func should_attack(target):
 	
 	
 func do_move():
-	var offset = ALL_DIRECTIONS.pick_random()
+	var offset = CARDINAL_DIRECTIONS.pick_random()
 	move_to(location + offset)
 
 func get_possible_targets() -> Array[Vector2i]:

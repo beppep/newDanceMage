@@ -170,6 +170,6 @@ func die():
 	super()
 	#if randf() < 0.9:
 	#	world.floor_tilemap.set_cell(location, 2, Vector2i(0,0))
-	if randf() < 0.1:
+	if randf() < 0.1 and world.floor_tilemap.get_cell_source_id(location)==-1:
 		world.floor_tilemap.set_cell(location, 1, Vector2i(0,0)) # heart
 		
