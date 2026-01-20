@@ -70,8 +70,8 @@ func toggle_spikes(): # ground based effects rather?
 				_sacrifice.die()
 			items.spawn_random_item_at(pentagram_location+Vector2i(0, -1))
 		if _sacrifice is Player:
-			_sacrifice.take_damage()
-			#_sacrifice.max_health -= 1
+			#_sacrifice.health -= 1
+			_sacrifice.max_health -= 1
 			items.spawn_random_item_at(pentagram_location+Vector2i(0, -1))
 
 
