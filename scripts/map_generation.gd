@@ -197,6 +197,7 @@ func generate_map():
 			generate_map_chess_style()
 
 
+
 func generate_map_cavestyle():
 	ground_tilemap.clear()
 	floor_tilemap.clear()

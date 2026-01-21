@@ -9,6 +9,7 @@ class_name MainUI
 @onready var upgrade_button := $Shop/UpgradeButton
 @onready var damage_flash := $DamageFlash
 @onready var pickup_info = $PickupInfo
+@onready var spell_flash = $SpellFlash
 
 
 @onready var spell_card_scene := preload("res://scenes/spell_card.tscn")
@@ -182,6 +183,18 @@ func flash_icon(node: Node):
 	tween.tween_property(node, "scale", Vector2(1, 1), 0.1)
 	tween.tween_property(node, "modulate", Color(1,1,1), 0.05)
 
+func flash_spell(spell_resource : SpellResource):
+	var node : TextureRect = spell_flash.get_node("TextureRect")
+	node.texture = spell_resource.image
+	node.position = Vector2(0,0)
+	node.scale = Vector2(4,4)
+	node.modulate.a = 1.0
+	node.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var tween = get_tree().create_tween()
+	tween.tween_property(node, "scale", Vector2(16, 16), 0.3)
+	tween.parallel().tween_property(node, "modulate:a", 0.0, 0.3)
+	tween.parallel().tween_property(node,"position",node.position - Vector2(16,16)*16 * 0.5, 0.3)
+	
 
 func _on_upgrade_button_pressed() -> void:
 	if selected_spell_in_shop!=null and selected_arrow_in_shop!=null:

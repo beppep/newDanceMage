@@ -35,7 +35,7 @@ func next_floor():
 		item.queue_free()
 	
 	$map_generator.generate_map()
-	#units.start() # DONT!! Then it will run multiple instances of turn order (!!?!)
+	#units.start() # DONT!! Then it will run multiple instances of turn order (!!?!) (omega cursed)
 
 func _process(_delta):
 	pass

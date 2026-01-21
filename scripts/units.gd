@@ -6,16 +6,6 @@ var is_running := true
 
 var SIMULATION_DISTANCE = 10
 
-#func _ready() -> void:
-#	child_exiting_tree.connect(_on_child_exit)
-
-
-#func _on_child_exit(_node: Node):
-#	print("why???")
-	#for unit in get_units():
-#		if is_instance_valid(unit) and not unit.is_queued_for_deletion() and unit is Player:
-#			return
-#	is_running = false
 
 func start():
 	while is_running:

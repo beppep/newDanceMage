@@ -10,6 +10,7 @@ var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spe
 	"res://assets/resources/spells/bomb_spell.tres",
 	"res://assets/resources/spells/crystal_spell.tres",
 	"res://assets/resources/spells/dash_spell.tres",
+	"res://assets/resources/spells/diamond_spell.tres",
 	"res://assets/resources/spells/everything_spell.tres",
 	"res://assets/resources/spells/explode_spell.tres",
 	"res://assets/resources/spells/extra_turn_spell.tres",
@@ -18,7 +19,6 @@ var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spe
 	"res://assets/resources/spells/heal_spell.tres",
 	"res://assets/resources/spells/hook_spell.tres",
 	"res://assets/resources/spells/lightning_storm_spell.tres",
-	"res://assets/resources/spells/magnet_spell.tres",
 	"res://assets/resources/spells/random_spell.tres",
 	"res://assets/resources/spells/rock_spell.tres",
 	"res://assets/resources/spells/shield_spell.tres",
@@ -175,6 +175,9 @@ func check_recipe_alignment(spell : SpellResource):
 func cast_spell(spell_resource: SpellResource):
 	print("Casting ", spell_resource.name)
 	var spell : Spell
+	
+	world.main_ui.flash_spell(spell_resource)
+	
 	var _did_resolve # for temp spells
 	if spell_resource.spell_script: #why would this not happen?
 		spell = spell_resource.spell_script.new()  # instantiate makes a node2D?
@@ -183,12 +186,14 @@ func cast_spell(spell_resource: SpellResource):
 	else:
 		print("NO SPELL SCRIPT for ", spell_resource)
 		print("with name ",spell_resource.name)
+	
 	var _emergency_debugging_frame_limit = 0
 	while is_instance_valid(spell) and spell in get_children():
 		await get_tree().process_frame
 		_emergency_debugging_frame_limit += 1
 		if _emergency_debugging_frame_limit > 500:
 			print("ERROR::: STUCK WAITING FOR CHILD TO DIE")
+	
 	print("Done casting",spell_resource.name)
 	if spell_resource.temporary and _did_resolve and not (items.get("strange_spoon", 0) and randf()<0.5):
 		spell_book.erase(spell_resource)
