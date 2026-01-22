@@ -9,5 +9,5 @@ name = "Demolitioner's Blessing"
 dev_name = "bomb_immune"
 image = ExtResource("1_kn7gf")
 description = "Explosion immunity."
-price = 6
+price = 1
 metadata/_custom_type_script = "uid://bql1e6egobbiv"

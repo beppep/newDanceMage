@@ -15,7 +15,6 @@ func cast(caster: Unit):
 	camera_tween.tween_property(caster.get_node('Camera2D'), "position", offset, 0.06).as_relative()
 
 	if target:
-		target.take_damage(1)
+		await target.take_damage(1)
 	
-	await tween.finished
-	queue_free()
+	life_time = 8

@@ -136,8 +136,10 @@ func perform_attack():
 	print(name, " attacks.")
 	var targets = attack_offsets.map(func (offset): return location + offset)
 	for target in targets:
-		if not world.units.get_unit_at(target) is Crystal and should_attack(world.units.get_unit_at(target)):
-			world.deal_damage_at(target, attack_power)
+		var target_unit = world.units.get_unit_at(target)
+		if target_unit:
+			if not (target_unit is Crystal or target_unit is Chest) and should_attack(world.units.get_unit_at(target)):
+				target_unit.take_damage(attack_power)
 	perform_attack_effects()
 	attack_offsets = []
 

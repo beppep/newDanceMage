@@ -9,5 +9,5 @@ name = "Wrestler's Blessing"
 dev_name = "push"
 image = ExtResource("1_iqysw")
 description = "Push anything when walking."
-price = 6
+price = 2
 metadata/_custom_type_script = "uid://bql1e6egobbiv"

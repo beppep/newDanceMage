@@ -1,7 +1,7 @@
 extends Node
 class_name World
 
-const TILE_SIZE = 16
+const TILE_SIZE = 16 # pixels per tile
 
 @onready var units: Units = $Level/Units
 @onready var items: Items = $Items
@@ -22,11 +22,15 @@ func _ready() -> void:
 		
 	print(" GAME START ")
 	current_floor = 1
-	$map_generator.generate_map_cavestyle()
+	#$map_generator.generate_map_cavestyle()
 	units.start()
 
 func next_floor():
 	current_floor += 1
+	if current_floor==10:
+		print("YOU WIN !!!")
+		units.is_running = false
+		return
 	print("current floor: ", current_floor)
 	for child in units.get_children():
 		if child != player:

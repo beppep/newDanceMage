@@ -9,5 +9,5 @@ name = "Strange Spoon"
 dev_name = "strange_spoon"
 image = ExtResource("1_b4l6a")
 description = "Temporary spells have a chance to not disappear."
-price = 6
+price = 1
 metadata/_custom_type_script = "uid://bql1e6egobbiv"

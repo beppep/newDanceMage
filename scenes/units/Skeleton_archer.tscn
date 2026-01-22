@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://barr38mwj2khw"]
+
+[ext_resource type="Script" uid="uid://cjt8isjxkx2i6" path="res://scenes/units/skeleton_archer.gd" id="1_pjrw1"]
+[ext_resource type="Texture2D" uid="uid://vac4eh4c5ehh" path="res://assets/sprites/enemies/skeleton_archer/idle.png" id="2_30rct"]
+[ext_resource type="Texture2D" uid="uid://dm5yal32g4sqb" path="res://assets/sprites/enemies/skeleton_archer/dead.png" id="2_pjrw1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pjrw1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_pjrw1")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_30rct")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_30rct")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
+}]
+
+[node name="Skeleton" type="Node2D"]
+script = ExtResource("1_pjrw1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_pjrw1")
+animation = &"idle"

@@ -3,21 +3,17 @@ class_name Items
 
 @onready var world = get_parent()
 
-var ALL_ITEM_PATHS : Array = [
-	"res://assets/resources/items/bomb_immune.tres",
-	"res://assets/resources/items/exploding_rocks.tres",
-	"res://assets/resources/items/heart.tres",
-	"res://assets/resources/items/push.tres",
-	"res://assets/resources/items/walk_damage.tres",
-	"res://assets/resources/items/strange_spoon.tres",
-	"res://assets/resources/items/metal_shoe.tres",
-	"res://assets/resources/items/recipe_shuffler.tres",
+static var unspawned_items : Array = [
+	preload("res://assets/resources/items/bomb_immune.tres"),
+	preload("res://assets/resources/items/exploding_rocks.tres"),
+	preload("res://assets/resources/items/heart.tres"),
+	preload("res://assets/resources/items/push.tres"),
+	preload("res://assets/resources/items/walk_damage.tres"),
+	preload("res://assets/resources/items/strange_spoon.tres"),
+	preload("res://assets/resources/items/metal_shoe.tres"),
+	preload("res://assets/resources/items/recipe_shuffler.tres"),
 ]
 
-
-func create_item(item_resource : Item):
-	var item_node = Sprite2D.new()
-	item_node.texture = item_resource.image
 
 func get_item_at(location):
 	for item in get_children():
@@ -29,11 +25,16 @@ func pickup_item_at(location, _player):
 	if item_node:
 		item_node.pick_up(_player)
 		item_node.queue_free()
+
+static func choose_random_item(): # this also removes it from pool
+	var item_resource: ItemResource = unspawned_items.pick_random()
+	if not item_resource.stackable:
+		unspawned_items.erase(item_resource)
+		#print("remianing items : ", ALL_ITEM_PATHS.size())
+	return item_resource
 	
 	
-func spawn_random_item_at(loc):
-	var item_path = ALL_ITEM_PATHS.pick_random()
-	var item_resource: ItemResource = load(item_path)
+func spawn_item_at(loc, item_resource : ItemResource):
 	var item_node = Item.new()
 	item_node.item_resource = item_resource
 	var sprite_node = Sprite2D.new()
@@ -43,6 +44,6 @@ func spawn_random_item_at(loc):
 	item_node.add_child(sprite_node)
 	add_child(item_node)
 	
-	if not item_resource.stackable:
-		ALL_ITEM_PATHS.erase(item_path)
-		#print("remianing items : ", ALL_ITEM_PATHS.size())
+func spawn_random_item_at(loc):
+	spawn_item_at(loc, choose_random_item())
+	

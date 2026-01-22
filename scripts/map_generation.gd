@@ -27,36 +27,52 @@ var chest_scene = preload("res://scenes/units/Chest.tscn")
 
 var trader_scene = preload("res://scenes/units/Trader.tscn")
 
-var chess_enemies = [
-	bishop_scene,
-	knight_scene,
-	rook_scene,
-	pawn_scene,
+var CHESS_ENEMIES = [
+	{"level": 1, "scene": pawn_scene},
+	{"level": 2, "scene": bishop_scene},
+	{"level": 2, "scene": knight_scene},
+	{"level": 3, "scene": rook_scene},
+	
 ]
 
-var all_enemies = [
-	egg_scene,
-	troll_scene,
-	troll_scene,
-	preload("res://scenes/enemies/ghost.tscn"),
-	preload("res://scenes/units/Slime.tscn"),
-	preload("res://scenes/units/Slime.tscn"),
-	preload("res://scenes/units/Bomb.tscn"),
-]
-
-var hard_enemies = [
-	preload("res://scenes/enemies/mortar.tscn"),
-	preload("res://scenes/units/Worm.tscn"),
-	preload("res://scenes/units/mother_slime.tscn"),
-	mother_ghost_scene
+var CAVE_ENEMIES := [
+	{"level": 1, "scene": preload("res://scenes/units/Slime.tscn")},
+	{"level": 1, "scene": troll_scene},
+	{"level": 1, "scene": preload("res://scenes/units/Bomb.tscn")},
+	{"level": 2, "scene": egg_scene},
+	{"level": 2, "scene": preload("res://scenes/enemies/ghost.tscn")},
+	{"level": 3, "scene": preload("res://scenes/units/Skeleton_archer.tscn")},
+	{"level": 3, "scene": preload("res://scenes/units/mother_slime.tscn"), "fatness":Vector2i(2,2)},
+	{"level": 3, "scene": preload("res://scenes/enemies/mortar.tscn")},
+	{"level": 5, "scene": mother_ghost_scene, "fatness":Vector2i(2,2)},
+	{"level": 6, "scene": preload("res://scenes/units/Worm.tscn")},
 ]
 
 var tile_ids = Globals.tile_ids
 
-func generate_shop(first_floor=false):
+
+
+func generate_map():
+	world.pentagram_location = null
+	world.all_spike_locations = []
 	ground_tilemap.clear()
 	floor_tilemap.clear()
 	wall_tilemap.clear()
+	if world.current_floor == 4 or world.current_floor == 7:
+		if randf() < 0.5:
+			generate_boss_room()
+		else:
+			generate_chessboard()
+	else:
+		if randf() < 0.7:
+			generate_map_cavestyle()
+		else:
+			generate_map_chess_style()
+
+
+
+
+func generate_shop(first_floor=false):
 	
 	world.player.teleport_to(Vector2i(0, 2))
 	
@@ -77,13 +93,10 @@ func generate_shop(first_floor=false):
 		_create_unit_at(Vector2i(1, -2), crystal_scene)
 		_create_unit_at(Vector2i(2, -2), crystal_scene)
 		_create_unit_at(Vector2i(0, -2), crystal_scene)
-		
+
 func generate_chessboard():
-	ground_tilemap.clear()
-	floor_tilemap.clear()
-	wall_tilemap.clear()
 	
-	world.player.teleport_to(Vector2i(4, 7))
+	world.player.teleport_to(Vector2i(3, 6))
 	
 	
 	_create_borders(0, 7, 0, 7)
@@ -108,9 +121,6 @@ func generate_chessboard():
 	ground_tilemap.set_cell(Vector2i(4,0), tile_ids["STAIRS"] , Vector2i(0, 0))
 
 func generate_boss_room():
-	ground_tilemap.clear()
-	floor_tilemap.clear()
-	wall_tilemap.clear()
 	
 	const ARENA_SIZE = 3
 	
@@ -133,79 +143,11 @@ func generate_boss_room():
 		random_pos = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, ARENA_SIZE))
 		_create_unit_at(random_pos, egg_scene)
 
-func _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y):
-	var available_directions = [Vector2i.UP, Vector2i.DOWN,Vector2i.LEFT, Vector2i.RIGHT]
-	available_directions.erase(-prev_step)
-	if randomwalk_loc.x == MAPSIZE_X:
-		available_directions.erase(Vector2i.RIGHT)
-	if randomwalk_loc.x == -MAPSIZE_X:
-		available_directions.erase(Vector2i.LEFT)
-	if randomwalk_loc.y == MAPSIZE_Y:
-		available_directions.erase(Vector2i.DOWN)
-	if randomwalk_loc.y == -MAPSIZE_Y:
-		available_directions.erase(Vector2i.UP)
-	#if prev_step in available_directions:
-	#	return prev_step
-	return available_directions.pick_random()
-
-func _find_wall(MAPSIZE_X, MAPSIZE_Y):
-	# used for generating treasures deep inside walls
-	var random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-	var _max_tries = 100
-	while _max_tries>0:
-		_max_tries -= 1
-		if _max_tries < 10 and wall_tilemap.get_cell_source_id(random_loc) != tile_ids["STONE"]:
-			return random_loc
-		var all_stone = true
-		for x in [-1,0,1]:
-			for y in [-1,0,1]:
-				if wall_tilemap.get_cell_source_id(random_loc+Vector2i(x,y)) != tile_ids["STONE"]:
-					all_stone = false
-		if all_stone:
-			break
-		random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-	return random_loc
-
-func randomwalk_to_air(start_loc : Vector2i, MAPSIZE_X: int, MAPSIZE_Y: int):
-	var randomwalk_loc: Vector2i = start_loc
-	var visited = []
-	var prev_step := Vector2i.ZERO
-	while true:
-		if world.is_empty(randomwalk_loc):
-			break
-		visited.append(randomwalk_loc)
-		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
-		randomwalk_loc += prev_step
-	for loc in visited:
-		if randf()<0.05: # spike ground
-			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
-		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
-
-
-func generate_map():
-	world.pentagram_location = null
-	world.all_spike_locations = []
-	if world.current_floor % 3 == 0:
-		if randf() < 0.5:
-			generate_boss_room()
-		else:
-			generate_chessboard()
-	else:
-		if randf() < 0.7:
-			generate_map_cavestyle()
-		else:
-			generate_map_chess_style()
-
-
-
 func generate_map_cavestyle():
-	ground_tilemap.clear()
-	floor_tilemap.clear()
-	wall_tilemap.clear()
 	
 	
-	var MAPSIZE_X = 5 + floor(world.current_floor*0.5) # mapsize depends on current floor
-	var MAPSIZE_Y = 5 + floor(world.current_floor*0.5) # mapsize then decides things for worldgen (like amount of stuff)
+	var MAPSIZE_X = 5 + floor(world.current_floor*0.4) # mapsize depends on current floor
+	var MAPSIZE_Y = 5 + floor(world.current_floor*0.4) # mapsize then decides things for worldgen (like amount of stuff)
 
 	_create_borders(-MAPSIZE_X, MAPSIZE_X, -MAPSIZE_Y, MAPSIZE_Y)
 
@@ -268,8 +210,7 @@ func generate_map_cavestyle():
 	for i in range(MAPSIZE_X**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 1:
-			var enemy_pool = all_enemies + hard_enemies if world.current_floor>3 else all_enemies
-			_create_unit_at(random_pos, enemy_pool.pick_random())
+			_create_random_unit_at(random_pos, CAVE_ENEMIES)
 	
 	# ROCKS
 	for i in range(2*MAPSIZE_X**2):
@@ -292,11 +233,7 @@ func generate_map_cavestyle():
 			if cell in [tile_ids["SPIKES"], tile_ids["NOSPIKES"]]:
 				world.all_spike_locations.append(Vector2i(x,y))
 
-
 func generate_map_chess_style():
-	ground_tilemap.clear()
-	floor_tilemap.clear()
-	wall_tilemap.clear()
 	
 	var PLAYER_SPAWN = Vector2i(0,0)
 	world.player.teleport_to(PLAYER_SPAWN)
@@ -339,9 +276,8 @@ func generate_map_chess_style():
 	# ENEMIES
 	for i in range(MAPSIZE_X**2 + world.current_floor):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
-		if (random_pos-PLAYER_SPAWN).length() > 1:
-			var enemy_pool = chess_enemies + hard_enemies if world.current_floor>3 else chess_enemies
-			_create_unit_at(random_pos, enemy_pool.pick_random())
+		if (random_pos-PLAYER_SPAWN).length() > 2:
+			_create_random_unit_at(random_pos, CHESS_ENEMIES)
 	
 	# STAIRS
 	random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
@@ -355,12 +291,61 @@ func generate_map_chess_style():
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, 0))
 	_create_unit_at(random_pos, chest_scene)
 
+
+
 func _create_borders(start_x, end_x, start_y, end_y):
 	_paint_area(wall_tilemap, Vector2i(start_x-2,start_y-2),Vector2i(start_x-1,end_y+2), tile_ids["OBSIDIAN"]) # left wall
 	_paint_area(wall_tilemap, Vector2i(start_x-2,start_y-2),Vector2i(end_x+2,start_y-1), tile_ids["OBSIDIAN"]) # up wall
 	_paint_area(wall_tilemap, Vector2i(end_x+1,start_y-2),Vector2i(end_x+2,end_y+2), tile_ids["OBSIDIAN"]) # right wall
 	_paint_area(wall_tilemap, Vector2i(start_x-2,end_y+1),Vector2i(end_x+2,end_y+2), tile_ids["OBSIDIAN"]) # down wall
-	
+
+func _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y):
+	var available_directions = [Vector2i.UP, Vector2i.DOWN,Vector2i.LEFT, Vector2i.RIGHT]
+	available_directions.erase(-prev_step)
+	if randomwalk_loc.x == MAPSIZE_X:
+		available_directions.erase(Vector2i.RIGHT)
+	if randomwalk_loc.x == -MAPSIZE_X:
+		available_directions.erase(Vector2i.LEFT)
+	if randomwalk_loc.y == MAPSIZE_Y:
+		available_directions.erase(Vector2i.DOWN)
+	if randomwalk_loc.y == -MAPSIZE_Y:
+		available_directions.erase(Vector2i.UP)
+	#if prev_step in available_directions:
+	#	return prev_step
+	return available_directions.pick_random()
+
+func _find_wall(MAPSIZE_X, MAPSIZE_Y):
+	# used for generating treasures deep inside walls
+	var random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
+	var _max_tries = 100
+	while _max_tries>0:
+		_max_tries -= 1
+		if _max_tries < 10 and wall_tilemap.get_cell_source_id(random_loc) != tile_ids["STONE"]:
+			return random_loc
+		var all_stone = true
+		for x in [-1,0,1]:
+			for y in [-1,0,1]:
+				if wall_tilemap.get_cell_source_id(random_loc+Vector2i(x,y)) != tile_ids["STONE"]:
+					all_stone = false
+		if all_stone:
+			break
+		random_loc = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X),randi_range(-MAPSIZE_Y, MAPSIZE_Y))
+	return random_loc
+
+func randomwalk_to_air(start_loc : Vector2i, MAPSIZE_X: int, MAPSIZE_Y: int):
+	var randomwalk_loc: Vector2i = start_loc
+	var visited = []
+	var prev_step := Vector2i.ZERO
+	while true:
+		if world.is_empty(randomwalk_loc):
+			break
+		visited.append(randomwalk_loc)
+		prev_step = _take_random_walk_step(randomwalk_loc, prev_step, MAPSIZE_X, MAPSIZE_Y)
+		randomwalk_loc += prev_step
+	for loc in visited:
+		if randf()<0.05: # spike ground
+			ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
+		wall_tilemap.set_cell(loc, -1, Vector2i(0, 0))
 
 func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_location: Vector2i, tile_id: int) -> void:
 	var min_vec = Vector2(min(from_location.x, to_location.x), min(from_location.y, to_location.y))
@@ -369,9 +354,16 @@ func _paint_area(tilemap_layer: TileMapLayer, from_location: Vector2i, to_locati
 		for y in range(min_vec.y, max_vec.y + 1):
 			tilemap_layer.set_cell(Vector2i(x, y), tile_id , Vector2i(0, 0))
 
+func _create_random_unit_at(location: Vector2i, dicts : Array):
+	var _enemy = dicts.pick_random()
+	while _enemy["level"]>world.current_floor:
+		_enemy = dicts.pick_random()
+		print(_enemy["level"], " ? " ,world.current_floor)
+	if world.is_empty(location, _enemy.get("fatness",Vector2i(1,1))):
+		_create_unit_at(location, _enemy["scene"])
+
 func _create_unit_at(location: Vector2i, scene : PackedScene):
-	#var fatness = Globals.get_fatness_from_packed_scene(scene)
-	if world.is_empty(location):#,fatness): # TODO: ACCESS FATNESS OF A PACKED SCENE! (IMPOSSIBLE?!?!)
+	if world.is_empty(location):
 		var thing: Unit = scene.instantiate()
 		thing.position = World.loc_to_pos(location)
 		world.units.add_child(thing)
@@ -391,8 +383,7 @@ func _create_spell_room(center_loc: Vector2i) -> void:
 	_paint_area(wall_tilemap, center_loc, center_loc+door_offset*2, -1)
 	_create_unit_at(center_loc+door_offset, rock_scene)
 	_create_unit_at(center_loc, crystal_scene)
-	
-	
+
 func _create_room(from_location: Vector2i, to_location: Vector2i) -> void:
 	_paint_area(ground_tilemap, from_location, to_location, tile_ids["WOOD"])
 	_paint_area(wall_tilemap, from_location, to_location, tile_ids["STONE"])

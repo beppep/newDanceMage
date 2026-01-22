@@ -6,13 +6,13 @@ class_name MainUI
 @onready var health_container := $VBoxContainer/Health
 @onready var spell_container := $VBoxContainer/Spells
 @onready var item_container := $Items
-@onready var upgrade_button := $Shop/UpgradeButton
 @onready var damage_flash := $DamageFlash
 @onready var pickup_info = $PickupInfo
 @onready var spell_flash = $SpellFlash
 
 
 @onready var spell_card_scene := preload("res://scenes/spell_card.tscn")
+@onready var item_card_scene := preload("res://scenes/item_card.tscn")
 
 const SHIELD_TEXTURE := preload("res://assets/sprites/ui/shield.png")
 const heart_texture := preload("res://assets/sprites/ui/heart.png")
@@ -73,13 +73,25 @@ func remove_card_rewards():
 	for child in $"CardRewards/Cards".get_children():
 		child.queue_free()
 	
-func show_shop():
-	$Shop.show()
-func hide_shop():
-	$Shop.hide()
+func show_upgrade_shop():
+	$UpgradeShop.show()
+func hide_upgrade_shop():
+	$UpgradeShop.hide()
+func show_item_shop(items_for_sale : Array[ItemResource]):
+	if $ItemShop.visible == false:
+		for i in range(items_for_sale.size()):
+			var item_card : Item_card = item_card_scene.instantiate()
+			item_card.item = items_for_sale[i]
+			$"ItemShop".add_child(item_card)
+		$ItemShop.show()
+func hide_item_shop():
+	$ItemShop.hide()
+	for child in $"ItemShop".get_children():
+		child.queue_free()
+	
 	
 func get_shop_is_shown() -> bool:
-	return $Shop.visible
+	return $ItemShop.visible or $UpgradeShop.visible
 func get_card_reward_is_shown() -> bool:
 	return $"CardRewards/Cards".get_child_count() > 0
 
@@ -172,8 +184,8 @@ func _on_arrow_icon_pressed(spell_nr, arrow_nr): # select an arrow in the shop
 func _on_prices_changed():
 	var spell = player.spell_book[selected_spell_in_shop]
 	var cost = UPGRADE_COST + UPGRADE_SCALING * spell.upgrade_count
-	$"Shop/UpgradeButton/VBoxContainer/cost".text = str(cost) + "$"
-	$"Shop/UpgradeButton2/VBoxContainer/cost".text = str(cost) + "$"
+	$"UpgradeShop/UpgradeButton/VBoxContainer/cost".text = str(cost) + "$"
+	$"UpgradeShop/UpgradeButton2/VBoxContainer/cost".text = str(cost) + "$"
 	
 
 func flash_icon(node: Node):

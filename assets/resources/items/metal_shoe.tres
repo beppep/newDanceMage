@@ -9,5 +9,5 @@ name = "Metal Boots"
 dev_name = "metal_shoe"
 image = ExtResource("1_82h0n")
 description = "Spike immunity."
-price = 5
+price = 1
 metadata/_custom_type_script = "uid://bql1e6egobbiv"

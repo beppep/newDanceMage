@@ -11,7 +11,6 @@ func start():
 	while is_running:
 		await _process_turn()
 		await get_tree().create_timer(1.0 / 165.0).timeout
-	
 	# death
 	await get_tree().create_timer(3.0).timeout
 	get_tree().change_scene_to_file("res://scenes/character_select.tscn")

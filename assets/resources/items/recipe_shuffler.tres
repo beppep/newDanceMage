@@ -9,5 +9,6 @@ name = "Enigma"
 dev_name = "recipe_shuffler"
 image = ExtResource("1_u3hlc")
 description = "Shuffles Your Dances."
+price = 2
 stackable = true
 metadata/_custom_type_script = "uid://bql1e6egobbiv"

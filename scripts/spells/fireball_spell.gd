@@ -18,7 +18,7 @@ func cast(caster: Unit):
 		fireball.owner_spell = self
 
 func hit(proj, location):
-	world.deal_damage_at(location)
+	await world.deal_damage_at(location)
 	proj.queue_free()
 	life_time = 1
 	queue_free()#?

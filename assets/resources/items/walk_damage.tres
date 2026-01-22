@@ -9,5 +9,5 @@ name = "Cacti's Blessing"
 dev_name = "walk_damage"
 image = ExtResource("1_qexu6")
 description = "Hurt enemies when walking into them."
-price = 8
+price = 3
 metadata/_custom_type_script = "uid://bql1e6egobbiv"
