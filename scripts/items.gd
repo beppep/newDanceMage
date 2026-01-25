@@ -28,6 +28,8 @@ func pickup_item_at(location, _player):
 
 static func choose_random_item(): # this also removes it from pool
 	var item_resource: ItemResource = unspawned_items.pick_random()
+	if item_resource.name=="recipe_shuffler" and randf()<0.5:
+		item_resource = preload("res://assets/resources/items/heart.tres")
 	if not item_resource.stackable:
 		unspawned_items.erase(item_resource)
 		#print("remianing items : ", ALL_ITEM_PATHS.size())

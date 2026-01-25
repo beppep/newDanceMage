@@ -2,6 +2,7 @@ extends Enemy
 
 
 const SLIME_SCENE: PackedScene = preload("res://scenes/units/Slime.tscn")
+const RED_SLIME_SCENE: PackedScene = preload("res://scenes/units/RedSlime.tscn")
 
 
 func has_air_or_attackable(loc):
@@ -80,7 +81,7 @@ func die():
 	super()
 	
 	for offset in [Vector2i(0,0), Vector2i(0,1), Vector2i(1,0), Vector2i(1,1)]:
-		var slime = SLIME_SCENE.instantiate()
+		var slime = [SLIME_SCENE, RED_SLIME_SCENE].pick_random().instantiate()
 		slime.location = location + offset
 		slime.position = position + Vector2(offset*world.TILE_SIZE)
 		world.units.add_child(slime)

@@ -11,13 +11,15 @@ var MAPSIZE = 16
 const SHOPSIZE_X = 5
 const SHOPSIZE_Y = 3
 
-const CHEAT = true
+#const CHEAT = true
 
 var troll_scene = preload("res://scenes/units/Troll.tscn")
 var knight_scene = preload("res://scenes/enemies/knight.tscn")
 var bishop_scene = preload("res://scenes/enemies/bishop.tscn")
 var rook_scene = preload("res://scenes/enemies/rook.tscn")
 var pawn_scene = preload("res://scenes/enemies/pawn.tscn")
+var ghost_scene = preload("res://scenes/enemies/ghost.tscn")
+var skeleton_archer_scene = preload("res://scenes/units/Skeleton_archer.tscn")
 var mother_ghost_scene = preload("res://scenes/enemies/mother_ghost.tscn")
 var egg_scene = preload("res://scenes/units/Egg.tscn")
 var rock_scene = preload("res://scenes/units/Rock.tscn")
@@ -41,7 +43,8 @@ var CAVE_ENEMIES := [
 	{"level": 1, "scene": preload("res://scenes/units/Bomb.tscn")},
 	{"level": 2, "scene": egg_scene},
 	{"level": 2, "scene": preload("res://scenes/enemies/ghost.tscn")},
-	{"level": 3, "scene": preload("res://scenes/units/Skeleton_archer.tscn")},
+	{"level": 3, "scene": preload("res://scenes/units/RedSlime.tscn")},
+	{"level": 3, "scene": skeleton_archer_scene},
 	{"level": 3, "scene": preload("res://scenes/units/mother_slime.tscn"), "fatness":Vector2i(2,2)},
 	{"level": 3, "scene": preload("res://scenes/enemies/mortar.tscn")},
 	{"level": 5, "scene": mother_ghost_scene, "fatness":Vector2i(2,2)},
@@ -58,13 +61,15 @@ func generate_map():
 	ground_tilemap.clear()
 	floor_tilemap.clear()
 	wall_tilemap.clear()
-	if world.current_floor == 4 or world.current_floor == 7:
+	if world.current_floor == 9:
+		generate_final_boss_room()
+	elif world.current_floor == 4 or world.current_floor == 7:
 		if randf() < 0.5:
 			generate_boss_room()
 		else:
 			generate_chessboard()
 	else:
-		if randf() < 0.7:
+		if world.current_floor < 5 or randf() < 0.6:
 			generate_map_cavestyle()
 		else:
 			generate_map_chess_style()
@@ -72,7 +77,7 @@ func generate_map():
 
 
 
-func generate_shop(first_floor=false):
+func generate_shop(first_floor=false): # old and unused
 	
 	world.player.teleport_to(Vector2i(0, 2))
 	
@@ -89,10 +94,10 @@ func generate_shop(first_floor=false):
 	
 		_create_unit_at(Vector2i(3, -3), trader_scene)
 	
-	if first_floor and CHEAT:
-		_create_unit_at(Vector2i(1, -2), crystal_scene)
-		_create_unit_at(Vector2i(2, -2), crystal_scene)
-		_create_unit_at(Vector2i(0, -2), crystal_scene)
+	#if first_floor and CHEAT:
+	#	_create_unit_at(Vector2i(1, -2), crystal_scene)
+	#	_create_unit_at(Vector2i(2, -2), crystal_scene)
+	#	_create_unit_at(Vector2i(0, -2), crystal_scene)
 
 func generate_chessboard():
 	
@@ -143,6 +148,49 @@ func generate_boss_room():
 		random_pos = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, ARENA_SIZE))
 		_create_unit_at(random_pos, egg_scene)
 
+func generate_final_boss_room():
+	
+	const ARENA_SIZE = 5
+	
+	_paint_area(ground_tilemap, Vector2i(-ARENA_SIZE,-ARENA_SIZE),Vector2i(ARENA_SIZE,ARENA_SIZE), tile_ids["SAND"])
+	#_paint_area(wall_tilemap, Vector2i(-ARENA_SIZE,-ARENA_SIZE),Vector2i(ARENA_SIZE,ARENA_SIZE), -1)
+	_create_borders(-ARENA_SIZE, ARENA_SIZE, -ARENA_SIZE, ARENA_SIZE)
+	
+	var end_loc= Vector2i(randi_range(-ARENA_SIZE,ARENA_SIZE), -ARENA_SIZE-1)
+	ground_tilemap.set_cell(end_loc, tile_ids["STAIRS"], Vector2i(0, 0)) # exit
+	wall_tilemap.set_cell(end_loc, -1, Vector2i(0, 0)) # exit air
+	
+	var PLAYER_SPAWN = Vector2i(0, ARENA_SIZE)
+	world.player.teleport_to(PLAYER_SPAWN)
+	
+	for x in range(-ARENA_SIZE, ARENA_SIZE+1):
+		_create_unit_at(Vector2i(x, -ARENA_SIZE), skeleton_archer_scene)
+	
+	_create_unit_at(Vector2i(0, 0), ghost_scene)
+	_create_unit_at(Vector2i(0, 1), ghost_scene)
+	_create_unit_at(Vector2i(-3, -3), mother_ghost_scene)
+	_create_unit_at(Vector2i(2, -3), mother_ghost_scene)
+	_create_unit_at(Vector2i(-3, 2), mother_ghost_scene)
+	_create_unit_at(Vector2i(2, 2), mother_ghost_scene)
+	
+	# EGGS
+	var random_pos = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, 0))
+	for i in range(20):
+		random_pos = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, 0))
+		_create_unit_at(random_pos, egg_scene)
+	
+	for y in range(-ARENA_SIZE, ARENA_SIZE+1):
+		var loc = Vector2i([-1,1].pick_random()*ARENA_SIZE, y)
+		ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
+		
+		
+	world.all_spike_locations = []
+	for x in range(-ARENA_SIZE, ARENA_SIZE+1):
+		for y in range(-ARENA_SIZE, ARENA_SIZE+1):
+			var cell = ground_tilemap.get_cell_source_id(Vector2i(x,y))
+			if cell in [tile_ids["SPIKES"], tile_ids["NOSPIKES"]]:
+				world.all_spike_locations.append(Vector2i(x,y))
+
 func generate_map_cavestyle():
 	
 	
@@ -178,7 +226,7 @@ func generate_map_cavestyle():
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
 	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
 	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,-1), randomwalk_loc+Vector2i(1,1), -1)
-	if world.current_floor <= 2 or randf()<0.5:
+	if world.current_floor <= 5 or randf()<0.6:
 		_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
 	else:
 		_create_unit_at(randomwalk_loc, chest_scene)

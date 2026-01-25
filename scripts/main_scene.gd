@@ -14,6 +14,7 @@ const TILE_SIZE = 16 # pixels per tile
 var current_floor = 1
 var all_spike_locations: Array[Vector2i] = []
 var pentagram_location
+var CHEAT = 4
 
 func _ready() -> void:
 	
@@ -21,7 +22,8 @@ func _ready() -> void:
 		get_tree().root.content_scale_factor = 1.5
 		
 	print(" GAME START ")
-	current_floor = 1
+	if CHEAT:
+		current_floor = CHEAT
 	#$map_generator.generate_map_cavestyle()
 	units.start()
 

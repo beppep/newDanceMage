@@ -3,7 +3,6 @@ class_name Player
 
 var stab_spell = load("res://assets/resources/spells/stab_spell.tres")
 
-const CHEAT = 0
 
 var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spellresources in a typed array. for some reason preload returns like a weird reference instead of a SpellResource
 	"res://assets/resources/spells/beamstar_spell.tres",
@@ -103,8 +102,9 @@ func update_animation(move: Vector2i):
 			visual_armadillo_curl()
 
 func process_turn():
-	if CHEAT:
-		health = 3
+	if world.CHEAT:
+		health = 5
+		max_health = 5
 	while buffered_input == null:
 		await get_tree().create_timer(1.0 / 100.0).timeout # let other stuff run while waiting
 	world.main_ui.pickup_info.hide() # shown if you picked up an item last turn.

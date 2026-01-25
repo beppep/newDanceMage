@@ -50,6 +50,7 @@ func perform_attack():
 
 func process_turn():
 	if health <= 1:
+		anim.play("dead")
 		if randf() < 0.8:
 			regrowth_progress += 1
 			if regrowth_progress>2:

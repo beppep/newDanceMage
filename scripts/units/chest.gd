@@ -17,4 +17,12 @@ func die():
 		bomb.position = position
 		bomb.location = location
 		bomb.is_tnt_barrel = false
+		
+	if randf()<0.8:
+		var map_generator : MapGenerator = world.get_node("map_generator")
+		for i in range(3):
+			var offset := Vector2i(randi_range(-2,2), randi_range(-2,2))
+			var thing = map_generator._create_unit_at(location + offset, map_generator.skeleton_archer_scene)
+			if thing:
+				thing.health = randi_range(1,2)
 	
