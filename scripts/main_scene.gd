@@ -14,7 +14,7 @@ const TILE_SIZE = 16 # pixels per tile
 var current_floor = 1
 var all_spike_locations: Array[Vector2i] = []
 var pentagram_location
-var CHEAT = 4
+var CHEAT = 0
 
 func _ready() -> void:
 	

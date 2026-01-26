@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://csqbprv2hw28v"]
+
+[ext_resource type="Texture2D" uid="uid://c060h7qnaungx" path="res://assets/sprites/items/four_way_shot.png" id="1_ws0j8"]
+[ext_resource type="Script" uid="uid://bql1e6egobbiv" path="res://scripts/ItemResource.gd" id="2_6c7n0"]
+
+[resource]
+script = ExtResource("2_6c7n0")
+name = "Four-Way Shot"
+dev_name = "four_way_shot"
+image = ExtResource("1_ws0j8")
+description = "Projectiles are fired in all directions."
+price = 2
+metadata/_custom_type_script = "uid://bql1e6egobbiv"

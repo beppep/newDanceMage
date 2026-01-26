@@ -12,6 +12,7 @@ static var unspawned_items : Array = [
 	preload("res://assets/resources/items/strange_spoon.tres"),
 	preload("res://assets/resources/items/metal_shoe.tres"),
 	preload("res://assets/resources/items/recipe_shuffler.tres"),
+	preload("res://assets/resources/items/four_way_shot.tres"),
 ]
 
 
@@ -28,7 +29,7 @@ func pickup_item_at(location, _player):
 
 static func choose_random_item(): # this also removes it from pool
 	var item_resource: ItemResource = unspawned_items.pick_random()
-	if item_resource.name=="recipe_shuffler" and randf()<0.5:
+	if item_resource.dev_name=="recipe_shuffler" and randf()<0.5:
 		item_resource = preload("res://assets/resources/items/heart.tres")
 	if not item_resource.stackable:
 		unspawned_items.erase(item_resource)

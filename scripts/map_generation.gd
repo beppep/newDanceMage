@@ -31,9 +31,9 @@ var trader_scene = preload("res://scenes/units/Trader.tscn")
 
 var CHESS_ENEMIES = [
 	{"level": 1, "scene": pawn_scene},
-	{"level": 2, "scene": bishop_scene},
-	{"level": 2, "scene": knight_scene},
-	{"level": 3, "scene": rook_scene},
+	{"level": 3, "scene": bishop_scene},
+	{"level": 3, "scene": knight_scene},
+	{"level": 5, "scene": rook_scene},
 	
 ]
 
@@ -44,11 +44,11 @@ var CAVE_ENEMIES := [
 	{"level": 2, "scene": egg_scene},
 	{"level": 2, "scene": preload("res://scenes/enemies/ghost.tscn")},
 	{"level": 3, "scene": preload("res://scenes/units/RedSlime.tscn")},
-	{"level": 3, "scene": skeleton_archer_scene},
 	{"level": 3, "scene": preload("res://scenes/units/mother_slime.tscn"), "fatness":Vector2i(2,2)},
-	{"level": 3, "scene": preload("res://scenes/enemies/mortar.tscn")},
-	{"level": 5, "scene": mother_ghost_scene, "fatness":Vector2i(2,2)},
-	{"level": 6, "scene": preload("res://scenes/units/Worm.tscn")},
+	{"level": 3, "scene": skeleton_archer_scene},
+	{"level": 6, "scene": preload("res://scenes/enemies/mortar.tscn")},
+	{"level": 7, "scene": mother_ghost_scene, "fatness":Vector2i(2,2)},
+	{"level": 8, "scene": preload("res://scenes/units/Worm.tscn")},
 ]
 
 var tile_ids = Globals.tile_ids
@@ -226,10 +226,7 @@ func generate_map_cavestyle():
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
 	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
 	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,-1), randomwalk_loc+Vector2i(1,1), -1)
-	if world.current_floor <= 5 or randf()<0.6:
-		_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
-	else:
-		_create_unit_at(randomwalk_loc, chest_scene)
+	_create_unit_at(randomwalk_loc, crystal_scene) # after putting air
 		
 	# RANDOM WALK: SHOP -> AIR
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
@@ -238,20 +235,24 @@ func generate_map_cavestyle():
 	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,0), randomwalk_loc+Vector2i(1,1), -1)
 	_create_unit_at(randomwalk_loc, trader_scene) # after putting air
 	
-	# RANDOM WALK: DIAMOND -> AIR
+	# RANDOM WALK: CHEST -> AIR
 	randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
 	randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
-	floor_tilemap.set_cell(randomwalk_loc, tile_ids["DIAMOND"], Vector2i(0, 0))
-	wall_tilemap.set_cell(randomwalk_loc, -1, Vector2i(0, 0))
+	_paint_area(wall_tilemap, randomwalk_loc+Vector2i(-1,-1), randomwalk_loc+Vector2i(1,1), -1)
+	if randf()<0.5:
+		for offset in [Vector2i(0,1), Vector2i(1,1), Vector2i(1,0), Vector2i(1,-1), Vector2i(0,-1), Vector2i(-1,-1), Vector2i(-1,0), Vector2i(-1,1)]:
+			ground_tilemap.set_cell(randomwalk_loc+offset, [tile_ids["SPIKES"], tile_ids["NOSPIKES"], tile_ids["SAND"]].pick_random(), Vector2i(0, 0))
+	_create_unit_at(randomwalk_loc, chest_scene)
 	
-	if randf() < 0.5 or true:
+	if randf() < 0.5:
 		# RANDOM WALK: PENTAGRAM -> AIR
 		randomwalk_loc = _find_wall(MAPSIZE_X, MAPSIZE_Y)
-		randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
-		ground_tilemap.set_cell(randomwalk_loc, tile_ids["PENTAGRAM"], Vector2i(0, 0))
-		wall_tilemap.set_cell(randomwalk_loc, -1, Vector2i(0, 0))
-		wall_tilemap.set_cell(randomwalk_loc+Vector2i(0, -1), -1, Vector2i(0, 0))
-		world.pentagram_location = randomwalk_loc
+		if randomwalk_loc.y != -MAPSIZE_Y: # (want space above)
+			randomwalk_to_air(randomwalk_loc, MAPSIZE_X, MAPSIZE_Y)
+			ground_tilemap.set_cell(randomwalk_loc, tile_ids["PENTAGRAM"], Vector2i(0, 0))
+			wall_tilemap.set_cell(randomwalk_loc, -1, Vector2i(0, 0))
+			wall_tilemap.set_cell(randomwalk_loc+Vector2i(0, -1), -1, Vector2i(0, 0))
+			world.pentagram_location = randomwalk_loc
 	
 	# ENEMIES
 	var random_pos #loc
