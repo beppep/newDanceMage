@@ -20,8 +20,6 @@ func cast(caster: Unit):
 func hit(proj, location):
 	await world.deal_damage_at(location)
 	proj.queue_free()
-	life_time = 1
-	queue_free()#?
 
 
 func _physics_process(_delta): # dies when children die

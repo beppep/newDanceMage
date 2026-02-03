@@ -14,11 +14,17 @@ var regrowth_progress = 0
 
 func _ready():
 	super()
-	attack_range = 5
+	attack_range = 3
 	max_health = 2
 	health = 2
 
-
+func do_move():
+	var loc = world.player.location
+	while not world.is_empty(loc):
+		loc = world.player.location + Vector2i(randi_range(-4,4), randi_range(-4,4))
+	world.particles.make_cloud(location, "ectoplasm")
+	teleport_to(loc)
+	world.particles.make_cloud(location, "ectoplasm")
 
 
 func get_possible_targets() -> Array[Vector2i]:

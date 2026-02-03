@@ -1,8 +1,9 @@
-[gd_scene load_steps=37 format=4 uid="uid://dfm2hqcff5htw"]
+[gd_scene load_steps=39 format=4 uid="uid://dfm2hqcff5htw"]
 
 [ext_resource type="Texture2D" uid="uid://birqi1u65y38" path="res://assets/sprites/tiles/obsidian.png" id="1_jjf0l"]
 [ext_resource type="Texture2D" uid="uid://b1j5y10ckc80i" path="res://assets/sprites/tiles/rock.png" id="2_vj1s7"]
 [ext_resource type="Texture2D" uid="uid://bvaj6imc6unwm" path="res://assets/sprites/tiles/sand.png" id="3_471vg"]
+[ext_resource type="Texture2D" uid="uid://c03cg2m8qrwmo" path="res://assets/sprites/tiles/grave.png" id="3_qhnon"]
 [ext_resource type="Texture2D" uid="uid://euie60wjbdx0" path="res://assets/sprites/tiles/wood.png" id="4_q0em4"]
 [ext_resource type="Texture2D" uid="uid://57ta6mjg534o" path="res://assets/sprites/tiles/staircase.png" id="5_0phbf"]
 [ext_resource type="Texture2D" uid="uid://bxb3i4d6d082o" path="res://assets/sprites/tiles/white.png" id="6_gnurf"]
@@ -28,6 +29,10 @@ texture = ExtResource("1_jjf0l")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c1o4b"]
 texture = ExtResource("2_vj1s7")
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qvjt5"]
+texture = ExtResource("3_qhnon")
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_neqfu"]
@@ -73,6 +78,7 @@ sources/6 = SubResource("TileSetAtlasSource_tfagm")
 sources/7 = SubResource("TileSetAtlasSource_gnurf")
 sources/8 = SubResource("TileSetAtlasSource_lhmm1")
 sources/9 = SubResource("TileSetAtlasSource_6lba3")
+sources/10 = SubResource("TileSetAtlasSource_qvjt5")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7bxi3"]
 texture = ExtResource("8_6lba3")

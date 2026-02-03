@@ -40,7 +40,7 @@ var attack_offsets: Array[Vector2i] = []:
 			anim.play("default")
 		queue_redraw()
 
-@abstract func get_possible_targets() -> Array[Vector2i] # used to check if it should attack
+@abstract func get_possible_targets() -> Array[Vector2i] # all possible targetable non-wall squares
 
 var indicator_drawer: Node2D
 
@@ -52,8 +52,8 @@ func _ready():
 	
 
 
-func should_attack(target) -> bool:
-	return target is Player or target == null # true for player and null
+func should_attack(target) -> bool: # used for squids not killing each other for example
+	return target is Player or target == null # true for player and null (why null? i forgot but prolly important?)
 
 func get_attack_offsets(offset: Vector2i) -> Array[Vector2i]: # get the rest of the attack offsets for a given target??
 	return [offset]
@@ -134,12 +134,16 @@ func perform_moving_attack(offset: Vector2i, length: int = 1):
 
 func perform_attack():
 	print(name, " attacks.")
-	var targets = attack_offsets.map(func (offset): return location + offset)
-	for target in targets:
-		var target_unit = world.units.get_unit_at(target)
+	var target_locations = attack_offsets.map(func (offset): return location + offset)
+	var targets = []
+	for target_loc in target_locations:
+		var target_unit = world.units.get_unit_at(target_loc)
 		if target_unit:
-			if not (target_unit is Crystal or target_unit is Chest) and should_attack(world.units.get_unit_at(target)):
-				target_unit.take_damage(attack_power)
+			if not target_unit in targets:
+				if not (target_unit is Crystal or target_unit is Chest) and should_attack(target_unit):
+					targets.append(target_unit)
+	for target_unit in targets:
+		target_unit.take_damage(attack_power)
 	perform_attack_effects()
 	attack_offsets = []
 

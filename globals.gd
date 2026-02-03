@@ -6,7 +6,7 @@ var selected_character : CharacterResource
 
 
 # lookup table for tileset ids. used in mapgen and world
-var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4, "WHITE":5, "BLACK":6, "SPIKES":7, "NOSPIKES":8, "PENTAGRAM":9,  "DIAMOND":0, "HEART":1, "COIN":2} # SKETCHY because it has to align with the tileset at all times
+var tile_ids = {"OBSIDIAN":0, "STONE":1, "SAND":2, "WOOD":3 ,"STAIRS":4, "WHITE":5, "BLACK":6, "SPIKES":7, "NOSPIKES":8, "PENTAGRAM":9, "GRAVE":10,  "DIAMOND":0, "HEART":1, "COIN":2} # SKETCHY because it has to align with the tileset at all times
 
 
 

@@ -14,6 +14,7 @@ const TILE_SIZE = 16 # pixels per tile
 var current_floor = 1
 var all_spike_locations: Array[Vector2i] = []
 var pentagram_location
+var grave_locations
 var CHEAT = 0
 
 func _ready() -> void:
@@ -46,10 +47,12 @@ func next_floor():
 func _process(_delta):
 	pass
 
-func is_wall_at(location: Vector2i) -> bool:
-	var cell = wall_tilemap.local_to_map(loc_to_pos(location))
-	var tile_id = wall_tilemap.get_cell_source_id(cell)
-	return tile_id != -1
+func is_wall_at(location: Vector2i, fatness = Vector2i(1,1)) -> bool:
+	for x in range(fatness.x):
+		for y in range(fatness.y):
+			if wall_tilemap.get_cell_source_id(location + Vector2i(x,y)) != -1:
+				return true
+	return false
 
 func toggle_spikes(): # ground based effects rather?
 	var _to_go_up = [] # looks cooler if there is time in between imo
@@ -67,6 +70,7 @@ func toggle_spikes(): # ground based effects rather?
 		var target = units.get_unit_at(spike_loc)
 		if target and not (target is Crystal or (target is Player and player.items.get("metal_shoe", 0))):
 			target.take_damage()
+			
 	# pentagram logic (shoehorned in here lol)
 	if pentagram_location:
 		var _sacrifice = units.get_unit_at(pentagram_location)
@@ -79,8 +83,17 @@ func toggle_spikes(): # ground based effects rather?
 			#_sacrifice.health -= 1
 			_sacrifice.max_health -= 1
 			items.spawn_random_item_at(pentagram_location+Vector2i(0, -1))
-
-
+	
+	# grave logic too
+	if grave_locations:
+		if is_empty(grave_locations) and randf()<0.1:
+			var skeleton: Unit = $map_generator.skeleton_archer_scene.instantiate()
+			skeleton.position = World.loc_to_pos(grave_locations)
+			skeleton.location = grave_locations
+			units.add_child(skeleton)
+			skeleton.health = 1
+			
+			
 func is_empty(location: Vector2i, fatness = Vector2i(1,1), except=null) -> bool:
 	for x in range(fatness.x):
 		for y in range(fatness.y):

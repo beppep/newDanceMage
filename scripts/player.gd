@@ -1,7 +1,7 @@
 extends Unit
 class_name Player
 
-var stab_spell = load("res://assets/resources/spells/stab_spell.tres")
+var test_spell = load("res://assets/resources/spells/self_destruct_spell.tres")
 
 
 var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spellresources in a typed array. for some reason preload returns like a weird reference instead of a SpellResource
@@ -20,6 +20,7 @@ var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spe
 	"res://assets/resources/spells/lightning_storm_spell.tres",
 	"res://assets/resources/spells/random_spell.tres",
 	"res://assets/resources/spells/rock_spell.tres",
+	"res://assets/resources/spells/self_destruct_spell.tres",
 	"res://assets/resources/spells/shield_spell.tres",
 	"res://assets/resources/spells/teleport_spell.tres",
 	"res://assets/resources/spells/wind_spell.tres",
@@ -31,9 +32,7 @@ var locked_spell_paths : Array[String] = [ # i had issues trying to keep the spe
 var buffered_input = null
 var move_history: Array[Vector2i] = []
 var spell_book_max = 8 # not implemented
-#var recipe_book: Array = [Globals.selected_character.starting_dance]
 var spell_book: Array[SpellResource] = [Globals.selected_character.starting_spell.duplicate()]
-#var upgrade_count_book = [0]
 var diamonds = 0
 var items = {}
 var displayed_items = [] # maybe there should only be one items list, but having the dictionary can be handy for now...
@@ -234,12 +233,14 @@ func create_random_recipe(recipe_length :int):
 	var recipe: Array[Step] = []
 	for i in range(recipe_length):
 		recipe.append(Step.make_direction(all_inputs.pick_random()))
+	if randf()<0.2:
+		recipe.append(Step.make_wildcard())
 	return recipe
 
 func take_damage(amount=1):
 	super(amount)
 	ui_node.flash_damage()
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.1).timeout
 
 func die():
 	print(name, " died a horrible death.")

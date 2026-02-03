@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellResource" load_steps=5 format=3 uid="uid://dro2w7bvta4g0"]
+
+[ext_resource type="Texture2D" uid="uid://b1pkywk4tfx06" path="res://assets/sprites/spells/self_destruct.png" id="1_k1q80"]
+[ext_resource type="Script" uid="uid://val26tm8c0s5" path="res://scripts/StepResource.gd" id="2_4qotd"]
+[ext_resource type="Script" uid="uid://bol1wrrtmnshn" path="res://scripts/SpellResource.gd" id="3_wgl87"]
+[ext_resource type="Script" uid="uid://lkti13u4o0e" path="res://scripts/spells/self_destruct_spell.gd" id="4_k1q80"]
+
+[resource]
+script = ExtResource("3_wgl87")
+name = "Combust"
+image = ExtResource("1_k1q80")
+description = "Deal damage to yourself and a huge area."
+dance_length = 3
+spell_script = ExtResource("4_k1q80")
+metadata/_custom_type_script = "uid://bol1wrrtmnshn"

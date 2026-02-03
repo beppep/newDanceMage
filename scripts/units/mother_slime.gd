@@ -75,9 +75,6 @@ func die():
 	if is_queued_for_deletion():
 		return
 	
-		
-	
-	await get_tree().create_timer(0.1).timeout
 	super()
 	
 	for offset in [Vector2i(0,0), Vector2i(0,1), Vector2i(1,0), Vector2i(1,1)]:

@@ -13,6 +13,7 @@ const SHOPSIZE_Y = 3
 
 #const CHEAT = true
 
+var boss_scene = preload("res://scenes/enemies/boss3x3.tscn")
 var troll_scene = preload("res://scenes/units/Troll.tscn")
 var knight_scene = preload("res://scenes/enemies/knight.tscn")
 var bishop_scene = preload("res://scenes/enemies/bishop.tscn")
@@ -69,7 +70,7 @@ func generate_map():
 		else:
 			generate_chessboard()
 	else:
-		if world.current_floor < 5 or randf() < 0.6:
+		if world.current_floor == 2 or randf() < 0.7:
 			generate_map_cavestyle()
 		else:
 			generate_map_chess_style()
@@ -150,7 +151,7 @@ func generate_boss_room():
 
 func generate_final_boss_room():
 	
-	const ARENA_SIZE = 5
+	const ARENA_SIZE = 4
 	
 	_paint_area(ground_tilemap, Vector2i(-ARENA_SIZE,-ARENA_SIZE),Vector2i(ARENA_SIZE,ARENA_SIZE), tile_ids["SAND"])
 	#_paint_area(wall_tilemap, Vector2i(-ARENA_SIZE,-ARENA_SIZE),Vector2i(ARENA_SIZE,ARENA_SIZE), -1)
@@ -163,25 +164,23 @@ func generate_final_boss_room():
 	var PLAYER_SPAWN = Vector2i(0, ARENA_SIZE)
 	world.player.teleport_to(PLAYER_SPAWN)
 	
-	for x in range(-ARENA_SIZE, ARENA_SIZE+1):
-		_create_unit_at(Vector2i(x, -ARENA_SIZE), skeleton_archer_scene)
+	#for x in range(-ARENA_SIZE, ARENA_SIZE+1):
+	#	_create_unit_at(Vector2i(x, -ARENA_SIZE), skeleton_archer_scene)
 	
-	_create_unit_at(Vector2i(0, 0), ghost_scene)
-	_create_unit_at(Vector2i(0, 1), ghost_scene)
-	_create_unit_at(Vector2i(-3, -3), mother_ghost_scene)
-	_create_unit_at(Vector2i(2, -3), mother_ghost_scene)
-	_create_unit_at(Vector2i(-3, 2), mother_ghost_scene)
-	_create_unit_at(Vector2i(2, 2), mother_ghost_scene)
+	_create_unit_at(Vector2i(1, -1), boss_scene)
+	_create_unit_at(Vector2i(-3, -1), boss_scene)
 	
-	# EGGS
-	var random_pos = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, 0))
+	# ROCKS
 	for i in range(20):
-		random_pos = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, 0))
-		_create_unit_at(random_pos, egg_scene)
+		var random_loc = Vector2i(randi_range(-ARENA_SIZE, ARENA_SIZE), randi_range(-ARENA_SIZE, ARENA_SIZE))
+		_create_unit_at(random_loc, rock_scene)
 	
 	for y in range(-ARENA_SIZE, ARENA_SIZE+1):
 		var loc = Vector2i([-1,1].pick_random()*ARENA_SIZE, y)
-		ground_tilemap.set_cell(loc, [tile_ids["SPIKES"], tile_ids["NOSPIKES"]].pick_random(), Vector2i(0, 0))
+		var tile_id = [tile_ids["SPIKES"], tile_ids["NOSPIKES"], tile_ids["GRAVE"], tile_ids["SAND"]].pick_random()
+		ground_tilemap.set_cell(loc, tile_id, Vector2i(0, 0))
+		if tile_id == tile_ids["GRAVE"]:
+			world.grave_locations = loc
 		
 		
 	world.all_spike_locations = []
@@ -275,6 +274,13 @@ func generate_map_cavestyle():
 			if random_pos.length() > 3:
 				_create_unit_at(random_pos, egg_scene)
 	
+	if world.current_floor > 2:
+		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
+		ground_tilemap.set_cell(random_pos, tile_ids["GRAVE"], Vector2i(0, 0))
+		world.grave_locations = random_pos
+	else:
+		world.grave_locations = null
+	
 	world.all_spike_locations = []
 	for x in range(-MAPSIZE_X, MAPSIZE_X+1):
 		for y in range(-MAPSIZE_Y, MAPSIZE_Y+1):
@@ -323,7 +329,7 @@ func generate_map_chess_style():
 			_create_unit_at(random_pos, rock_scene)
 	
 	# ENEMIES
-	for i in range(MAPSIZE_X**2 + world.current_floor):
+	for i in range(MAPSIZE_X + world.current_floor**2):
 		random_pos = Vector2i(randi_range(-MAPSIZE_X, MAPSIZE_X), randi_range(-MAPSIZE_Y, MAPSIZE_Y))
 		if (random_pos-PLAYER_SPAWN).length() > 2:
 			_create_random_unit_at(random_pos, CHESS_ENEMIES)

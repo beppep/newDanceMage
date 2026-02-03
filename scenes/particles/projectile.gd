@@ -14,33 +14,41 @@ var direction := Vector2i.RIGHT
 var caster : Unit # player (or enemy!?) casting the spell
 var owner_spell : Spell # if you assign this from the spell you must also define a hit() behaviour in the spell
 var age := 0
-var location: Vector2i = World.pos_to_loc(position)
+var location: Vector2i # read only
+var start_location : Vector2i
 var hit = false
 var attack_range := 10
 
 func _ready():
-	location = World.pos_to_loc(position)
+	start_location = World.pos_to_loc(global_position)
+	location = start_location
 
 func _physics_process(_delta):
 	if hit:
 		return
 	# Move continuously (async?!)
-	global_position += Vector2(direction) * move_speed * world.TILE_SIZE
 	age += 1
-	var lifetime = attack_range / move_speed
-	if age > lifetime:
+	location = start_location + int(move_speed * age) * direction
+	global_position = World.loc_to_pos(start_location) + Vector2(direction) * move_speed * world.TILE_SIZE * age
+	if int(move_speed * age) > attack_range:
 		queue_free()
 		return
 
-	location = World.pos_to_loc(global_position)
 	_check_collision()
 
 func _check_collision():
-	if not world.is_empty(location) and not location == caster.location:
-		hit = true
-		if owner_spell:
-			owner_spell.hit(self, location)
+	if not world.is_empty(location):
+		var target = world.units.get_unit_at(location)
+		if target:
+			if target == caster:
+				return # ally
+			else:
+				hit = true
+				if owner_spell:
+					owner_spell.hit(self, location)
+				else:
+					await world.deal_damage_at(location)
+					queue_free()
 		else:
-			await world.deal_damage_at(location)
+			# no unit means wall
 			queue_free()
-			
